@@ -1,5 +1,11 @@
+<script setup>
+import TitlePage from '@/components/TitlePage.vue'
+import tempImage from '@/assets/temp.jpg'
+import EventsTable from '@/components/EventsTable.vue';
+</script>
+
 <template>
-  <section class="min-vh-100 pt-4 position-relative bg-white z-1">
-    <h1>this is events</h1>
-  </section>
+  <TitlePage title="Events" :image="tempImage" />
+
+  <EventsTable/>
 </template>

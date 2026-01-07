@@ -1,21 +1,10 @@
-<template>
-  <div class="registration bg-white">
-    <h1>Registration Page</h1>
-    <!-- Your form or content goes here -->
-  </div>
-</template>
-
-<script>
-export default {
-  name: 'Registration',
-  // optional: data, methods, etc.
-}
+<script setup>
+import TitlePage from '@/components/TitlePage.vue'
+import tempImage from '@/assets/temp.jpg'
 </script>
 
-<!-- Optional: styles -->
-<style scoped>
-.registration {
-  padding: 2rem;
-  min-height: 100vh;
-}
-</style>
+<template>
+  <TitlePage title="Registration" :image="tempImage" />
+
+  <div class="min-vh-100"></div>
+</template>
