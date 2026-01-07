@@ -5,7 +5,7 @@ import 'bootstrap/dist/js/bootstrap.js'
 import '@/assets/base.css'
 import '@/assets/main.css'
 import App from './App.vue'
-import { MotionPlugin } from "@vueuse/motion"
+import { MotionPlugin } from '@vueuse/motion'
 import router from './router'
 
 const app = createApp(App)

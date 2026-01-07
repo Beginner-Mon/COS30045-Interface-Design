@@ -13,18 +13,13 @@
     <!-- Black Gradient Overlay -->
     <div
       class="position-absolute top-0 start-0 w-100 h-100"
-      style="background: linear-gradient(to bottom, rgba(0,0,0,.12), rgba(0,0,0,.26));"
+      style="background: linear-gradient(to bottom, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.26))"
     ></div>
 
     <div class="position-relative text-white text-center px-3 content">
-      <h1 class="fw-bold display-6 display-md-5 display-lg-4">
-        Register Now
-      </h1>
+      <h1 class="fw-bold display-6 display-md-5 display-lg-4">Register Now</h1>
 
-      <RouterLink
-        to="/events"
-        class="btn btn-outline-light mt-3 px-4 py-2"
-      >
+      <RouterLink to="/events" class="btn btn-outline-light mt-3 px-4 py-2">
         Go to Registration Form
       </RouterLink>
     </div>
@@ -32,10 +27,10 @@
 </template>
 
 <style scoped>
-    .min-h-50vh {
-        min-height: 70vh;
-    }
-    .content {
-      margin-top: 4rem;
-    }
+.min-h-50vh {
+  min-height: 70vh;
+}
+.content {
+  margin-top: 4rem;
+}
 </style>

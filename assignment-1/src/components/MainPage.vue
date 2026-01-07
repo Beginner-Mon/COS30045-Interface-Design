@@ -14,39 +14,28 @@
     <!-- Black Gradient Overlay -->
     <div
       class="position-absolute top-0 start-0 w-100 h-100"
-      style="
-        background: linear-gradient(
-          to bottom,
-          rgba(0, 0, 0, 0.12),
-          rgba(0, 0, 0, 0.15)
-        );
-      "
+      style="background: linear-gradient(to bottom, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.15))"
     ></div>
 
     <!-- Content -->
     <div
-        v-motion
-        :initial="{y:40, opacity: 0 }"
-        :enter="{y:0,  opacity: 1 }"
-        :transition="{ duration: 3, ease: 'easeInOut' }"
-        class="position-relative text-center text-white px-3"
+      v-motion
+      :initial="{ y: 40, opacity: 0 }"
+      :enter="{ y: 0, opacity: 1 }"
+      :transition="{ duration: 3, ease: 'easeInOut' }"
+      class="position-relative text-center text-white px-3"
     >
-      <h1 class="display-5 fw-bold mb-3">
-        Event Management System
-      </h1>
+      <h1 class="display-5 fw-bold mb-3">Event Management System</h1>
 
       <p class="lead mb-4">
-        Plan, manage, and organize events effortlessly with a modern
-        event management platform.
+        Plan, manage, and organize events effortlessly with a modern event management platform.
       </p>
 
-      <RouterLink to="/events" class="btn btn-light btn-lg">
-        View Events
-      </RouterLink>
+      <RouterLink to="/events" class="btn btn-light btn-lg"> View Events </RouterLink>
     </div>
   </section>
 </template>
 
 <script setup>
-import { RouterLink } from "vue-router"
+import { RouterLink } from 'vue-router'
 </script>
