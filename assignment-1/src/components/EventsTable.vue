@@ -30,7 +30,7 @@ const filteredEvents = computed(() => {
       class="col-12 col-md-3 p-4 mb-4 mb-md-0 me-md-4 position-md-sticky"
       :class="['vh-md-100 overflow-auto', 'sticky-md-top']"
     >
-      <h5>Filters Option</h5>
+      <h3>Filters Option</h3>
       <div class="mb-3">
         <label class="form-label">Event ID</label>
         <input v-model="searchEventID" type="text" class="form-control" placeholder="Search by ID" />
@@ -89,7 +89,7 @@ const filteredEvents = computed(() => {
 <style scoped>
 /* Sticky sidebar only on md and above */
 .sticky-md-top {
-  top: 0;
+  top: 4rem;
   z-index: 1;
 }
 

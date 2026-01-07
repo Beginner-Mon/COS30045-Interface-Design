@@ -46,8 +46,8 @@ const reasons = [
       <div class="row g-3 justify-content-center">
         <div v-for="(item, index) in reasons" :key="index" class="col-12 col-md-6 col-lg-4">
           <div
-            class="position-relative d-flex align-items-end overflow-hidden p-4 text-white"
-            style="min-height: 16rem"
+            class="position-relative child-div d-flex align-items-end overflow-hidden p-4 text-white"
+            
           >
             <!-- Background image -->
             <img
@@ -77,4 +77,16 @@ const reasons = [
   padding-top: 7rem;
   padding-bottom: 7rem;
 }
+.child-div {
+  min-height: 10rem;
+}
+
+@media (min-width: 768px) {
+  .child-div {
+    min-height: 16rem;
+  }
+}
+
+
+
 </style>
