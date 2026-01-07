@@ -1,69 +1,109 @@
 <template>
-  <header class="bg-black text-white d-flex justify-content-between align-items-center p-2  ">
-    <!-- Logo / Left side -->
-    <div class="logo">
-      <h2 class="m-0">MyLogo</h2>
-    </div>
+  <header
+    class="p-4  text-white fixed-top d-flex align-items-center"
+    :class="isMobile ? 'justify-content-between' : 'justify-content-center'"
+  >
+    <!-- Desktop Nav -->
+    <nav v-if="!isMobile" class="desktop-nav d-flex align-items-center gap-5 px-4 py-2">
+      <RouterLink to="/" class=" text-decoration-none fs-5 fw-bold">
+        LOGO
+      </RouterLink>
+      <RouterLink to="/events" class="text-decoration-none fs-6">
+        Events
+      </RouterLink>
+      <RouterLink to="/registration" class=" text-decoration-none fs-6">
+        Registration
+      </RouterLink>
+    </nav>
 
-    <!-- Menu button / Right side -->
-    <button class="btn btn-outline-light" @click="showModal = true">☰ Menu</button>
+    <!-- Mobile Header -->
+    <template v-else>
+      <RouterLink to="/" class=" text-decoration-none fw-bold">
+        LOGO
+      </RouterLink>
+      <i
+        class="bi bi-list fs-2 cursor-pointer"
+        role="button"
+        @click="openMenu"
+      ></i>
+    </template>
   </header>
 
-  <!-- Fullscreen Modal -->
+  <!-- MOBILE MODAL -->
   <div
-    class="modal fade"
-    :class="{ show: showModal }"
-    tabindex="-1"
-    style="display: block"
-    v-if="showModal"
+    v-if="menuOpen"
+    class="position-fixed top-0 start-0 w-100 h-100 bg-primary text-white z-50"
+    v-motion
+    :initial="{ y: '-100%' }"
+    :enter="{ y: '0%' }"
+    :leave="{ y: '-100%' }"
+    :transition="{ duration: 0.4, ease: 'easeInOut' }"
   >
-    <div class="modal-dialog modal-fullscreen">
-      <div
-        class="modal-content bg-dark text-white d-flex flex-column justify-content-center align-items-center"
-      >
-        <button
-          type="button"
-          class="btn btn-light position-absolute top-0 end-0 m-3"
-          @click="showModal = false"
-        >
-          ✕
-        </button>
-        <nav class="d-flex flex-column gap-3 fs-2 text-center">
-          <router-link class="text-white" to="/" @click="showModal = false">Home</router-link>
-          <router-link class="text-white" to="/events" @click="showModal = false"
-            >Events</router-link
-          >
-          <router-link class="text-white" to="/registration" @click="showModal = false"
-            >Registration</router-link
-          >
-        </nav>
-      </div>
+    <!-- Close Button -->
+    <div class="p-4 d-flex justify-content-end">
+      <i
+        class="bi bi-x-lg fs-3"
+        role="button"
+        @click="closeMenu"
+      ></i>
     </div>
+
+    <!-- Bottom Nav -->
+    <nav
+      class="position-absolute bottom-0 w-100 pb-5 d-flex flex-column align-items-center gap-4"
+    >
+      <RouterLink
+        to="/events"
+        class="text-white text-decoration-none fs-4"
+        @click="closeMenu"
+      >
+        Events
+      </RouterLink>
+
+      <RouterLink
+        to="/registration"
+        class="text-white text-decoration-none fs-4"
+        @click="closeMenu"
+      >
+        Registration
+      </RouterLink>
+    </nav>
   </div>
 </template>
+<style scoped>
+  .desktop-nav {
+  background: rgba(0, 0, 0, 0.45);     /* semi-transparent */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* Safari */
+  border-radius: 999px;               /* pill shape */
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
 
+</style>
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useWindowSize } from '@vueuse/core'
 
-const showModal = ref(false)
+const menuOpen = ref(false)
+
+const { width } = useWindowSize()
+const isMobile = computed(() => width.value < 768)
+
+const openMenu = () => {
+  menuOpen.value = true
+}
+
+const closeMenu = () => {
+  menuOpen.value = false
+}
 </script>
 
 <style scoped>
-/* Remove background overlay behind modal */
-.modal {
-  background-color: rgba(0, 0, 0, 0.85);
-  transition: opacity 0.3s ease;
+.z-50 {
   z-index: 1050;
 }
 
-/* Smooth fade for modal */
-.modal.show {
-  opacity: 1;
-}
-
-/* Modal nav links hover */
-.modal nav a:hover {
-  text-decoration: underline;
-  color: #f8f9fa;
+.cursor-pointer {
+  cursor: pointer;
 }
 </style>
