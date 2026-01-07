@@ -1,5 +1,5 @@
 <template>
-  <div class="registration">
+  <div class="registration bg-white">
     <h1>Registration Page</h1>
     <!-- Your form or content goes here -->
   </div>
@@ -16,5 +16,6 @@ export default {
 <style scoped>
 .registration {
   padding: 2rem;
+  min-height: 100vh;
 }
 </style>

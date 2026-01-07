@@ -16,7 +16,7 @@
       style="background: linear-gradient(to bottom, rgba(0,0,0,.12), rgba(0,0,0,.26));"
     ></div>
 
-    <div class="position-relative text-white text-center px-3">
+    <div class="position-relative text-white text-center px-3 content">
       <h1 class="fw-bold display-6 display-md-5 display-lg-4">
         Register Now
       </h1>
@@ -33,6 +33,9 @@
 
 <style scoped>
     .min-h-50vh {
-        min-height: 50vh;
+        min-height: 70vh;
+    }
+    .content {
+      margin-top: 4rem;
     }
 </style>
