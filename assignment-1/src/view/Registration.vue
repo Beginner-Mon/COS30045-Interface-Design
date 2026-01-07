@@ -1,11 +1,11 @@
 <script setup>
 import TitlePage from '@/components/TitlePage.vue'
 import tempImage from '@/assets/temp.jpg'
-import Registration from '@/components/Registration.vue';
+import RegistrationForm from '@/components/RegistrationForm.vue';
 </script>
 
 <template>
   <TitlePage title="Registration" :image="tempImage" />
 
-  <Registration/>
+  <RegistrationForm/>
 </template>
