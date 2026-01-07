@@ -31,7 +31,7 @@
         Plan, manage, and organize events effortlessly with a modern event management platform.
       </p>
 
-      <RouterLink to="/events" class="btn btn-light btn-lg"> View Events </RouterLink>
+      <RouterLink to="/events" class="btn btn-outline-light btn-lg"> View Events </RouterLink>
     </div>
   </section>
 </template>
