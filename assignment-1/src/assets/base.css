@@ -1,40 +1,101 @@
-/* src/assets/css/base.css */
+/* =========================
+   Base CSS with Variables
+   ========================= */
 
-/* Reset some defaults */
+/* CSS Variables */
+:root {
+  /* Colors */
+  --color-primary: #0d6efd;
+  --color-secondary: #6c757d;
+  --color-success: #198754;
+  --color-danger: #dc3545;
+  --color-warning: #ffc107;
+  --color-info: #0dcaf0;
+  --color-light: #f8f9fa;
+  --color-dark: #212529;
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  /* Backgrounds */
+  --bg-primary: var(--color-primary);
+  --bg-dark: var(--color-dark);
+  --bg-light: var(--color-light);
+
+  /* Text Colors */
+  --text-primary: var(--color-primary);
+  --text-white: var(--color-white);
+  --text-dark: var(--color-dark);
+
+  /* Spacing */
+  --padding-xs: 4px;
+  --padding-sm: 8px;
+  --padding-md: 16px;
+  --padding-lg: 24px;
+  --padding-xl: 32px;
+}
+
+/* =========================
+   Global Reset
+   ========================= */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Body styles */
 body {
   font-family: 'Helvetica Neue', Arial, sans-serif;
   font-size: 16px;
-  background-color: #f8f9fa;
-  color: #333;
+  line-height: 1.5;
+  background-color: var(--bg-light);
+  color: var(--text-dark);
 }
 
-/* Links */
+/* =========================
+   Links
+   ========================= */
 a {
   text-decoration: none;
   color: inherit;
 }
 
-/* Headings */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: 600;
-  margin-bottom: 0.5rem;
+a:hover {
+  text-decoration: underline;
 }
 
-/* Containers */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
+/* =========================
+   Headings
+   ========================= */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  margin-bottom: var(--padding-md);
+  color: var(--text-dark);
 }
+
+
+
+/* =========================
+   Utility Classes
+   ========================= */
+
+.bg-primary {
+  background-color: var(--bg-primary);
+  color: var(--text-white);
+}
+
+.bg-dark {
+  background-color: var(--bg-dark);
+  color: var(--text-white);
+}
+
+.p-1 { padding: var(--padding-xs); }
+.p-2 { padding: var(--padding-sm); }
+.p-3 { padding: var(--padding-md); }
+.p-4 { padding: var(--padding-lg); }
+.p-5 { padding: var(--padding-xl); }
+
+.m-1 { margin: var(--padding-xs); }
+.m-2 { margin: var(--padding-sm); }
+.m-3 { margin: var(--padding-md); }
+.m-4 { margin: var(--padding-lg); }
+.m-5 { margin: var(--padding-xl); }
