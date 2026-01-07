@@ -24,10 +24,10 @@ const filteredEvents = computed(() => {
 </script>
 
 <template>
-  <section class="min-vh-100 d-flex flex-column flex-md-row p-4">
+  <section class="min-vh-100 d-flex flex-column flex-md-row py">
     <!-- Filters -->
     <div
-      class="col-12 col-md-3 p-md-4 mb-4 mb-md-0 me-md-4 position-md-sticky"
+      class="col-12 col-md-3 p-4 mb-4 mb-md-0 me-md-4 position-md-sticky"
       :class="['vh-md-100 overflow-auto', 'sticky-md-top']"
     >
       <h5>Filters Option</h5>
@@ -60,7 +60,7 @@ const filteredEvents = computed(() => {
     </div>
 
     <!-- Table -->
-    <div class="col-12 col-md-9 overflow-auto py-10">
+    <div class="col-12 col-md-9 overflow-auto">
       <table class="table table-striped table-hover">
         <thead class="table-dark sticky-top">
           <tr>
@@ -89,7 +89,7 @@ const filteredEvents = computed(() => {
 <style scoped>
 /* Sticky sidebar only on md and above */
 .sticky-md-top {
-  bottom: 0;
+  top: 0;
   z-index: 1;
 }
 
@@ -103,10 +103,16 @@ const filteredEvents = computed(() => {
 .vh-md-100 {
   height: auto;
 }
-
+.py {
+    padding-bottom: 3rem;
+}
 @media (min-width: 768px) {
   .vh-md-100 {
     height: 100vh;
   }
+  .py {
+    padding-bottom: 7rem;
+    padding-top: 7rem;
+}
 }
 </style>
