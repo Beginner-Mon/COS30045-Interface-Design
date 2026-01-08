@@ -1,9 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue';
-// Import JSON file
 import events from '@/assets/events.json';
 
-// Form state
 const username = ref('');
 const password = ref('');
 const confirmPassword = ref('');
