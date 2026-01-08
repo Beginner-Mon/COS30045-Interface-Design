@@ -1,5 +1,4 @@
 <script setup>
-
 const reasons = [
   {
     title: 'Professional Team',
@@ -22,10 +21,11 @@ const reasons = [
     image: '/secure.jpg',
   },
   {
-  title: 'Diverse Events',
-  description: 'We offer a wide range of events across multiple categories to suit different interests and industries.',
-  image: '/diverse-events.jpg',
-},
+    title: 'Diverse Events',
+    description:
+      'We offer a wide range of events across multiple categories to suit different interests and industries.',
+    image: '/diverse-events.jpg',
+  },
 
   {
     title: 'Customer Satisfaction',
@@ -47,7 +47,6 @@ const reasons = [
         <div v-for="(item, index) in reasons" :key="index" class="col-12 col-md-6 col-lg-4">
           <div
             class="position-relative child-div d-flex align-items-end overflow-hidden p-4 text-white"
-            
           >
             <!-- Background image -->
             <img
@@ -86,7 +85,4 @@ const reasons = [
     min-height: 16rem;
   }
 }
-
-
-
 </style>

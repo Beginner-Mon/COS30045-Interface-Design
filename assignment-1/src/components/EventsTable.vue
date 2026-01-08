@@ -1,26 +1,28 @@
 <script setup>
-import { ref, computed } from 'vue';
-import events from '@/assets/events.json';
+import { ref, computed } from 'vue'
+import events from '@/assets/events.json'
 
-const searchEventID = ref('');
-const searchEventName = ref('');
-const searchDuration = ref('');
-const selectedCategory = ref('None');
+const searchEventID = ref('')
+const searchEventName = ref('')
+const searchDuration = ref('')
+const selectedCategory = ref('None')
 
 // Combined filter
 const filteredEvents = computed(() => {
   return events.filter((e) => {
-    const matchesID = e.eventid.toLowerCase().includes(searchEventID.value.toLowerCase());
-    const matchesName = e.eventname.toLowerCase().includes(searchEventName.value.toLowerCase());
+    const matchesID = e.eventid.toLowerCase().includes(searchEventID.value.toLowerCase())
+    const matchesName = e.eventname.toLowerCase().includes(searchEventName.value.toLowerCase())
     const matchesDuration = searchDuration.value
       ? e.durationhour.toString().includes(searchDuration.value)
-      : true;
+      : true
     const matchesCategory =
-      selectedCategory.value === 'None' ? true : e.category.toLowerCase() === selectedCategory.value.toLowerCase();
+      selectedCategory.value === 'None'
+        ? true
+        : e.category.toLowerCase() === selectedCategory.value.toLowerCase()
 
-    return matchesID && matchesName && matchesDuration && matchesCategory;
-  });
-});
+    return matchesID && matchesName && matchesDuration && matchesCategory
+  })
+})
 </script>
 
 <template>
@@ -33,19 +35,38 @@ const filteredEvents = computed(() => {
       <h3>Filters Option</h3>
       <div class="mb-3">
         <label class="form-label">Event ID</label>
-        <input v-model="searchEventID" type="text" class="form-control" placeholder="Search by ID" />
+        <input
+          v-model="searchEventID"
+          type="text"
+          class="form-control"
+          placeholder="Search by ID"
+        />
       </div>
       <div class="mb-3">
         <label class="form-label">Event Name</label>
-        <input v-model="searchEventName" type="text" class="form-control" placeholder="Search by Name" />
+        <input
+          v-model="searchEventName"
+          type="text"
+          class="form-control"
+          placeholder="Search by Name"
+        />
       </div>
       <div class="mb-3">
         <label class="form-label">Duration Hours</label>
-        <input v-model="searchDuration" type="text" class="form-control" placeholder="Search by Duration" />
+        <input
+          v-model="searchDuration"
+          type="text"
+          class="form-control"
+          placeholder="Search by Duration"
+        />
       </div>
       <div class="mb-3">
         <label class="form-label">Category</label>
-        <div class="form-check" v-for="cat in ['None','Technology','Business','Marketing','Finance']" :key="cat">
+        <div
+          class="form-check"
+          v-for="cat in ['None', 'Technology', 'Business', 'Marketing', 'Finance']"
+          :key="cat"
+        >
           <input
             class="form-check-input"
             type="radio"
@@ -104,7 +125,7 @@ const filteredEvents = computed(() => {
   height: auto;
 }
 .py {
-    padding-bottom: 3rem;
+  padding-bottom: 3rem;
 }
 @media (min-width: 768px) {
   .vh-md-100 {
@@ -113,6 +134,6 @@ const filteredEvents = computed(() => {
   .py {
     padding-bottom: 7rem;
     padding-top: 7rem;
-}
+  }
 }
 </style>

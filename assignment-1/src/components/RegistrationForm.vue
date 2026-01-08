@@ -1,122 +1,207 @@
 <script setup>
-import { ref, computed } from 'vue';
-import events from '@/assets/events.json';
+import { ref, computed } from 'vue'
+import events from '@/assets/events.json'
+import bgImage from '@/assets/temp.jpg'
 
-const username = ref('');
-const password = ref('');
-const confirmPassword = ref('');
-const category = ref('Business'); // Default category
-const selectedEvent = ref('');
+const username = ref('')
+const password = ref('')
+const confirmPassword = ref('')
+const category = ref('Business')
+const selectedEvent = ref('')
 
-// Filter events based on selected category
 const eventsList = computed(() =>
   events.filter(event => event.category === category.value)
-);
+)
 
-// Password match check
-const passwordsMatch = computed(() => password.value === confirmPassword.value);
+const passwordsMatch = computed(
+  () => password.value === confirmPassword.value
+)
 
-// Summary message
-const summaryMessage = computed(() => {
-  if (username.value && category.value && selectedEvent.value) {
-    const event = events.find(e => e.eventname === selectedEvent.value);
-    return `User "${username.value}" registered for "${event.eventname}" (ID: ${event.eventid}, Duration: ${event.durationhour}h) under category "${category.value}".`;
-  }
-  return '';
-});
+const selectedEventData = computed(() =>
+  events.find(e => e.eventname === selectedEvent.value)
+)
 </script>
 
 <template>
-  <section class="container my-5">
-    <h2 class="mb-4 text-center">Event Registration</h2>
-    <form class="row g-3">
-      <!-- Username -->
-      <div class="col-md-6">
-        <label for="username" class="form-label">Username</label>
-        <input
-          type="text"
-          id="username"
-          class="form-control"
-          v-model="username"
-          placeholder="Enter your username"
-        />
-      </div>
+  <section class="registration-section">
+    <div class="container">
+      <div class="row g-4 align-items-start">
 
-      <!-- Password -->
-      <div class="col-md-6">
-        <label for="password" class="form-label">Password</label>
-        <input
-          type="password"
-          id="password"
-          class="form-control"
-          v-model="password"
-          placeholder="Enter your password"
-        />
-      </div>
+        <!-- LEFT: Registration Form -->
+        <div class="col-lg-6 col-12">
+          <form class="border-0">
 
-      <!-- Confirm Password -->
-      <div class="col-md-6">
-        <label for="confirmPassword" class="form-label">Confirm Password</label>
-        <input
-          type="password"
-          id="confirmPassword"
-          class="form-control"
-          v-model="confirmPassword"
-          placeholder="Confirm your password"
-        />
-        <div class="text-danger mt-1" v-if="confirmPassword && !passwordsMatch">
-          Passwords do not match.
+            <!-- Account Info -->
+            <fieldset>
+              <legend class="fieldset-title">Account Information</legend>
+
+              <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-control" v-model="username" />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-control" v-model="password" />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Confirm Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  v-model="confirmPassword"
+                />
+                <small
+                  class="text-danger"
+                  v-if="confirmPassword && !passwordsMatch"
+                >
+                  Passwords do not match
+                </small>
+              </div>
+            </fieldset>
+
+            <!-- Event Info -->
+            <fieldset>
+              <legend class="fieldset-title">Event Selection</legend>
+
+              <div class="mb-3">
+                <label class="form-label">Category</label>
+                <div class="d-flex gap-3 flex-wrap">
+                  <div
+                    v-for="cat in ['Technology','Business','Marketing','Finance']"
+                    :key="cat"
+                    class="form-check"
+                  >
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      :value="cat"
+                      v-model="category"
+                    />
+                    <label class="form-check-label">{{ cat }}</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Event Name</label>
+                <select
+                  class="form-select"
+                  v-model="selectedEvent"
+                  :disabled="!eventsList.length"
+                >
+                  <option value="" disabled>Select an event</option>
+                  <option
+                    v-for="event in eventsList"
+                    :key="event.eventid"
+                    :value="event.eventname"
+                  >
+                    {{ event.eventname }}
+                  </option>
+                </select>
+              </div>
+            </fieldset>
+
+          </form>
         </div>
-      </div>
 
-      <!-- Event Category -->
-      <div class="col-md-6">
-        <label class="form-label">Event Category</label>
-        <div class="d-flex gap-3 flex-wrap">
-          <div v-for="cat of ['Technology','Business','Marketing','Finance']" :key="cat" class="form-check">
-            <input
-              class="form-check-input"
-              type="radio"
-              :id="cat"
-              :value="cat"
-              v-model="category"
-            />
-            <label class="form-check-label" :for="cat">{{ cat }}</label>
+        <!-- RIGHT: Summary -->
+        <div class="col-lg-6 col-12">
+          <div
+            class="summary-box text-white p-4"
+            :style="{ backgroundImage: `linear-gradient(rgba(13,110,253,.75), rgba(8,66,152,.85)), url(${bgImage})` }"
+          >
+            <h5 class="mb-4">Summary</h5>
+
+            <div v-if="username && selectedEventData">
+
+              <!-- Personal Information -->
+              <div class="summary-section mb-3">
+                <h6 class="summary-title">Personal Information</h6>
+                <p class="mb-0">
+                  <strong>Username:</strong> {{ username }}
+                </p>
+              </div>
+
+              <!-- Event Information -->
+              <div class="summary-section">
+                <h6 class="summary-title">Event Information</h6>
+                <p class="mb-1">
+                  <strong>Category:</strong> {{ category }}
+                </p>
+                <p class="mb-1">
+                  <strong>Event:</strong> {{ selectedEventData.eventname }}
+                </p>
+                <p class="mb-0">
+                  <strong>ID:</strong> {{ selectedEventData.eventid }} |
+                  <strong>Duration:</strong> {{ selectedEventData.durationhour }}h
+                </p>
+              </div>
+
+            </div>
+
+            <p v-else class="text-white-50">
+              Complete the form to see your summary.
+            </p>
           </div>
         </div>
-      </div>
 
-      <!-- Event Name Dropdown -->
-      <div class="col-md-6">
-        <label for="eventName" class="form-label">Event Name</label>
-        <select
-          id="eventName"
-          class="form-select"
-          v-model="selectedEvent"
-          :disabled="!eventsList.length"
-        >
-          <option value="" disabled>Select an event</option>
-          <option v-for="event in eventsList" :key="event.eventid" :value="event.eventname">
-            {{ event.eventname }}
-          </option>
-        </select>
       </div>
-
-      <!-- Summary Message -->
-      <div class="col-12 mt-3" v-if="summaryMessage">
-        <div class="alert alert-success">
-          {{ summaryMessage }}
-        </div>
-      </div>
-    </form>
+    </div>
   </section>
 </template>
 
 <style scoped>
-/* Optional: better display on small screens */
-@media (max-width: 576px) {
-  .form-check {
-    flex: 1 1 100%;
+.registration-section {
+  min-height: 100vh;
+  padding: 6rem 0;
+  background-color: #f8f9fa;
+}
+
+/* Glassmorphism Fieldsets */
+fieldset {
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.fieldset-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* Summary */
+.summary-box {
+  position: sticky;
+  top: 2rem;
+  border-radius: 22px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Summary sections */
+.summary-section {
+  background: rgba(255, 255, 255, 0.18);
+  padding: 1rem;
+  border-radius: 14px;
+}
+
+.summary-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 991px) {
+  .summary-box {
+    position: static;
   }
 }
 </style>
