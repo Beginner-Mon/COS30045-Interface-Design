@@ -26,7 +26,15 @@
 
     <!-- Mobile Header -->
     <template v-else>
-      <RouterLink to="/" class="text-decoration-none fw-bold"> LOGO </RouterLink>
+      <RouterLink to="/" class="text-decoration-none fw-bold"> 
+        <img
+          src="/logo.svg"
+          alt="Logo"
+          height="35"
+          class=" text-white logo-white"
+        
+        />
+      </RouterLink>
       <i class="bi bi-list fs-2 cursor-pointer" role="button" @click="openMenu"></i>
     </template>
   </header>
@@ -34,12 +42,7 @@
   <!-- MOBILE MODAL -->
   <div
     v-if="menuOpen"
-    class="position-fixed top-0 start-0 w-100 h-100 bg-primary text-white z-50"
-    v-motion
-    :initial="{ y: '-100%' }"
-    :enter="{ y: '0%' }"
-    :leave="{ y: '-100%' }"
-    :transition="{ duration: 0.4, ease: 'easeInOut' }"
+    class="position-fixed top-0 start-0 w-100 h-100 small-modal text-white z-50"
   >
     <!-- Close Button -->
     <div class="p-4 d-flex justify-content-end">
@@ -47,7 +50,7 @@
     </div>
 
     <!-- Bottom Nav -->
-    <nav class="position-absolute bottom-0 w-100 pb-5 d-flex flex-column align-items-center gap-4">
+    <nav class="position-absolute bottom-0 w-100 pb-5 d-flex flex-column p-4 gap-4">
       <RouterLink to="/events" class="text-white text-decoration-none fs-4" @click="closeMenu">
         Events
       </RouterLink>
@@ -72,7 +75,7 @@
 }
 </style>
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed} from 'vue'
 import { useWindowSize } from '@vueuse/core'
 
 const menuOpen = ref(false)
@@ -81,6 +84,7 @@ const { width } = useWindowSize()
 const isMobile = computed(() => width.value < 768)
 
 const openMenu = () => {
+
   menuOpen.value = true
 }
 
@@ -99,5 +103,8 @@ const closeMenu = () => {
 }
 .logo-white {
   filter: brightness(0) invert(1);
+}
+.small-modal {
+  background-color: rgb(33,37,41);
 }
 </style>
