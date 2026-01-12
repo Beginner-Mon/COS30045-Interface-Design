@@ -13,6 +13,10 @@ const router = createRouter({
       component: JobOverview,
     },
     {
+      path: '/application',
+      component: () => import('@/view/Application.vue'),
+    },
+    {
       path: '/jobs/:id',
       component: () => import('@/view/JobDetail.vue'),
       props: true,

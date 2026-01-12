@@ -21,7 +21,7 @@
     <!-- Desktop Navigation -->
     <nav v-if="!isMobile" class="d-flex gap-4">
       <RouterLink class="nav-link-custom" to="/jobs">Job Explorer</RouterLink>
-      <RouterLink class="nav-link-custom" to="/applications">Job Application</RouterLink>
+      <RouterLink class="nav-link-custom" to="/application">Job Application</RouterLink>
       <RouterLink class="nav-link-custom" to="/todo">To-Do List</RouterLink>
     </nav>
   </header>

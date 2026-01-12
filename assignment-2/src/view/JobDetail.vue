@@ -1,14 +1,10 @@
 <template>
   <section class="min-vh-100 p-3">
-    <button class="btn btn-link mb-3" @click="router.back()">
-      ← Back
-    </button>
+    <button class="btn btn-link mb-3" @click="router.back()">← Back</button>
 
     <div v-if="job" class="bg-white rounded p-3">
       <h4 class="fw-bold">{{ job.job_title }}</h4>
-      <p class="text-muted">
-        {{ job.category }} · {{ job.location }}
-      </p>
+      <p class="text-muted">{{ job.category }} · {{ job.location }}</p>
 
       <hr />
 
@@ -24,9 +20,7 @@
       </ul>
     </div>
 
-    <div v-else class="text-muted">
-      Job not found.
-    </div>
+    <div v-else class="text-muted">Job not found.</div>
   </section>
 </template>
 
@@ -38,7 +32,5 @@ import jobs from '@/assets/jobs.json'
 const route = useRoute()
 const router = useRouter()
 
-const job = computed(() =>
-  jobs.find(j => j.job_id === route.params.id)
-)
+const job = computed(() => jobs.find((j) => j.job_id === route.params.id))
 </script>
