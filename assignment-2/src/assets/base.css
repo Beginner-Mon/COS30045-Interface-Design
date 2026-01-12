@@ -1,0 +1,55 @@
+/* =========================
+   Bootstrap Integration
+   ========================= */
+
+/* Override Bootstrap theme colors */
+:root {
+  --bs-primary: #000000;
+  --bs-secondary: #6c757d;
+  --bs-success: #198754;
+  --bs-danger: #dc3545;
+  --bs-warning: #ffc107;
+  --bs-info: #0dcaf0;
+  --bs-light: #f8f9fa;
+  --bs-dark: #212529;
+}
+
+/* =========================
+   Base Typography
+   ========================= */
+
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* =========================
+   Links
+   ========================= */
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* =========================
+   Headings
+   ========================= */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+}
+
+/* =========================
+   Optional helpers (safe)
+   ========================= */
+
+.cursor-pointer {
+  cursor: pointer;
+}

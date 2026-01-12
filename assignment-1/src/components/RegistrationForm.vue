@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import events from '@/assets/events.json'
-import bgImage from '@/assets/temp.jpg'
+import bgImage from '@/assets/registration-bg.jpg'
 const username = ref('')
 const password = ref('')
 const confirmPassword = ref('')

@@ -24,7 +24,7 @@ defineProps({
     />
 
     <!-- Black Gradient Overlay -->
-    <div class="overlay position-absolute top-0 start-0 w-100 h-100"></div>
+    <!-- <div class="overlay position-absolute top-0 start-0 w-100 h-100"></div> -->
 
     <!-- Title -->
     <h1 class="position-relative text-white text-center fw-bold">
@@ -34,6 +34,9 @@ defineProps({
 </template>
 
 <style scoped>
+  img {
+    object-position: top;
+  }
 .hero-section {
   min-height: 40vh;
 }

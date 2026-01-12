@@ -1,11 +1,23 @@
-<script setup></script>
-
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <div class="container mt-4">
+    <h2 class="text-center mb-4">Insight Hire</h2>
+
+    <div class="row">
+      <div class="col-3">
+        <JobList />
+      </div>
+
+      <div class="col-9">
+        <router-view />
+      </div>
+    </div>
+  </div>
 </template>
 
-<style scoped></style>
+<script>
+import JobList from '@/components/JobList.vue'
+
+export default {
+  components: { JobList }
+}
+</script>
