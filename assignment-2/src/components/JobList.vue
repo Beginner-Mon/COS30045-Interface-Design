@@ -4,11 +4,7 @@
       <router-link to="/jobs">Overview</router-link>
     </li>
 
-    <li
-      v-for="job in jobs"
-      :key="job.job_id"
-      class="list-group-item"
-    >
+    <li v-for="job in jobs" :key="job.job_id" class="list-group-item">
       <router-link :to="`/jobs/${job.job_id}`">
         {{ job.job_id }}
       </router-link>
@@ -22,8 +18,8 @@ import jobs from '@/assets/jobs.json'
 export default {
   data() {
     return {
-      jobs
+      jobs,
     }
-  }
+  },
 }
 </script>

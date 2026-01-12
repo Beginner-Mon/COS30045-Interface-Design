@@ -42,8 +42,8 @@ export default {
   props: ['id'],
   computed: {
     job() {
-      return jobs.find(j => j.job_id === this.id)
-    }
-  }
+      return jobs.find((j) => j.job_id === this.id)
+    },
+  },
 }
 </script>
