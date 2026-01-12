@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import JobDetail from '@/components/JobDetail.vue'
 import JobOverview from '@/components/JobOverview.vue'
 import Home from '@/view/Home.vue'
 const router = createRouter({
@@ -15,7 +14,7 @@ const router = createRouter({
     },
     {
       path: '/jobs/:id',
-      component: JobDetail,
+      component: () => import('@/view/JobDetail.vue'),
       props: true,
     },
   ],
