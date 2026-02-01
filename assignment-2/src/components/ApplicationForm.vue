@@ -6,9 +6,9 @@
     @submit.prevent="handleSubmit"
     class="bg-white p-4 rounded shadow-sm"
   >
-    <!-- ================= PERSONAL DETAILS ================= -->
+    <!-- ================= PERSONAL INFORMATION ================= -->
     <fieldset class="mb-4">
-      <legend class="fw-bold mb-3">Personal Details</legend>
+      <legend class="fw-bold mb-3">Personal Information</legend>
 
       <div class="row g-3">
         <div class="col-md-6">
@@ -24,6 +24,19 @@
         </div>
 
         <div class="col-md-6">
+          <label class="form-label">Date of Birth *</label>
+          <input name="dob" v-model="form.dob" type="date" class="form-control" />
+          <small class="text-danger">{{ errors.dob }}</small>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- ================= ACCOUNT DETAILS ================= -->
+    <fieldset class="mb-4">
+      <legend class="fw-bold mb-3">Account Details</legend>
+
+      <div class="row g-3">
+        <div class="col-md-6">
           <label class="form-label">Username *</label>
           <input name="username" v-model="form.username" class="form-control" />
           <small class="text-danger">{{ errors.username }}</small>
@@ -34,14 +47,7 @@
           <input name="email" v-model="form.email" type="email" class="form-control" />
           <small class="text-danger">{{ errors.email }}</small>
         </div>
-      </div>
-    </fieldset>
 
-    <!-- ================= PASSWORD ================= -->
-    <fieldset class="mb-4">
-      <legend class="fw-bold mb-3">Security</legend>
-
-      <div class="row g-3">
         <div class="col-md-6">
           <label class="form-label">Password *</label>
           <input name="password" v-model="form.password" type="password" class="form-control" />
@@ -87,20 +93,12 @@
           <input name="mobile" v-model="form.mobile" class="form-control" />
           <small class="text-danger">{{ errors.mobile }}</small>
         </div>
-
-        <div class="col-md-4">
-          <label class="form-label">Date of Birth *</label>
-          <input name="dob" v-model="form.dob" type="date" class="form-control" />
-          <small class="text-danger">{{ errors.dob }}</small>
-        </div>
       </div>
     </fieldset>
 
-    <!-- ================= JOB ================= -->
-    <fieldset class="mb-4">
-      <legend class="fw-bold mb-3">Job Preference</legend>
-
-      <label class="form-label">Preferred Job Category</label>
+    <!-- ================= JOB CATEGORY (NO FIELDSET) ================= -->
+    <div class="mb-4">
+      <label class="form-label fw-bold">Preferred Job Category</label>
       <select name="category" v-model="form.category" class="form-select">
         <option value="">-- No preference --</option>
         <option>AI</option>
@@ -108,9 +106,8 @@
         <option>Web Development</option>
         <option>Cybersecurity</option>
       </select>
-
       <small class="text-danger">{{ errors.category }}</small>
-    </fieldset>
+    </div>
 
     <!-- ================= TERMS ================= -->
     <div class="mb-3">
@@ -128,6 +125,7 @@
     <button type="submit" class="btn btn-primary w-100">Submit Application</button>
   </form>
 </template>
+
 
 <script setup>
 import { reactive, ref, onMounted } from 'vue'

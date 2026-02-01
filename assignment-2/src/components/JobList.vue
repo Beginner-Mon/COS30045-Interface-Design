@@ -286,6 +286,10 @@ section {
 /* =========================
    JOB DETAIL CONTENT
 ========================= */
+.detail-panel {
+  position: sticky;
+  top: 5.5rem;
+}
 .job-detail-card {
   padding: 1rem;
   background: #ffffff;

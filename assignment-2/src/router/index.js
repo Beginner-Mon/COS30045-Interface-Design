@@ -1,16 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import JobOverview from '@/components/JobOverview.vue'
+
 import Home from '@/view/Home.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      component: Home,
+      redirect: '/jobs',
     },
     {
       path: '/jobs',
-      component: JobOverview,
+      component: Home,
     },
     {
       path: '/application',
@@ -21,6 +21,11 @@ const router = createRouter({
       component: () => import('@/view/JobDetail.vue'),
       props: true,
     },
+    {
+      path: '/todo',
+      component: () => import('@/view/ToDoList.vue'),
+
+    }
   ],
 })
 

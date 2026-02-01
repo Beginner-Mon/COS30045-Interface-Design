@@ -4,14 +4,12 @@
     :class="isMobile ? 'justify-content-center position-relative' : 'justify-content-between'"
   >
     <!-- Mobile Menu Icon -->
-    <button
+    <i
       v-if="isMobile"
-      class="btn position-absolute start-0"
-      data-bs-toggle="modal"
-      data-bs-target="#mobileMenu"
-    >
-      <i class="bi bi-list fs-3"></i>
-    </button>
+      class="bi bi-list fs-3"
+      role="button"
+      @click="openMenu"
+    ></i>
 
     <!-- Logo -->
     <RouterLink to="/" class="logo text-decoration-none fw-bold fs-4 text-dark">
@@ -27,27 +25,25 @@
   </header>
 
   <!-- Mobile Menu Modal -->
-  <div class="modal fade" id="mobileMenu" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen-sm-down">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title fw-bold">Menu</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-
-        <div class="modal-body d-flex flex-column gap-4 text-center">
-          <RouterLink class="nav-link-custom fs-5" to="/jobs" data-bs-dismiss="modal">
-            Job Explorer
-          </RouterLink>
-          <RouterLink class="nav-link-custom fs-5" to="/applications" data-bs-dismiss="modal">
-            Job Application
-          </RouterLink>
-          <RouterLink class="nav-link-custom fs-5" to="/todo" data-bs-dismiss="modal">
-            To-Do List
-          </RouterLink>
-        </div>
-      </div>
+  <div
+    v-if="menuOpen"
+    class="position-fixed top-0 start-0 w-100 h-100 small-modal z-50"
+  >
+    <!-- Close Button -->
+    <div class="p-4 d-flex justify-content-end">
+      <i class="bi bi-x-lg fs-3" role="button" @click="closeMenu"></i>
     </div>
+
+    <!-- Bottom Nav -->
+    <nav class="position-absolute bottom-0 w-100 pb-5 d-flex flex-column p-4 gap-4">
+      <RouterLink to="/application" class=" text-decoration-none fs-4" @click="closeMenu">
+        Application Form
+      </RouterLink>
+
+      <RouterLink to="/todo" class=" text-decoration-none fs-4" @click="closeMenu">
+        To-Do List
+      </RouterLink>
+    </nav>
   </div>
 </template>
 
@@ -55,6 +51,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const isMobile = ref(window.innerWidth < 768)
+const menuOpen = ref(false) // ✅ define menuOpen properly
 
 const handleResize = () => {
   isMobile.value = window.innerWidth < 768
@@ -62,20 +59,35 @@ const handleResize = () => {
 
 onMounted(() => window.addEventListener('resize', handleResize))
 onUnmounted(() => window.removeEventListener('resize', handleResize))
+
+const openMenu = () => {
+  console.log('Opening menu') // Debugging line
+  menuOpen.value = true
+}
+
+const closeMenu = () => {
+  menuOpen.value = false
+}
 </script>
 
 <style scoped>
 .logo {
   letter-spacing: 0.5px;
 }
-
+.bi-list {
+  position: absolute;
+  left: 1.5rem;
+}
 .nav-link-custom {
   position: relative;
   color: #333;
   font-weight: 500;
   text-decoration: none;
 }
-
+.small-modal {
+  background: white;
+  z-index: 60;
+}
 /* underline hover */
 .nav-link-custom::after {
   content: '';
