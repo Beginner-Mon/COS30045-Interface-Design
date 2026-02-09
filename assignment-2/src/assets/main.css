@@ -1,0 +1,23 @@
+#app {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.job-title {
+  display: inline-block;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.job-title::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px; /* stronger underline */
+  background-color: #000;
+  border-radius: 2px;
+}

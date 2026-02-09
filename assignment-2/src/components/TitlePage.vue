@@ -13,7 +13,7 @@ defineProps({
 
 <template>
   <section
-    class="hero-section pt-5 d-flex justify-content-center align-items-center position-relative overflow-hidden"
+    class="hero-section pt-5 d-flex justify-content-center align-items-center position-relative overflow-hidden mb-5"
   >
     <!-- Background Image -->
     <img
@@ -24,7 +24,7 @@ defineProps({
     />
 
     <!-- Black Gradient Overlay -->
-    <!-- <div class="overlay position-absolute top-0 start-0 w-100 h-100"></div> -->
+    <div class="overlay position-absolute top-0 start-0 w-100 h-100"></div>
 
     <!-- Title -->
     <h1 class="position-relative text-white text-center fw-bold">
@@ -34,11 +34,11 @@ defineProps({
 </template>
 
 <style scoped>
-  img {
-    object-position: top;
-  }
+img {
+  object-position: top;
+}
 .hero-section {
-  min-height: 40vh;
+  min-height: 75vh;
 }
 
 /* Black gradient overlay */

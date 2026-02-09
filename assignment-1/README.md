@@ -42,3 +42,20 @@ npm run build
 ```sh
 npm run lint
 ```
+
+### Key Components
+
+#### EventsTable
+Displays a table of available events with event details. This component renders event information in a structured table format, allowing users to view all events and their associated information at a glance.
+
+#### ReasonTemplate
+A reusable template component for displaying reasons or benefits. This component provides consistent styling and layout for presenting multiple reasons, making it easy to maintain uniform presentation across the application.
+
+#### RegistrationForm
+Handles user registration submissions. This component provides form controls for users to enter their information and register for events, with built-in validation and form submission handling.
+
+## Documentation
+Detailed documentation and guides for each assignment.
+
+    
+👉 **Live site:** [Assignment 1 – Interface Design](https://cos-30045-interface-design.vercel.app/)

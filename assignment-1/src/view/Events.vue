@@ -1,6 +1,6 @@
 <script setup>
 import TitlePage from '@/components/TitlePage.vue'
-import tempImage from '@/assets/temp.jpg'
+import tempImage from '@/assets/events-bg.jpg'
 import EventsTable from '@/components/EventsTable.vue'
 </script>
 
