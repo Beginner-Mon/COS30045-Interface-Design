@@ -14,10 +14,18 @@ const firebaseConfig = {
     appId: import.meta.env.VITE_FIREBASE_APP_ID
 }
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig)
+// Initialize Firebase only when config is present
+let app = null
+let auth = null
 
-// Initialize Firebase Authentication
-export const auth = getAuth(app)
+const hasFirebaseConfig = Boolean(
+    firebaseConfig && firebaseConfig.apiKey && firebaseConfig.authDomain && firebaseConfig.projectId
+)
 
+if (hasFirebaseConfig) {
+    app = initializeApp(firebaseConfig)
+    auth = getAuth(app)
+}
+
+export { auth }
 export default app
