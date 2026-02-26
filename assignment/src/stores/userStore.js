@@ -10,7 +10,7 @@ import {
     signInWithEmail,
     signInWithGoogle,
     signOutUser,
-    subscribeToAuthChanges
+    onAuthStateChangedListener
 } from '@/services/authService'
 
 export const useUserStore = defineStore('user', () => {
@@ -98,15 +98,14 @@ export const useUserStore = defineStore('user', () => {
     }
 
     // Initialize auth listener
-    const initializeAuth = () => {
-        return subscribeToAuthChanges((currentUser) => {
+    const initializeAuth = (router) => {
+        return onAuthStateChangedListener((currentUser) => {
             if (currentUser) {
                 setUser({
                     uid: currentUser.uid,
                     email: currentUser.email,
                     displayName: currentUser.displayName,
-                    photoURL: currentUser.photoURL,
-                    emailVerified: currentUser.emailVerified
+                    photoURL: currentUser.photoURL
                 })
             } else {
                 setUser(null)

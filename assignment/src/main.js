@@ -9,7 +9,6 @@ import { MotionPlugin } from '@vueuse/motion'
 import { createPinia } from 'pinia'
 import router from './router'
 import { useUserStore } from '@/stores/userStore'
-import { initializeAuthListener } from '@/services/authService'
 
 const app = createApp(App)
 
@@ -19,11 +18,8 @@ app.use(pinia)
 app.use(router)
 app.use(MotionPlugin)
 
-// Initialize global auth listener AT APP STARTUP
-initializeAuthListener()
-
-// Initialize authentication state in store
+// Initialize authentication
 const userStore = useUserStore()
-userStore.initializeAuth()
+userStore.initializeAuth(router)
 
 app.mount('#app')
