@@ -25,13 +25,13 @@
       :transition="{ duration: 3, ease: 'easeInOut' }"
       class="position-relative text-center text-white px-3"
     >
-      <h1 class="display-5 fw-bold mb-3">Event Management System</h1>
+      <h1 class="display-5 fw-bold mb-3">Welcome to ECA</h1>
 
       <p class="lead mb-4">
-        Plan, manage, and organize events effortlessly with a modern event management platform.
+        Experience the power of ECA - Chat with AI, create stunning 3D models, and build interactive experiences all in one platform.
       </p>
 
-      <RouterLink to="/events" class="btn btn-outline-light btn-lg"> View Events </RouterLink>
+      <RouterLink to="/dashboard" class="btn btn-outline-light btn-lg"> Get Started </RouterLink>
     </div>
   </section>
 </template>

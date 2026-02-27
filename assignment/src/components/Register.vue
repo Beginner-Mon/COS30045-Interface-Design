@@ -17,10 +17,10 @@
     ></div>
 
     <div class="position-relative text-white text-center px-3 content">
-      <h1 class="fw-bold display-6 display-md-5 display-lg-4">Register Now</h1>
+      <h1 class="fw-bold display-6 display-md-5 display-lg-4">Login Now</h1>
 
-      <RouterLink to="/registration" class="btn btn-outline-light mt-3 px-4 py-2">
-        Go to Registration Form
+      <RouterLink to="/signup" class="btn btn-outline-light mt-3 px-4 py-2">
+        Go to Chat Bow now
       </RouterLink>
     </div>
   </section>

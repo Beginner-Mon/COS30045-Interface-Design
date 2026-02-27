@@ -1,5 +1,16 @@
 <template>
   <div class="login-container">
+    <!-- Background Image -->
+    <img
+      src="@/assets/temp.jpg"
+      alt="Login background"
+      class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover"
+      style="object-position: center"
+    />
+
+    <!-- Black Overlay -->
+    <div class="position-absolute top-0 start-0 w-100 h-100" style="background: rgba(0, 0, 0, 0.1)"></div>
+
     <div class="login-card">
       <div class="login-header">
         <h1 class="mb-2">Welcome Back</h1>
@@ -38,7 +49,7 @@
           />
         </div>
 
-        <button type="submit" class="btn btn-primary w-100 mb-3" :disabled="isLoading">
+        <button type="submit" class="btn btn-custom w-100 mb-3" :disabled="isLoading">
           <span v-if="isLoading" class="spinner-border spinner-border-sm me-2"></span>
           {{ isLoading ? 'Signing in...' : 'Sign In' }}
         </button>
@@ -50,7 +61,7 @@
       </div>
 
       <!-- Google Sign In -->
-      <button @click="handleGoogleLogin" class="btn btn-outline-primary w-100 mb-3" :disabled="isLoading">
+      <button @click="handleGoogleLogin" class="btn btn-custom w-100 mb-3" :disabled="isLoading">
         <svg width="20" height="20" class="me-2" viewBox="0 0 24 24" fill="currentColor">
           <path
             d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -70,9 +81,9 @@
 
       <!-- Sign Up Link -->
       <div class="text-center mt-4">
-        <p class="text-muted mb-0">
+        <p class="mb-0" style="color: rgba(255, 255, 255, 0.8)">
           Don't have an account?
-          <router-link to="/signup" class="text-decoration-none fw-bold">Sign Up</router-link>
+          <router-link to="/signup" class="text-decoration-none fw-bold" style="color: white">Sign Up</router-link>
         </p>
       </div>
     </div>
@@ -141,18 +152,23 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  overflow: hidden;
   padding: 1rem;
 }
 
 .login-card {
-  background: white;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 1rem;
   padding: 2.5rem;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   width: 100%;
   max-width: 400px;
   animation: slideUp 0.5s ease;
+  position: relative;
+  z-index: 1;
 }
 
 @keyframes slideUp {
@@ -174,14 +190,59 @@ export default {
 .login-header h1 {
   font-size: 1.75rem;
   font-weight: 700;
-  color: #212529;
+  color: white;
+}
+.login-header p {
+  color: rgba(255, 255, 255, 0.8);
 }
 
+.form-label {
+  color: white;
+  font-weight: 500;
+}
+
+.form-control {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: white;
+}
+
+.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.form-control:focus {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: white;
+  box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.1);
+}
+
+.btn-custom {
+  border: 2px solid white;
+  color: white;
+  background-color: transparent;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.btn-custom:hover:not(:disabled) {
+  border-color: white;
+  color: #000;
+  background-color: white;
+}
+
+.btn-custom:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 .divider {
   display: flex;
   align-items: center;
   gap: 1rem;
-  color: #adb5bd;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .divider::before,
@@ -189,7 +250,7 @@ export default {
   content: '';
   flex: 1;
   height: 1px;
-  background-color: #e9ecef;
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .divider span {
@@ -197,9 +258,26 @@ export default {
   font-size: 0.875rem;
 }
 
+.alert {
+  background: rgba(220, 53, 69, 0.1);
+  border: 1px solid rgba(220, 53, 69, 0.3);
+  color: #ff8a8a;
+  border-radius: 0.5rem;
+}
+
+.alert-danger {
+  background: rgba(220, 53, 69, 0.1);
+  border-color: rgba(220, 53, 69, 0.3);
+  color: #ff8a8a;
+}
+
 button:disabled {
   opacity: 0.65;
   cursor: not-allowed;
+}
+
+.btn-close {
+  filter: brightness(0) invert(1);
 }
 
 @media (max-width: 576px) {

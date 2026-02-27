@@ -1,36 +1,19 @@
 <script setup>
 const reasons = [
   {
-    title: 'Professional Team',
-    description: 'Our experienced team delivers high-quality solutions with attention to detail.',
-    image: '/pro-team.jpg',
+    title: 'Text to Speech',
+    description: 'AI-driven text-to-speech with emotional expression.',
+    image: '/TTS.jpg',
   },
   {
-    title: 'Modern Technology',
-    description: 'We use the latest tools and frameworks to ensure performance and scalability.',
-    image: '/modern-tech.jpg',
+    title: 'Agentic RAG',
+    description: 'Intelligent agents providing accurate, contextual responses.',
+    image: '/RAG.jpg',
   },
   {
-    title: 'Reliable Support',
-    description: '24/7 support to help you whenever you need assistance.',
-    image: '/reliable-support.jpg',
-  },
-  {
-    title: 'Secure Systems',
-    description: 'Security is our top priority to keep your data safe.',
-    image: '/secure.jpg',
-  },
-  {
-    title: 'Diverse Events',
-    description:
-      'We offer a wide range of events across multiple categories to suit different interests and industries.',
-    image: '/diverse-events.jpg',
-  },
-
-  {
-    title: 'Customer Satisfaction',
-    description: 'We focus on long-term relationships and client satisfaction.',
-    image: '/cust-sf.jpg',
+    title: 'Text to Motion',
+    description: 'Transform text into dynamic motion and animation.',
+    image: '/t2m.jpg',
   },
 ]
 </script>

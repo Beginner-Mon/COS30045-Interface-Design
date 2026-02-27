@@ -26,10 +26,12 @@
 
     <!-- Mobile Header -->
     <template v-else>
-      <RouterLink to="/" class="text-decoration-none fw-bold">
-        <img src="/logo.svg" alt="Logo" height="35" class="text-white logo-white" />
-      </RouterLink>
-      <i class="bi bi-list fs-2 cursor-pointer" role="button" @click="openMenu"></i>
+      <nav class="desktop-nav d-flex align-items-center justify-content-between px-4 py-2 w-100">
+        <RouterLink to="/" class="text-decoration-none fw-bold">
+          <img src="/logo.svg" alt="Logo" height="35" class="text-white logo-white" />
+        </RouterLink>
+        <i class="bi bi-list fs-2 cursor-pointer" role="button" @click="openMenu"></i>
+      </nav>
     </template>
   </header>
 
@@ -47,7 +49,7 @@
       </RouterLink>
 
       <RouterLink to="/about" class="text-white text-decoration-none fs-4" @click="closeMenu">
-        Registration
+        About
       </RouterLink>
     </nav>
   </div>

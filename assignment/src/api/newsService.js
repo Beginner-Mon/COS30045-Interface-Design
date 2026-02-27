@@ -11,7 +11,7 @@ const apiClient = axios.create({
 })
 
 /**
- * Fetch top headlines for artificial intelligence
+ * Fetch top headlines for technology and AI news
  * @param {Object} options - Query options
  * @param {string} options.sortBy - Sort option (default: 'publishedAt')
  * @param {string} options.language - Language code (default: 'en')
@@ -25,9 +25,10 @@ export const fetchTopHeadlines = async (options = {}) => {
             sortBy = 'publishedAt',
             language = 'en',
             pageSize = 10,
-            page = 1,
-            q = 'artificial intelligence'
+            page = 1
         } = options
+
+        const q = 'artificial intelligence OR technology OR software OR hardware'
 
         const response = await apiClient.get(newsApiConfig.endpoints.everything, {
             params: {

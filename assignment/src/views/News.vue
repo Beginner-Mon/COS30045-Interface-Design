@@ -15,7 +15,7 @@
 
       <!-- Featured News (First Article) -->
       <template v-if="articles.length > 0 && !loading">
-        <div class="featured-article mb-5">
+        <div class="featured-article mb-5 p-3 p-md-4">
           <div class="row align-items-center" style="min-height: 16rem">
             <!-- Image on Left -->
             <div class="col-md-5">
@@ -44,7 +44,7 @@
                 :href="articles[0].url"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="btn btn-primary btn-sm"
+                class="btn btn-custom btn-sm"
               >
                 Read Full Article
               </a>
@@ -57,7 +57,7 @@
           <h3 class="mb-4">More News</h3>
           <div class="row">
             <div v-for="(article, index) in articles.slice(1)" :key="index" class="col-md-6 mb-4">
-              <div class="article-card h-100">
+              <div class="article-card h-100 p-2 p-md-3">
                 <div class="row g-3 align-items-center">
                   <!-- Image on Left (Small) -->
                   <div class="col-md-5">
@@ -86,7 +86,7 @@
                       :href="article.url"
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="btn btn-outline-primary btn-sm"
+                      class="btn btn-custom btn-sm"
                     >
                       Read More
                     </a>
@@ -123,9 +123,9 @@
             </button>
           </li>
 
-          <!-- Page Numbers -->
+          <!-- Page Numbers (show range around current page, hide on very small screens) -->
           <li
-            v-for="page in Math.min(5, totalPages)"
+            v-for="page in visiblePages"
             :key="page"
             class="page-item"
             :class="{ active: currentPage === page }"
@@ -136,11 +136,6 @@
             >
               {{ page }}
             </button>
-          </li>
-
-          <!-- More Pages Indicator -->
-          <li v-if="totalPages > 5" class="page-item disabled">
-            <span class="page-link">...</span>
           </li>
 
           <!-- Next Button -->
@@ -181,16 +176,26 @@ export default {
       return Math.ceil(totalResults.value / pageSize)
     })
 
+    const visiblePages = computed(() => {
+      const pages = []
+      const startPage = Math.max(1, currentPage.value - 1)
+      const endPage = Math.min(totalPages.value, currentPage.value + 1)
+      
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i)
+      }
+      return pages
+    })
+
     const fetchNews = async (page = 1) => {
       try {
         loading.value = true
         error.value = null
         currentPage.value = page
 
-        // Fetch news with specific parameters
+        // Fetch technology and AI news
         // Sorted by publishedAt (latest first)
         const data = await fetchTopHeadlines({
-          q: 'artificial intelligence',
           language: 'en',
           sortBy: 'publishedAt',
           pageSize,
@@ -228,6 +233,7 @@ export default {
       error,
       currentPage,
       totalPages,
+      visiblePages,
       totalResults,
       pageSize,
       fetchNews,
@@ -236,6 +242,7 @@ export default {
     }
   }
 }
+
 </script>
 
 <style scoped>
@@ -246,7 +253,6 @@ export default {
 
 .featured-article {
   background-color: white;
-  padding: 2rem;
   border-radius: 0.5rem;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 }
@@ -266,7 +272,6 @@ export default {
 
 .article-card {
   background-color: white;
-  padding: 1.5rem;
   border-radius: 0.5rem;
   border: 1px solid #e9ecef;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
@@ -296,7 +301,7 @@ export default {
 .other-articles h3 {
   font-weight: 600;
   color: #212529;
-  border-bottom: 2px solid #007bff;
+  border-bottom: 2px solid #000;
   padding-bottom: 0.5rem;
 }
 
@@ -309,19 +314,38 @@ img {
   gap: 0.5rem;
 }
 
+.btn-custom {
+  border: 2px solid white;
+  color: white;
+  background-color: #000;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.btn-custom:hover:not(:disabled) {
+  border-color: #000;
+  color: #000;
+  background-color: white;
+}
+
+.btn-custom:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .page-item button {
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .page-item:not(.disabled) button:hover {
-  background-color: #007bff;
+  background-color: #000;
   color: white;
 }
 
 .page-item.active .page-link {
-  background-color: #007bff;
-  border-color: #007bff;
+  background-color: #000;
+  border-color: #000;
 }
 
 .page-item.disabled button {
@@ -329,17 +353,9 @@ img {
   opacity: 0.5;
 }
 
-@media (max-width: 768px) {
-  .featured-article {
-    padding: 1rem;
-  }
-
+@media (max-width: 992px) {
   .news-title {
     font-size: 1.5rem;
-  }
-
-  .article-card {
-    padding: 1rem;
   }
 
   .row {
@@ -349,11 +365,28 @@ img {
   nav {
     flex-direction: column;
     gap: 1.5rem;
+    align-items: center;
   }
 
   .pagination {
     width: 100%;
     justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .page-item {
+    margin: 0.25rem 0.125rem;
+  }
+
+  .page-link {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  .btn-custom {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
   }
 }
 </style>
