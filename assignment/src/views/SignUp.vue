@@ -1,5 +1,5 @@
 <template>
-  <div class="signup-container">
+  <div class="signup-container pt-5">
     <!-- Background Image -->
     <img
       src="@/assets/temp.jpg"
@@ -9,7 +9,10 @@
     />
 
     <!-- Black Overlay -->
-    <div class="position-absolute top-0 start-0 w-100 h-100" style="background: rgba(0, 0, 0, 0.1)"></div>
+    <div
+      class="position-absolute top-0 start-0 w-100 h-100"
+      style="background: linear-gradient(to bottom, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.25))"
+    ></div>
 
     <div class="signup-card">
       <div class="signup-header">
@@ -129,7 +132,7 @@
       <div class="text-center mt-4">
         <p class="mb-0" style="color: rgba(255, 255, 255, 0.8)">
           Already have an account?
-          <router-link to="/login" class="text-decoration-none fw-bold" style="color: white">Sign In</router-link>
+          <router-link to="/auth/login" class="text-decoration-none fw-bold" style="color: white">Log In</router-link>
         </p>
       </div>
     </div>
@@ -239,7 +242,7 @@ export default {
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 1rem;
-  padding: 2.5rem;
+  padding: 1.8rem;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   width: 100%;

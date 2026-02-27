@@ -223,7 +223,7 @@ export default {
     const handleLogout = async () => {
       try {
         await userStore.logout()
-        router.push('/login')
+        router.push('/auth/login')
       } catch (error) {
         console.error('Logout error:', error)
       }
@@ -231,7 +231,7 @@ export default {
 
     // Check if user is authenticated
     if (!userStore.isAuthenticated) {
-      router.push('/login')
+      router.push('/auth/login')
     }
 
     return {

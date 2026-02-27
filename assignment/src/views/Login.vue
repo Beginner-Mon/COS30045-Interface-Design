@@ -9,7 +9,10 @@
     />
 
     <!-- Black Overlay -->
-    <div class="position-absolute top-0 start-0 w-100 h-100" style="background: rgba(0, 0, 0, 0.1)"></div>
+    <div
+      class="position-absolute top-0 start-0 w-100 h-100"
+      style="background: linear-gradient(to bottom, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.25))"
+    ></div>
 
     <div class="login-card">
       <div class="login-header">
@@ -83,7 +86,7 @@
       <div class="text-center mt-4">
         <p class="mb-0" style="color: rgba(255, 255, 255, 0.8)">
           Don't have an account?
-          <router-link to="/signup" class="text-decoration-none fw-bold" style="color: white">Sign Up</router-link>
+          <router-link to="/auth/signup" class="text-decoration-none fw-bold" style="color: white">Sign Up</router-link>
         </p>
       </div>
     </div>
