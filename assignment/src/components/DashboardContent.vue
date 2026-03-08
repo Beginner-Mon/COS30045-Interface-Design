@@ -1,31 +1,36 @@
 <template>
   <main class="chat-main">
-    <!-- Initial Welcome State -->
-    <div v-if="messages.length === 0" class="welcome-container">
-      <img src="/logo.svg" alt="ECA" class="welcome-logo" />
-      <h2>ECA</h2>
+    <MotionAvatarBackground ref="motionBgRef" />
+
+    <div class="camera-controls">
+      <button type="button" class="btn btn-sm btn-light" @click="zoomIn">+</button>
+      <button type="button" class="btn btn-sm btn-light" @click="zoomOut">-</button>
+      <button type="button" class="btn btn-sm btn-light" @click="resetView">Reset</button>
     </div>
 
-    <!-- Messages -->
-    <div v-else class="messages-container">
-      <div v-for="(msg, index) in messages" :key="index" class="message" :class="msg.role">
-        <div class="message-content">{{ msg.text }}</div>
-      </div>
-    </div>
+    <div class="chat-content-layer">
+      <!-- <div class="messages-container">
+        <div class="messages-scroll">
+          <div v-for="(msg, index) in messages" :key="index" class="message" :class="msg.role">
+            <div class="message-content">{{ msg.text }}</div>
+          </div>
+        </div>
+      </div> -->
 
-    <!-- Chat Input -->
-    <div class="chat-input-area">
-      <div class="input-group">
-        <input
-          v-model="userInput"
-          type="text"
-          class="form-control"
-          placeholder="Ask me anything..."
-          @keyup.enter="sendMessage"
-        />
-        <button class="btn btn-primary" @click="sendMessage" :disabled="!userInput.trim()">
-          <i class="bi bi-send"></i>
-        </button>
+      <!-- Chat Input -->
+      <div class="chat-input-area">
+        <div class="input-group">
+          <input
+            v-model="userInput"
+            type="text"
+            class="form-control"
+            placeholder="Ask me anything..."
+            @keyup.enter="sendMessage"
+          />
+          <button class="btn btn-primary" @click="sendMessage" :disabled="!userInput.trim()">
+            <i class="bi bi-send"></i>
+          </button>
+        </div>
       </div>
     </div>
   </main>
@@ -33,9 +38,11 @@
 
 <script setup>
 import { ref } from 'vue'
-
+import MotionAvatarBackground from './MotionAvatarBackground.vue'
+import MotionBackground from './MotionBackground.vue'
 const userInput = ref('')
 const messages = ref([])
+const motionBgRef = ref(null)
 
 const sendMessage = () => {
   if (userInput.value.trim()) {
@@ -61,6 +68,18 @@ defineExpose({
     messages.value = []
   }
 })
+
+const zoomIn = () => {
+  motionBgRef.value?.zoomIn?.()
+}
+
+const zoomOut = () => {
+  motionBgRef.value?.zoomOut?.()
+}
+
+const resetView = () => {
+  motionBgRef.value?.resetView?.()
+}
 </script>
 
 <style scoped>
@@ -68,37 +87,56 @@ defineExpose({
   flex: 1;
   display: flex;
   flex-direction: column;
-  background-color: white;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 50%, rgba(8, 34, 61, 0.18), rgba(8, 34, 61, 0.5));
 }
 
-/* Welcome Container */
-.welcome-container {
-  flex: 1;
+.camera-controls {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 3;
+  display: flex;
+  gap: 0.5rem;
+  pointer-events: auto;
+}
+
+.camera-controls .btn {
+  min-width: 2.25rem;
+  border: none;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.chat-content-layer {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
-  gap: 1.5rem;
-}
-
-.welcome-logo {
-  height: 100px;
-  filter: brightness(0) invert(1);
-  opacity: 0.3;
-}
-
-.welcome-container h2 {
-  font-size: 3rem;
-  font-weight: 700;
-  color: #667eea;
-  opacity: 0.3;
+  min-height: 100%;
+  padding-bottom: 1rem;
+  pointer-events: none;
 }
 
 /* Messages Container */
 .messages-container {
-  flex: 1;
+  width: 60%;
+  max-width: 800px;
+  height: 300px;
+  overflow: hidden;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(4px);
+  pointer-events: auto;
+}
+
+.messages-scroll {
+  height: 100%;
   overflow-y: auto;
-  padding: 2rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -130,15 +168,20 @@ defineExpose({
 }
 
 .message.assistant .message-content {
-  background-color: #e9ecef;
-  color: #212529;
+  background-color: rgba(255, 255, 255, 0.82);
+  color: #1f2937;
 }
 
 /* Chat Input */
 .chat-input-area {
+  width: 60%;
+  max-width: 800px;
   padding: 1.5rem 2rem;
-  border-top: 1px solid #e9ecef;
-  background-color: white;
+  border-top: 1px solid rgba(255, 255, 255, 0.35);
+  background-color: rgba(255, 255, 255, 0.26);
+  backdrop-filter: blur(6px);
+  border-radius: 0.75rem;
+  pointer-events: auto;
 }
 
 .input-group {
@@ -163,31 +206,36 @@ defineExpose({
 }
 
 /* Scrollbar */
-.messages-container::-webkit-scrollbar {
+.messages-scroll::-webkit-scrollbar {
   width: 6px;
 }
 
-.messages-container::-webkit-scrollbar-track {
+.messages-scroll::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.messages-container::-webkit-scrollbar-thumb {
+.messages-scroll::-webkit-scrollbar-thumb {
   background: #ccc;
   border-radius: 3px;
 }
 
-.messages-container::-webkit-scrollbar-thumb:hover {
+.messages-scroll::-webkit-scrollbar-thumb:hover {
   background: #999;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
   .messages-container {
-    padding: 1rem;
+    width: 88%;
   }
 
   .message-content {
     max-width: 85%;
+  }
+
+  .chat-input-area {
+    width: 88%;
+    padding: 1rem;
   }
 }
 

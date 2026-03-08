@@ -1,53 +1,81 @@
 <template>
-  <aside :class="['sidebar', { collapsed: sidebarCollapsed }]">
+  <aside :class="['d-flex', 'flex-column', 'bg-white', 'border-end', 'sidebar-container', { 'sidebar-collapsed': sidebarCollapsed }]">
     <!-- Logo -->
-    <div class="sidebar-logo">
+    <div class="d-flex align-items-center p-4">
       <img src="/logo.svg" alt="ECA Logo" class="logo-img" />
+      <span v-if="!sidebarCollapsed" class="ms-2 fs-5 fw-bold">ECA</span>  
     </div>
 
     <!-- Chat Items -->
-    <div class="chat-items">
+    <div class="flex-grow-1 overflow-y-auto">
       <!-- New Chat -->
-      <div class="chat-item new-chat" @click="$emit('new-chat')">
-        <span v-if="!sidebarCollapsed" class="item-label">New Chat</span>
-        <i class="bi bi-plus-lg item-icon"></i>
+      <div 
+        class="d-flex align-items-center justify-content-between gap-2 px-4 py-3 cursor-pointer fw-bold text-primary chat-item-hover" 
+        @click="$emit('new-chat')"
+      >
+        <span v-if="!sidebarCollapsed" class="text-truncate">New Chat</span>
+        <i class="bi bi-plus-lg flex-shrink-0"></i>
       </div>
 
       <!-- Chat History -->
-      <div v-for="(chat, index) in chatHistory" :key="index" class="chat-item">
-        <span v-if="!sidebarCollapsed" class="item-label truncate">{{ chat.title }}</span>
-        <i class="bi bi-chat-left item-icon"></i>
+      <div 
+        v-for="(chat, index) in chatHistory" 
+        :key="index"
+        class="d-flex align-items-center justify-content-between gap-2 px-4 py-3 cursor-pointer text-muted chat-item-hover" 
+      >
+        <span v-if="!sidebarCollapsed" class="text-truncate">{{ chat.title }}</span>
+        <i class="bi bi-chat-left flex-shrink-0"></i>
       </div>
     </div>
 
     <!-- User Section -->
-    <div class="sidebar-user">
-      <div class="user-avatar-section">
-        <div class="user-avatar" @click="showLogout = !showLogout" :title="userStore.user?.email">
+    <div class="p-3 user-section">
+      <div class="d-flex align-items-center justify-content-between gap-2 position-relative">
+        <div 
+          class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 user-avatar"
+          @click="showLogout = !showLogout"
+          :title="userStore.user?.email"
+        >
           {{ userInitials }}
         </div>
         <button
           v-if="!sidebarCollapsed"
-          class="toggle-btn"
+          class="btn btn-sm btn-link text-muted p-2 d-none d-lg-flex"
           @click="sidebarCollapsed = !sidebarCollapsed"
           title="Collapse Sidebar"
         >
-          <i class="bi bi-chevron-left"></i>
+          <i class="bi bi-chevron-double-left"></i>
         </button>
       </div>
 
-      <!-- Logout Menu -->
-      <div v-if="showLogout" class="logout-menu">
-        <button class="btn btn-danger btn-sm w-100" @click="handleLogout">
+      <!-- Expand Button (visible when collapsed on desktop) -->
+      <button
+        v-if="sidebarCollapsed"
+        class="btn btn-sm btn-link text-muted p-2 d-none d-lg-flex w-100 justify-content-center mt-2"
+        @click="sidebarCollapsed = !sidebarCollapsed"
+        title="Expand Sidebar"
+      >
+        <i class="bi bi-chevron-double-right"></i>
+      </button>
+
+      <!-- Logout Menu (Teleported outside) -->
+    </div>
+  </aside>
+
+  <!-- Logout Menu - Teleported to body -->
+  <Teleport to="body">
+    <transition name="logout-fade">
+      <div v-if="showLogout" class="logout-menu-teleport" :style="{ left: logoutMenuPosition.left, top: logoutMenuPosition.top }">
+        <button class="btn btn-sm w-100 text-dark" @click="handleLogout">
           <i class="bi bi-box-arrow-right"></i> Log Out
         </button>
       </div>
-    </div>
-  </aside>
+    </transition>
+  </Teleport>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/userStore'
 
@@ -56,6 +84,7 @@ const userStore = useUserStore()
 
 const sidebarCollapsed = ref(false)
 const showLogout = ref(false)
+const logoutMenuPos = ref({ left: 0, top: 0 })
 
 const chatHistory = ref([
   { title: 'Next.js learning' },
@@ -72,6 +101,28 @@ const userInitials = computed(() => {
     .toUpperCase()
 })
 
+const updateLogoutMenuPosition = () => {
+  const avatar = document.querySelector('.user-avatar')
+  if (!avatar) return
+  const rect = avatar.getBoundingClientRect()
+  logoutMenuPos.value = {
+    left: rect.left + 'px',
+    top: (rect.top - 65) + 'px'
+  }
+}
+
+const logoutMenuPosition = computed(() => logoutMenuPos.value)
+
+watch(sidebarCollapsed, () => {
+  setTimeout(updateLogoutMenuPosition, 100)
+})
+
+watch(showLogout, () => {
+  if (showLogout.value) {
+    setTimeout(updateLogoutMenuPosition, 0)
+  }
+})
+
 const handleLogout = async () => {
   try {
     await userStore.logout()
@@ -83,114 +134,50 @@ const handleLogout = async () => {
 </script>
 
 <style scoped>
-.sidebar {
+.sidebar-container {
   width: 280px;
-  background-color: white;
-  border-right: 1px solid #e9ecef;
-  display: flex;
-  flex-direction: column;
   transition: width 0.3s ease;
   overflow: hidden;
 }
 
-.sidebar.collapsed {
+.sidebar-container.sidebar-collapsed {
   width: 70px;
-}
-
-.sidebar-logo {
-  padding: 1.5rem;
-  border-bottom: 1px solid #e9ecef;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .logo-img {
   height: 40px;
-  filter: brightness(0) invert(1);
+
 }
 
-.sidebar.collapsed .logo-img {
+.sidebar-collapsed .logo-img {
   height: 30px;
 }
 
-/* Chat Items */
-.chat-items {
-  flex: 1;
-  overflow-y: auto;
-  padding: 1rem 0;
-}
-
-.chat-item {
-  padding: 0.75rem 1.5rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  color: #495057;
-  transition: all 0.2s ease;
+/* Chat Item Hover Effects */
+.chat-item-hover {
   border-left: 3px solid transparent;
+  transition: all 0.2s ease;
 }
 
-.chat-item:hover {
+.chat-item-hover:hover {
   background-color: #f8f9fa;
-  color: #667eea;
-}
-
-.chat-item.new-chat {
-  font-weight: 600;
-  color: #667eea;
-  margin-bottom: 0.5rem;
-}
-
-.item-label {
-  flex: 1;
-  min-width: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.item-icon {
-  flex-shrink: 0;
-}
-
-.sidebar.collapsed .chat-item {
-  padding: 0.75rem;
-  justify-content: center;
-}
-
-.sidebar.collapsed .item-label {
-  display: none;
+  color: #667eea !important;
+  border-left-color: #667eea;
 }
 
 /* User Section */
-.sidebar-user {
-  padding: 1rem;
-  border-top: 1px solid #e9ecef;
+.user-section {
   position: relative;
 }
 
-.user-avatar-section {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-}
-
+/* User Avatar */
 .user-avatar {
   width: 40px;
   height: 40px;
-  border-radius: 50%;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   font-weight: bold;
   cursor: pointer;
-  flex-shrink: 0;
   transition: transform 0.2s ease;
 }
 
@@ -198,115 +185,136 @@ const handleLogout = async () => {
   transform: scale(1.05);
 }
 
-.toggle-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #495057;
+/* Logout Menu - Deprecated (kept for reference) */
+.logout-menu {
+  position: absolute;
+  left: 0;
+  bottom: 100%;
+  width: 120px;
+  min-width: 120px;
+  margin-bottom: 0.5rem;
+  z-index: 1000;
+  background-color: #f8f9fa;
+  border-radius: 0.375rem;
   padding: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: color 0.2s ease;
-  flex-shrink: 0;
 }
 
-.toggle-btn:hover {
-  color: #667eea;
+/* Logout Menu Teleported */
+.logout-menu-teleport {
+  position: absolute;
+  width: 120px;
+  min-width: 120px;
+  z-index: 9999;
+  background-color: #f8f9fa;
+  border-radius: 0.375rem;
+  padding: 0.2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.sidebar.collapsed .toggle-btn {
+/* Logout Transition Animation */
+.logout-fade-enter-active,
+.logout-fade-leave-active {
+  transition: all 0.3s ease;
+}
+
+.logout-fade-enter-from,
+.logout-fade-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.logout-fade-enter-to,
+.logout-fade-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Collapsed Sidebar Adjustments */
+.sidebar-collapsed .chat-item-hover {
+  justify-content: center !important;
+  padding: 0.75rem !important;
+}
+
+.sidebar-collapsed .text-truncate {
   display: none;
 }
 
-.logout-menu {
-  margin-top: 0.5rem;
-}
-
-/* Scrollbar */
-.chat-items::-webkit-scrollbar {
+/* Scrollbar Styling */
+div::-webkit-scrollbar {
   width: 6px;
 }
 
-.chat-items::-webkit-scrollbar-track {
+div::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.chat-items::-webkit-scrollbar-thumb {
+div::-webkit-scrollbar-thumb {
   background: #ccc;
   border-radius: 3px;
 }
 
-.chat-items::-webkit-scrollbar-thumb:hover {
+div::-webkit-scrollbar-thumb:hover {
   background: #999;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .sidebar {
+  .sidebar-container {
     width: 70px;
   }
 
-  .chat-item {
-    padding: 0.75rem;
-    justify-content: center;
+  .chat-item-hover {
+    justify-content: center !important;
+    padding: 0.75rem !important;
   }
 
-  .item-label {
-    display: none;
-  }
-
-  .toggle-btn {
+  .text-truncate {
     display: none;
   }
 }
 
 @media (max-width: 576px) {
-  .sidebar {
+  .sidebar-container {
     width: 100%;
     height: auto;
-    flex-direction: row;
+    flex-direction: row !important;
     border-right: none;
     border-bottom: 1px solid #e9ecef;
   }
 
-  .sidebar-logo {
-    padding: 0.75rem;
+  .sidebar-container > div:first-child {
+    padding: 0.75rem !important;
     flex-shrink: 0;
   }
 
-  .chat-items {
-    flex-direction: row;
-    overflow-x: auto;
-    padding: 0;
-    display: flex;
+  .flex-grow-1 {
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    padding: 0 !important;
   }
 
-  .chat-item {
-    padding: 0.75rem;
+  .chat-item-hover {
+    padding: 0.75rem !important;
     white-space: nowrap;
     border-left: none;
-    border-bottom: 3px solid transparent;
+    border-bottom: 3px solid transparent !important;
     flex-shrink: 0;
   }
 
-  .chat-item:hover {
-    border-bottom: 3px solid #667eea;
+  .chat-item-hover:hover {
+    border-bottom-color: #667eea !important;
     border-left: none;
   }
 
-  .chat-item.new-chat {
-    margin-bottom: 0;
-  }
-
-  .sidebar-user {
+  .sidebar-container .p-3:last-child {
     border-top: none;
     border-left: 1px solid #e9ecef;
-    padding: 0.5rem;
+    padding: 0.5rem !important;
   }
 
-  .user-avatar-section {
-    justify-content: center;
+  .sidebar-container .d-flex {
+    justify-content: center !important;
   }
 }
 </style>
