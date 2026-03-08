@@ -36,6 +36,9 @@
 
     <!-- Bottom Nav -->
     <nav class="position-absolute bottom-0 w-100 pb-5 d-flex flex-column p-4 gap-4">
+      <RouterLink to="/jobs" class=" text-decoration-none fs-4" @click="closeMenu">
+        Job Explorer
+      </RouterLink>
       <RouterLink to="/application" class=" text-decoration-none fs-4" @click="closeMenu">
         Application Form
       </RouterLink>

@@ -1,7 +1,7 @@
 <script setup>
 import JobOverview from '@/components/JobOverview.vue'
 import TitlePage from '@/components/TitlePage.vue'
-import bgImage from '@/assets/temp.jpg'
+import bgImage from '@/assets/bg.jpg'
 import JobTemplate from '@/components/JobTemplate.vue'
 import JobList from '@/components/JobList.vue'
 </script>
