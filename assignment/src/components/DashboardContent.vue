@@ -1,12 +1,26 @@
 <template>
   <main class="chat-main">
     <section class="chat-pane">
+      <button
+        v-if="showMobileMenu"
+        type="button"
+        class="mobile-menu-btn"
+        @click="emit('open-sidebar')"
+        aria-label="Open sidebar"
+      >
+        <i class="bi bi-list"></i>
+      </button>
+
       <div class="chat-content-layer">
-      <div class="messages-container">
-        <div class="messages-scroll">
+        <div v-if="hasAssistantResponse" class="messages-container">
           <div v-for="(msg, index) in messages" :key="index" class="message" :class="msg.role">
             <div class="message-bubble">
               <div class="message-content">{{ msg.text }}</div>
+              <div v-if="msg.role === 'assistant' && msg.exercises?.length" class="exercise-list">
+                <div v-for="(exercise, exerciseIndex) in msg.exercises" :key="exerciseIndex" class="exercise-item">
+                  {{ exercise }}
+                </div>
+              </div>
               <button
                 v-if="msg.role === 'assistant' && msg.audioUrl"
                 type="button"
@@ -18,61 +32,68 @@
               </button>
             </div>
           </div>
-
-          <div v-if="isThinking" class="message assistant">
-            <div class="message-bubble">
-              <div class="message-content thinking-content">
-                ECA is thinking
-                <span class="thinking-dots" aria-hidden="true">
-                  <span>.</span>
-                  <span>.</span>
-                  <span>.</span>
-                </span>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
 
-      <div class="chat-input-area">
-        <div class="input-group">
+        <div class="chat-input-bar">
           <input
             v-model="userInput"
             type="text"
-            class="form-control"
+            class="chat-input-field"
             :placeholder="isThinking ? 'ECA is thinking...' : 'Ask me anything...'"
             :disabled="isThinking"
             @keyup.enter="sendMessage"
           />
-          <button class="btn btn-primary" @click="sendMessage" :disabled="!userInput.trim() || isThinking">
+          <button class="chat-send-btn" @click="sendMessage" :disabled="!userInput.trim() || isThinking">
             <span v-if="isThinking" class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-            <i v-else class="bi bi-send"></i>
+            <i v-else class="bi bi-arrow-up"></i>
           </button>
         </div>
-      </div>
       </div>
     </section>
 
     <aside class="motion-pane">
-      <!-- <MotionBackground :motion-url="latestMotionUrl" /> -->
       <MotionGlbBackground :motion-url="latestMotionUrl" />
     </aside>
   </main>
 </template>
 
 <script setup>
-import { onBeforeUnmount, ref } from 'vue'
+import { computed, onBeforeUnmount, ref } from 'vue'
 // import MotionBackground from './MotionBackground.vue'
 import MotionGlbBackground from './MotionGlbBackground.vue'
 import { fetchOrchestratorAnswer } from '@/api'
+
+defineProps({
+  showMobileMenu: {
+    type: Boolean,
+    default: false
+  }
+})
+
+const emit = defineEmits(['open-sidebar'])
 
 const userInput = ref('')
 const messages = ref([])
 const latestMotion = ref(null)
 const latestMotionUrl = ref('')
 const isThinking = ref(false)
+const hasAssistantResponse = computed(() => messages.value.some((message) => message.role === 'assistant'))
 
 let audioPlayer = null
+
+const normalizeExercises = (exercises) => {
+  if (!Array.isArray(exercises)) return []
+
+  return exercises
+    .map((exercise) => {
+      if (typeof exercise === 'string') return exercise.trim()
+      if (exercise && typeof exercise === 'object') {
+        return String(exercise.name || exercise.title || '').trim()
+      }
+      return ''
+    })
+    .filter(Boolean)
+}
 
 const playMessageAudio = async (url) => {
   if (!url) return
@@ -128,7 +149,8 @@ const sendMessage = async () => {
     messages.value.push({
       role: 'assistant',
       text: data?.text_answer || 'No response text received from orchestrator.',
-      audioUrl
+      audioUrl,
+      exercises: normalizeExercises(data?.exercises)
     })
 
     if (latestMotion.value) {
@@ -152,6 +174,8 @@ const sendMessage = async () => {
 defineExpose({
   clearMessages: () => {
     messages.value = []
+    userInput.value = ''
+    isThinking.value = false
     latestMotion.value = null
     latestMotionUrl.value = ''
     if (audioPlayer) {
@@ -177,7 +201,6 @@ onBeforeUnmount(() => {
   position: relative;
   overflow: hidden;
   min-height: 100%;
-  background: linear-gradient(135deg, #f7fbff 0%, #eef5fc 48%, #e9f2fb 100%);
 }
 
 .chat-pane {
@@ -187,8 +210,9 @@ onBeforeUnmount(() => {
   min-width: 21rem;
   display: flex;
   align-items: stretch;
-  padding: 1.25rem;
+  padding: 1rem 1.25rem 1.25rem;
   min-height: 0;
+  background: transparent;
 }
 
 .motion-pane {
@@ -200,48 +224,35 @@ onBeforeUnmount(() => {
 }
 
 .chat-content-layer {
-  position: relative;
-  z-index: 2;
-  width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  align-items: stretch;
-  min-height: 0;
+  justify-content: flex-start;
+  gap: 0.65rem;
+  width: 100%;
+  max-width: none;
   height: 100%;
-  gap: 0.75rem;
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 .messages-container {
   flex: 1;
-  width: 100%;
-  max-width: none;
-  height: auto;
   min-height: 0;
-  overflow: hidden;
-  padding: 1rem;
-  margin-bottom: 0;
-  border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(155, 178, 202, 0.35);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 18px 42px rgba(56, 95, 138, 0.12);
-  pointer-events: auto;
-}
-
-.messages-scroll {
-  height: 100%;
+  width: 100%;
+  max-height: none;
   overflow-y: auto;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  backdrop-filter: none;
+  box-shadow: none;
   display: flex;
-  pointer-events: auto;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .message {
   display: flex;
-  margin-bottom: 1rem;
 }
 
 .message.user {
@@ -264,7 +275,7 @@ onBeforeUnmount(() => {
 }
 
 .message-content {
-  padding: 0.75rem 1rem;
+  padding: 0.65rem 0.9rem;
   border-radius: 0.75rem;
   white-space: pre-wrap;
   overflow-wrap: break-word;
@@ -280,6 +291,22 @@ onBeforeUnmount(() => {
   background-color: #f8fbff;
   color: #1f2937;
   border: 1px solid rgba(155, 178, 202, 0.35);
+}
+
+.exercise-list {
+  margin-top: 0.4rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.exercise-item {
+  font-size: 0.82rem;
+  line-height: 1.2;
+  padding: 0.32rem 0.55rem;
+  border-radius: 0.5rem;
+  background: rgba(94, 134, 229, 0.14);
+  color: #2f4a73;
 }
 
 .audio-replay-btn {
@@ -315,67 +342,88 @@ onBeforeUnmount(() => {
   animation-delay: 0.4s;
 }
 
-.chat-input-area {
+.chat-input-bar {
   width: 100%;
-  max-width: none;
-  padding: 1.5rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding: 0.35rem 0.45rem;
   border: 1px solid rgba(155, 178, 202, 0.35);
-  background-color: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(12px);
-  border-radius: 1rem;
-  box-shadow: 0 18px 42px rgba(56, 95, 138, 0.12);
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 0.6rem;
+  box-shadow: 0 6px 16px rgba(56, 95, 138, 0.12);
+  backdrop-filter: blur(10px);
+}
+
+.chat-input-field {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0.45rem 0.6rem;
+  color: #1f2937;
+}
+
+.chat-input-field:disabled {
+  opacity: 0.75;
+}
+
+.chat-send-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 0.5rem;
+  width: 2.1rem;
+  height: 2.1rem;
+  background: #5e86e5;
+  color: #fff;
+}
+
+.chat-send-btn:disabled {
+  opacity: 0.55;
+}
+
+.mobile-menu-btn {
+  position: absolute;
+  top: 0.9rem;
+  left: 0.9rem;
+  width: auto;
+  height: auto;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  z-index: 4;
+  background: transparent;
+  color: #000;
+  box-shadow: none;
+  backdrop-filter: none;
+  font-size: 1.85rem;
+  line-height: 1;
   pointer-events: auto;
 }
 
-.input-group {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.input-group .form-control {
-  border-radius: 2rem;
-  border: 1px solid rgba(155, 178, 202, 0.45);
-  padding: 0.75rem 1.25rem;
-  background: #ffffff;
-}
-
-.input-group .form-control:focus {
-  border-color: #667eea;
-  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
-}
-
-.input-group .form-control:disabled {
-  background-color: rgba(255, 255, 255, 0.65);
-}
-
-.input-group .btn {
-  border-radius: 2rem;
-  padding: 0.75rem 1.5rem;
-  min-width: 3.25rem;
-}
-
-.messages-scroll::-webkit-scrollbar {
+.messages-container::-webkit-scrollbar {
   width: 6px;
 }
 
-.messages-scroll::-webkit-scrollbar-track {
+.messages-container::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.messages-scroll::-webkit-scrollbar-thumb {
+.messages-container::-webkit-scrollbar-thumb {
   background: #ccc;
   border-radius: 3px;
 }
 
-.messages-scroll::-webkit-scrollbar-thumb:hover {
+.messages-container::-webkit-scrollbar-thumb:hover {
   background: #999;
 }
 
 @media (max-width: 768px) {
   .chat-main {
     min-height: 100vh;
-    align-items: center;
-    justify-content: center;
   }
 
   .motion-pane {
@@ -388,13 +436,16 @@ onBeforeUnmount(() => {
     flex: 1;
     min-width: 0;
     width: 100%;
-    max-width: 42rem;
-    padding: 1rem;
+    max-width: none;
+    z-index: 2;
+    padding: 4rem 0.85rem 1rem;
+    pointer-events: none;
   }
 
   .chat-content-layer {
-    justify-content: center;
-    min-height: calc(100vh - 2rem);
+    width: 100%;
+    justify-content: flex-end;
+    gap: 0.5rem;
   }
 
   .message-content {
@@ -402,13 +453,20 @@ onBeforeUnmount(() => {
   }
 
   .messages-container {
-    flex: 1;
-    height: auto;
-    min-height: 0;
+    height: 30vh;
+    max-height: 30vh;
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-radius: 0.7rem;
+    padding: 0.45rem;
   }
 
-  .chat-input-area {
-    padding: 1rem;
+  .chat-input-bar {
+    margin-top: 0;
+    position: sticky;
+    bottom: 0;
+    z-index: 3;
   }
 }
 

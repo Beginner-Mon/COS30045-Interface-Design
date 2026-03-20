@@ -1,5 +1,5 @@
 <template>
-  <aside :class="['d-flex', 'flex-column', 'bg-white', 'border-end', 'sidebar-container', { 'sidebar-collapsed': sidebarCollapsed }]">
+  <aside :class="['d-flex', 'flex-column', 'bg-white', 'border-end', 'sidebar-container', { 'sidebar-collapsed': sidebarCollapsed, 'mobile-drawer': mobileDrawer }]">
     <!-- Logo -->
     <div class="d-flex align-items-center p-4">
       <img src="/logo.svg" alt="ECA Logo" class="logo-img" />
@@ -81,6 +81,13 @@ import { ref, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/userStore'
 
+defineProps({
+  mobileDrawer: {
+    type: Boolean,
+    default: false
+  }
+})
+
 const router = useRouter()
 const userStore = useUserStore()
 
@@ -145,6 +152,15 @@ const handleLogout = async () => {
   width: 280px;
   transition: width 0.3s ease;
   overflow: hidden;
+}
+
+.sidebar-container.mobile-drawer {
+  width: 280px;
+  height: 100vh;
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 3100;
+  box-shadow: 12px 0 30px rgba(0, 0, 0, 0.25);
 }
 
 .sidebar-container.sidebar-collapsed {
@@ -270,6 +286,10 @@ div::-webkit-scrollbar-thumb:hover {
     width: 70px;
   }
 
+  .sidebar-container.mobile-drawer {
+    width: 280px;
+  }
+
   .chat-item-hover {
     justify-content: center !important;
     padding: 0.75rem !important;
@@ -322,6 +342,46 @@ div::-webkit-scrollbar-thumb:hover {
 
   .sidebar-container .d-flex {
     justify-content: center !important;
+  }
+
+  .sidebar-container.mobile-drawer {
+    width: 280px;
+    height: 100vh;
+    flex-direction: column !important;
+    border-right: 1px solid #e9ecef;
+    border-bottom: none;
+  }
+
+  .sidebar-container.mobile-drawer > div:first-child {
+    padding: 1rem !important;
+    flex-shrink: initial;
+  }
+
+  .sidebar-container.mobile-drawer .flex-grow-1 {
+    flex-direction: column !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  .sidebar-container.mobile-drawer .chat-item-hover {
+    justify-content: space-between !important;
+    white-space: normal;
+    border-left: 3px solid transparent;
+    border-bottom: none !important;
+  }
+
+  .sidebar-container.mobile-drawer .chat-item-hover:hover {
+    border-left-color: #667eea;
+    border-bottom: none !important;
+  }
+
+  .sidebar-container.mobile-drawer .text-truncate {
+    display: inline;
+  }
+
+  .sidebar-container.mobile-drawer .p-3:last-child {
+    border-left: none;
+    padding: 0.75rem !important;
   }
 }
 </style>
