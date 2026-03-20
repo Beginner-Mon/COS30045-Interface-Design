@@ -17,23 +17,25 @@
         <i class="bi bi-plus-lg flex-shrink-0"></i>
       </div>
 
-      <!-- Chat History -->
-      <div 
-        v-for="(chat, index) in chatHistory" 
+      <!-- Chat History (disabled for now)
+      <div
+        v-for="(chat, index) in chatHistory"
         :key="index"
-        class="d-flex align-items-center justify-content-between gap-2 px-4 py-3 cursor-pointer text-muted chat-item-hover" 
+        class="d-flex align-items-center justify-content-between gap-2 px-4 py-3 cursor-pointer text-muted chat-item-hover"
       >
         <span v-if="!sidebarCollapsed" class="text-truncate">{{ chat.title }}</span>
         <i class="bi bi-chat-left flex-shrink-0"></i>
       </div>
+      -->
     </div>
 
     <!-- User Section -->
     <div class="p-3 user-section">
       <div class="d-flex align-items-center justify-content-between gap-2 position-relative">
         <div 
+          ref="avatarRef"
           class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 user-avatar"
-          @click="showLogout = !showLogout"
+          @click="toggleLogoutMenu"
           :title="userStore.user?.email"
         >
           {{ userInitials }}
@@ -85,12 +87,13 @@ const userStore = useUserStore()
 const sidebarCollapsed = ref(false)
 const showLogout = ref(false)
 const logoutMenuPos = ref({ left: 0, top: 0 })
+const avatarRef = ref(null)
 
-const chatHistory = ref([
+/* const chatHistory = ref([
   { title: 'Next.js learning' },
   { title: 'Python basics' },
   { title: 'Vue 3 components' }
-])
+]) */
 
 const userInitials = computed(() => {
   const name = userStore.user?.displayName || 'User'
@@ -102,7 +105,7 @@ const userInitials = computed(() => {
 })
 
 const updateLogoutMenuPosition = () => {
-  const avatar = document.querySelector('.user-avatar')
+  const avatar = avatarRef.value
   if (!avatar) return
   const rect = avatar.getBoundingClientRect()
   logoutMenuPos.value = {
@@ -111,16 +114,20 @@ const updateLogoutMenuPosition = () => {
   }
 }
 
+const toggleLogoutMenu = () => {
+  if (showLogout.value) {
+    showLogout.value = false
+    return
+  }
+
+  updateLogoutMenuPosition()
+  showLogout.value = true
+}
+
 const logoutMenuPosition = computed(() => logoutMenuPos.value)
 
 watch(sidebarCollapsed, () => {
   setTimeout(updateLogoutMenuPosition, 100)
-})
-
-watch(showLogout, () => {
-  if (showLogout.value) {
-    setTimeout(updateLogoutMenuPosition, 0)
-  }
 })
 
 const handleLogout = async () => {
