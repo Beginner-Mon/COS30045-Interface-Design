@@ -4,4 +4,5 @@
  */
 
 export { fetchTopHeadlines } from './newsService'
+export { fetchOrchestratorAnswer } from './orchestratorService'
 export { default as newsApiConfig } from './config'
