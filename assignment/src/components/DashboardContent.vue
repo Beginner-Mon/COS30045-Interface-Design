@@ -284,6 +284,7 @@ onBeforeUnmount(() => {
 
 .chat-input-field {
   min-height: 2.1rem;
+  pointer-events: auto;
 }
 
 .chat-input-field:disabled {
@@ -296,6 +297,11 @@ onBeforeUnmount(() => {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  pointer-events: auto;
+}
+
+.audio-replay-btn {
+  pointer-events: auto;
 }
 
 .chat-send-btn:disabled {
@@ -362,6 +368,7 @@ onBeforeUnmount(() => {
   .chat-content-layer {
     justify-content: flex-end;
     gap: 0.5rem;
+    pointer-events: none;
   }
 
   .message-content {
@@ -374,6 +381,7 @@ onBeforeUnmount(() => {
     background: rgba(255, 255, 255, 0.2);
     border-radius: 0.7rem;
     padding: 0.45rem;
+    pointer-events: auto;
   }
 
   .chat-input-bar {
@@ -381,6 +389,7 @@ onBeforeUnmount(() => {
     position: sticky;
     bottom: 0;
     z-index: 3;
+    pointer-events: auto;
   }
 }
 </style>
