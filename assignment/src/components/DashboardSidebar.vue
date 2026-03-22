@@ -1,16 +1,26 @@
 <template>
-  <aside :class="['d-flex', 'flex-column', 'bg-white', 'border-end', 'sidebar-container', { 'sidebar-collapsed': sidebarCollapsed, 'mobile-drawer': mobileDrawer }]">
+  <aside
+    :class="[
+      'd-flex',
+      'flex-column',
+      'bg-white',
+      'border-end',
+      'sidebar-container',
+      { 'sidebar-collapsed': sidebarCollapsed, 'mobile-drawer': mobileDrawer }
+    ]"
+  >
     <!-- Logo -->
     <div class="d-flex align-items-center p-4">
       <img src="/logo.svg" alt="ECA Logo" class="logo-img" />
-      <span v-if="!sidebarCollapsed" class="ms-2 fs-5 fw-bold">ECA</span>  
+      <span v-if="!sidebarCollapsed" class="ms-2 fs-5 fw-bold">ECA</span>
     </div>
 
     <!-- Chat Items -->
     <div class="flex-grow-1 overflow-y-auto">
       <!-- New Chat -->
-      <div 
-        class="d-flex align-items-center justify-content-between gap-2 px-4 py-3 cursor-pointer fw-bold text-primary chat-item-hover" 
+      <div
+        class="d-flex align-items-center justify-content-between gap-2 px-4 py-3 fw-semibold text-primary border-start border-3 border-transparent"
+        role="button"
         @click="$emit('new-chat')"
       >
         <span v-if="!sidebarCollapsed" class="text-truncate">New Chat</span>
@@ -34,7 +44,7 @@
       <div class="d-flex align-items-center justify-content-between gap-2 position-relative">
         <div 
           ref="avatarRef"
-          class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 user-avatar"
+          class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 user-avatar text-white fw-bold bg-primary bg-gradient"
           @click="toggleLogoutMenu"
           :title="userStore.user?.email"
         >
@@ -169,60 +179,17 @@ const handleLogout = async () => {
 
 .logo-img {
   height: 40px;
-
 }
 
 .sidebar-collapsed .logo-img {
   height: 30px;
 }
-
-/* Chat Item Hover Effects */
-.chat-item-hover {
-  border-left: 3px solid transparent;
-  transition: all 0.2s ease;
-}
-
-.chat-item-hover:hover {
-  background-color: #f8f9fa;
-  color: #667eea !important;
-  border-left-color: #667eea;
-}
-
-/* User Section */
-.user-section {
-  position: relative;
-}
-
-/* User Avatar */
 .user-avatar {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  font-weight: bold;
   cursor: pointer;
-  transition: transform 0.2s ease;
 }
 
-.user-avatar:hover {
-  transform: scale(1.05);
-}
-
-/* Logout Menu - Deprecated (kept for reference) */
-.logout-menu {
-  position: absolute;
-  left: 0;
-  bottom: 100%;
-  width: 120px;
-  min-width: 120px;
-  margin-bottom: 0.5rem;
-  z-index: 1000;
-  background-color: #f8f9fa;
-  border-radius: 0.375rem;
-  padding: 0.5rem;
-}
-
-/* Logout Menu Teleported */
 .logout-menu-teleport {
   position: absolute;
   width: 120px;
@@ -234,7 +201,6 @@ const handleLogout = async () => {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Logout Transition Animation */
 .logout-fade-enter-active,
 .logout-fade-leave-active {
   transition: all 0.3s ease;
@@ -250,138 +216,5 @@ const handleLogout = async () => {
 .logout-fade-leave-from {
   opacity: 1;
   transform: translateY(0);
-}
-
-/* Collapsed Sidebar Adjustments */
-.sidebar-collapsed .chat-item-hover {
-  justify-content: center !important;
-  padding: 0.75rem !important;
-}
-
-.sidebar-collapsed .text-truncate {
-  display: none;
-}
-
-/* Scrollbar Styling */
-div::-webkit-scrollbar {
-  width: 6px;
-}
-
-div::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-div::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 3px;
-}
-
-div::-webkit-scrollbar-thumb:hover {
-  background: #999;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .sidebar-container {
-    width: 70px;
-  }
-
-  .sidebar-container.mobile-drawer {
-    width: 280px;
-  }
-
-  .chat-item-hover {
-    justify-content: center !important;
-    padding: 0.75rem !important;
-  }
-
-  .text-truncate {
-    display: none;
-  }
-}
-
-@media (max-width: 576px) {
-  .sidebar-container {
-    width: 100%;
-    height: auto;
-    flex-direction: row !important;
-    border-right: none;
-    border-bottom: 1px solid #e9ecef;
-  }
-
-  .sidebar-container > div:first-child {
-    padding: 0.75rem !important;
-    flex-shrink: 0;
-  }
-
-  .flex-grow-1 {
-    flex-direction: row !important;
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-    padding: 0 !important;
-  }
-
-  .chat-item-hover {
-    padding: 0.75rem !important;
-    white-space: nowrap;
-    border-left: none;
-    border-bottom: 3px solid transparent !important;
-    flex-shrink: 0;
-  }
-
-  .chat-item-hover:hover {
-    border-bottom-color: #667eea !important;
-    border-left: none;
-  }
-
-  .sidebar-container .p-3:last-child {
-    border-top: none;
-    border-left: 1px solid #e9ecef;
-    padding: 0.5rem !important;
-  }
-
-  .sidebar-container .d-flex {
-    justify-content: center !important;
-  }
-
-  .sidebar-container.mobile-drawer {
-    width: 280px;
-    height: 100vh;
-    flex-direction: column !important;
-    border-right: 1px solid #e9ecef;
-    border-bottom: none;
-  }
-
-  .sidebar-container.mobile-drawer > div:first-child {
-    padding: 1rem !important;
-    flex-shrink: initial;
-  }
-
-  .sidebar-container.mobile-drawer .flex-grow-1 {
-    flex-direction: column !important;
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-  }
-
-  .sidebar-container.mobile-drawer .chat-item-hover {
-    justify-content: space-between !important;
-    white-space: normal;
-    border-left: 3px solid transparent;
-    border-bottom: none !important;
-  }
-
-  .sidebar-container.mobile-drawer .chat-item-hover:hover {
-    border-left-color: #667eea;
-    border-bottom: none !important;
-  }
-
-  .sidebar-container.mobile-drawer .text-truncate {
-    display: inline;
-  }
-
-  .sidebar-container.mobile-drawer .p-3:last-child {
-    border-left: none;
-    padding: 0.75rem !important;
-  }
 }
 </style>

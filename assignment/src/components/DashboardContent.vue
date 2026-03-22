@@ -12,19 +12,33 @@
       </button>
 
       <div class="chat-content-layer">
-        <div v-if="hasAssistantResponse" class="messages-container">
-          <div v-for="(msg, index) in messages" :key="index" class="message" :class="msg.role">
-            <div class="message-bubble">
-              <div class="message-content">{{ msg.text }}</div>
+        <div v-if="hasAssistantResponse" class="messages-container d-flex flex-column gap-2">
+          <div
+            v-for="(msg, index) in messages"
+            :key="index"
+            class="d-flex"
+            :class="msg.role === 'user' ? 'justify-content-end' : 'justify-content-start'"
+          >
+            <div class="message-bubble d-flex flex-column" :class="msg.role === 'user' ? 'align-items-end' : 'align-items-start'">
+              <div
+                class="message-content px-3 py-2 rounded-3"
+                :class="msg.role === 'user' ? 'bg-primary text-white' : 'bg-light border text-dark'"
+              >
+                {{ msg.text }}
+              </div>
               <div v-if="msg.role === 'assistant' && msg.exercises?.length" class="exercise-list">
-                <div v-for="(exercise, exerciseIndex) in msg.exercises" :key="exerciseIndex" class="exercise-item">
+                <div
+                  v-for="(exercise, exerciseIndex) in msg.exercises"
+                  :key="exerciseIndex"
+                  class="exercise-item badge rounded-pill text-bg-primary-subtle text-primary-emphasis"
+                >
                   {{ exercise }}
                 </div>
               </div>
               <button
                 v-if="msg.role === 'assistant' && msg.audioUrl"
                 type="button"
-                class="audio-replay-btn"
+                class="audio-replay-btn btn btn-sm btn-link text-secondary p-0 mt-1 text-start"
                 title="Play reply audio"
                 @click="playMessageAudio(msg.audioUrl)"
               >
@@ -34,16 +48,20 @@
           </div>
         </div>
 
-        <div class="chat-input-bar">
+        <div class="chat-input-bar input-group border rounded-3 bg-white shadow-sm">
           <input
             v-model="userInput"
             type="text"
-            class="chat-input-field"
+            class="chat-input-field form-control border-0 shadow-none"
             :placeholder="isThinking ? 'ECA is thinking...' : 'Ask me anything...'"
             :disabled="isThinking"
             @keyup.enter="sendMessage"
           />
-          <button class="chat-send-btn" @click="sendMessage" :disabled="!userInput.trim() || isThinking">
+          <button
+            class="chat-send-btn btn btn-primary rounded-2"
+            @click="sendMessage"
+            :disabled="!userInput.trim() || isThinking"
+          >
             <span v-if="isThinking" class="spinner-border spinner-border-sm" aria-hidden="true"></span>
             <i v-else class="bi bi-arrow-up"></i>
           </button>
@@ -226,71 +244,25 @@ onBeforeUnmount(() => {
 .chat-content-layer {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  gap: 0.65rem;
+  gap: 0.75rem;
   width: 100%;
-  max-width: none;
   height: 100%;
-  pointer-events: auto;
 }
 
 .messages-container {
   flex: 1;
   min-height: 0;
-  width: 100%;
-  max-height: none;
   overflow-y: auto;
-  padding: 0;
-  border-radius: 0;
-  background: transparent;
-  border: none;
-  backdrop-filter: none;
-  box-shadow: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.message {
-  display: flex;
-}
-
-.message.user {
-  justify-content: flex-end;
-}
-
-.message.assistant {
-  justify-content: flex-start;
 }
 
 .message-bubble {
-  display: flex;
-  flex-direction: column;
   align-items: flex-start;
   max-width: 100%;
 }
 
-.message.user .message-bubble {
-  align-items: flex-end;
-}
-
 .message-content {
-  padding: 0.65rem 0.9rem;
-  border-radius: 0.75rem;
   white-space: pre-wrap;
   overflow-wrap: break-word;
-  word-break: normal;
-}
-
-.message.user .message-content {
-  background-color: #5e86e5;
-  color: white;
-}
-
-.message.assistant .message-content {
-  background-color: #f8fbff;
-  color: #1f2937;
-  border: 1px solid rgba(155, 178, 202, 0.35);
 }
 
 .exercise-list {
@@ -301,68 +273,17 @@ onBeforeUnmount(() => {
 }
 
 .exercise-item {
-  font-size: 0.82rem;
-  line-height: 1.2;
-  padding: 0.32rem 0.55rem;
-  border-radius: 0.5rem;
-  background: rgba(94, 134, 229, 0.14);
-  color: #2f4a73;
-}
-
-.audio-replay-btn {
-  margin-top: 0.35rem;
-  border: none;
-  background: transparent;
-  color: #3c5d85;
-  font-size: 0.95rem;
-  line-height: 1;
-  padding: 0.1rem 0.2rem;
-}
-
-.audio-replay-btn:hover {
-  color: #1b3f73;
-}
-
-.thinking-content {
-  display: flex;
-  align-items: center;
-  gap: 0.15rem;
-}
-
-.thinking-dots span {
-  display: inline-block;
-  animation: thinking-blink 1.2s infinite;
-}
-
-.thinking-dots span:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.thinking-dots span:nth-child(3) {
-  animation-delay: 0.4s;
+  font-size: 0.78rem;
+  font-weight: 500;
 }
 
 .chat-input-bar {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
   margin-top: auto;
-  padding: 0.35rem 0.45rem;
-  border: 1px solid rgba(155, 178, 202, 0.35);
-  background: rgba(255, 255, 255, 0.92);
-  border-radius: 0.6rem;
-  box-shadow: 0 6px 16px rgba(56, 95, 138, 0.12);
-  backdrop-filter: blur(10px);
+  padding: 0.35rem;
 }
 
 .chat-input-field {
-  flex: 1;
-  border: none;
-  outline: none;
-  background: transparent;
-  padding: 0.45rem 0.6rem;
-  color: #1f2937;
+  min-height: 2.1rem;
 }
 
 .chat-input-field:disabled {
@@ -370,15 +291,11 @@ onBeforeUnmount(() => {
 }
 
 .chat-send-btn {
+  width: 2.1rem;
+  height: 2.1rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: none;
-  border-radius: 0.5rem;
-  width: 2.1rem;
-  height: 2.1rem;
-  background: #5e86e5;
-  color: #fff;
 }
 
 .chat-send-btn:disabled {
@@ -443,7 +360,6 @@ onBeforeUnmount(() => {
   }
 
   .chat-content-layer {
-    width: 100%;
     justify-content: flex-end;
     gap: 0.5rem;
   }
@@ -455,9 +371,7 @@ onBeforeUnmount(() => {
   .messages-container {
     height: 30vh;
     max-height: 30vh;
-    background: rgba(255, 255, 255, 0.18);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    background: rgba(255, 255, 255, 0.2);
     border-radius: 0.7rem;
     padding: 0.45rem;
   }
@@ -467,16 +381,6 @@ onBeforeUnmount(() => {
     position: sticky;
     bottom: 0;
     z-index: 3;
-  }
-}
-
-@keyframes thinking-blink {
-  0%, 80%, 100% {
-    opacity: 0.25;
-  }
-
-  40% {
-    opacity: 1;
   }
 }
 </style>

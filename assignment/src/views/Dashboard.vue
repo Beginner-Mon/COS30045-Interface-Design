@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard-container">
+  <div class="d-flex position-relative vh-100 overflow-hidden bg-light">
     <DashboardSidebar v-if="!isMobile" @new-chat="handleNewChat" />
     <DashboardContent
       ref="dashboardContent"
@@ -7,8 +7,13 @@
       @open-sidebar="openMobileSidebar"
     />
 
-    <div v-if="isMobile && sidebarOpen" class="mobile-backdrop" @click="closeMobileSidebar">
-      <div class="mobile-sidebar-shell" @click.stop>
+    <div
+      v-if="isMobile && sidebarOpen"
+      class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50"
+      style="z-index: 3000"
+      @click="closeMobileSidebar"
+    >
+      <div class="position-absolute top-0 start-0 h-100" @click.stop>
         <DashboardSidebar :mobile-drawer="true" @new-chat="handleNewChat" />
       </div>
     </div>
@@ -62,31 +67,3 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', updateViewportState)
 })
 </script>
-
-<style scoped>
-.dashboard-container {
-  display: flex;
-  position: relative;
-  height: 100vh;
-  background-color: #f5f5f5;
-  overflow: hidden;
-}
-
-.mobile-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 3000;
-  background: rgba(0, 0, 0, 0.5);
-}
-
-.mobile-sidebar-shell {
-  position: absolute;
-  inset: 0 auto 0 0;
-}
-
-@media (min-width: 769px) {
-  .mobile-backdrop {
-    display: none;
-  }
-}
-</style>
