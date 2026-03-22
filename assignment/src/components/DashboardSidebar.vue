@@ -19,7 +19,7 @@
     <div class="flex-grow-1 overflow-y-auto">
       <!-- New Chat -->
       <div
-        class="d-flex align-items-center justify-content-between gap-2 px-4 py-3 fw-semibold text-primary border-start border-3 border-transparent"
+        class="d-flex align-items-center justify-content-between gap-2 px-4 py-3 fw-semibold text-dark border-start border-3 border-transparent"
         role="button"
         @click="emit('new-chat')"
       >

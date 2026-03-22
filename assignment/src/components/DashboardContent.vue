@@ -22,7 +22,7 @@
             <div class="message-bubble d-flex flex-column" :class="msg.role === 'user' ? 'align-items-end' : 'align-items-start'">
               <div
                 class="message-content px-3 py-2 rounded-3"
-                :class="msg.role === 'user' ? 'bg-primary text-white' : 'bg-light border text-dark'"
+                :class="msg.role === 'user' ? 'user-message-tone text-dark border' : 'bg-light border text-dark'"
               >
                 {{ msg.text }}
               </div>
@@ -58,7 +58,7 @@
             @keyup.enter="sendMessage"
           />
           <button
-            class="chat-send-btn btn btn-primary rounded-2"
+            class="chat-send-btn btn btn-dark rounded-2"
             @click="sendMessage"
             :disabled="!userInput.trim() || isThinking"
           >
@@ -263,6 +263,10 @@ onBeforeUnmount(() => {
 .message-content {
   white-space: pre-wrap;
   overflow-wrap: break-word;
+}
+
+.user-message-tone {
+  background-color: #eef2f7;
 }
 
 .exercise-list {
