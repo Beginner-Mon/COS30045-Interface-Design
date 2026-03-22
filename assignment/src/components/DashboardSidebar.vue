@@ -21,7 +21,7 @@
       <div
         class="d-flex align-items-center justify-content-between gap-2 px-4 py-3 fw-semibold text-primary border-start border-3 border-transparent"
         role="button"
-        @click="$emit('new-chat')"
+        @click="emit('new-chat')"
       >
         <span v-if="!sidebarCollapsed" class="text-truncate">New Chat</span>
         <i class="bi bi-plus-lg flex-shrink-0"></i>
@@ -97,6 +97,8 @@ defineProps({
     default: false
   }
 })
+
+const emit = defineEmits(['new-chat'])
 
 const router = useRouter()
 const userStore = useUserStore()

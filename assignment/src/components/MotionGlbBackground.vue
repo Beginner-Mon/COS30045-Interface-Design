@@ -21,9 +21,10 @@ let scene
 let camera
 let renderer
 let controls
-let clock
+let timer
 let frameId
 let resizeHandler
+let resizeObserver
 let axesHelper
 let keyLight
 let fillBackLight
@@ -337,19 +338,37 @@ const setupScene = () => {
     scene.add(xLabel, yLabel, zLabel)
   }
 
-  clock = new THREE.Clock()
+  timer = new THREE.Timer()
+  if (typeof document !== 'undefined') {
+    timer.connect(document)
+  }
   loader = new GLTFLoader()
 
-  resizeHandler = () => {
+  const syncRendererSize = () => {
     if (!container || !camera || !renderer) return
     const width = container.clientWidth
     const height = container.clientHeight
+    if (width <= 0 || height <= 0) return
     camera.aspect = width / height
     camera.updateProjectionMatrix()
     renderer.setSize(width, height)
   }
 
+  resizeHandler = () => {
+    requestAnimationFrame(syncRendererSize)
+  }
+
   window.addEventListener('resize', resizeHandler)
+
+  if (typeof ResizeObserver !== 'undefined') {
+    resizeObserver = new ResizeObserver(() => {
+      syncRendererSize()
+    })
+    resizeObserver.observe(container)
+  }
+
+  syncRendererSize()
+  requestAnimationFrame(syncRendererSize)
 }
 
 const loadGlbMotion = async (url) => {
@@ -417,7 +436,7 @@ const loadGlbMotion = async (url) => {
   currentFrame = 0
 }
 
-const animate = () => {
+const animate = (timestamp) => {
   frameId = requestAnimationFrame(animate)
 
   if (keyLight && controls && camera) {
@@ -426,7 +445,8 @@ const animate = () => {
     keyLight.target.updateMatrixWorld()
   }
 
-  const delta = clock.getDelta()
+  timer.update(timestamp)
+  const delta = timer.getDelta()
   if (isPlaying.value && totalFrames > 0) {
     accumulatedTime += delta
     while (accumulatedTime >= frameDuration) {
@@ -463,6 +483,10 @@ watch(() => props.motionUrl, async (newUrl) => {
 onBeforeUnmount(() => {
   if (frameId) cancelAnimationFrame(frameId)
   if (resizeHandler) window.removeEventListener('resize', resizeHandler)
+  if (resizeObserver) {
+    resizeObserver.disconnect()
+    resizeObserver = null
+  }
 
   clearMotion()
   clearAxesLabels()
@@ -473,6 +497,11 @@ onBeforeUnmount(() => {
   }
 
   if (controls) controls.dispose()
+
+  if (timer) {
+    timer.dispose()
+    timer = null
+  }
 
   if (renderer) {
     renderer.dispose()
