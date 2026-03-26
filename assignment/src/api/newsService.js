@@ -25,21 +25,37 @@ export const fetchTopHeadlines = async (options = {}) => {
             sortBy = 'publishedAt',
             language = 'en',
             pageSize = 10,
-            page = 1
+            page = 1,
+            category = '',
+            searchQuery = '',
+            fromDate = '',
+            toDate = ''
         } = options
 
-        const q = 'artificial intelligence OR technology OR software OR hardware'
-
-        const response = await apiClient.get(newsApiConfig.endpoints.everything, {
-            params: {
-                q,
-                language,
-                sortBy,
-                pageSize,
-                page,
-                apiKey: newsApiConfig.apiKey
+        let q = 'artificial intelligence OR technology OR software OR hardware'
+        
+        if (searchQuery) {
+            q = searchQuery
+            if (category) {
+                q += ` AND ${category}`
             }
-        })
+        } else if (category) {
+            q = category
+        }
+
+        const params = {
+            q,
+            language,
+            sortBy,
+            pageSize,
+            page,
+            apiKey: newsApiConfig.apiKey
+        }
+
+        if (fromDate) params.from = fromDate
+        if (toDate) params.to = toDate
+
+        const response = await apiClient.get(newsApiConfig.endpoints.everything, { params })
 
         return response.data
     } catch (error) {

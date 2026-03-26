@@ -13,6 +13,35 @@
         Error loading news: {{ error }}
       </div>
 
+      <!-- Filters and Search -->
+      <div class="row mb-5 g-3 align-items-end filter-bar p-4 rounded bg-white shadow-sm mx-0">
+        <div class="col-md-4">
+          <label class="form-label text-muted small fw-bold text-uppercase">Search Keywords</label>
+          <input type="text" v-model="filters.searchQuery" class="form-control" placeholder="Search title or content..." @keyup.enter="applyFilters" />
+        </div>
+        <div class="col-md-3">
+          <label class="form-label text-muted small fw-bold text-uppercase">Category</label>
+          <select v-model="filters.category" class="form-control form-select" @change="applyFilters">
+            <option value="">All Tech & AI</option>
+            <option value="artificial intelligence">Artificial Intelligence</option>
+            <option value="software">Software</option>
+            <option value="hardware">Hardware</option>
+            <option value="cybersecurity">Cybersecurity</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label text-muted small fw-bold text-uppercase">From Date</label>
+          <input type="date" v-model="filters.fromDate" class="form-control" @change="applyFilters" />
+        </div>
+        <div class="col-md-2">
+          <label class="form-label text-muted small fw-bold text-uppercase">To Date</label>
+          <input type="date" v-model="filters.toDate" class="form-control" @change="applyFilters" />
+        </div>
+        <div class="col-md-1 d-flex">
+          <button class="btn btn-dark w-100" @click="applyFilters" :disabled="loading">Go</button>
+        </div>
+      </div>
+
       <!-- Featured News (First Article) -->
       <template v-if="articles.length > 0 && !loading">
         <div class="featured-article mb-5 p-3 p-md-4">
@@ -172,6 +201,17 @@ export default {
     const totalResults = ref(0)
     const pageSize = 10
 
+    const filters = ref({
+      searchQuery: '',
+      category: '',
+      fromDate: '',
+      toDate: ''
+    })
+
+    const applyFilters = () => {
+      fetchNews(1)
+    }
+
     const totalPages = computed(() => {
       return Math.ceil(totalResults.value / pageSize)
     })
@@ -199,7 +239,11 @@ export default {
           language: 'en',
           sortBy: 'publishedAt',
           pageSize,
-          page
+          page,
+          searchQuery: filters.value.searchQuery,
+          category: filters.value.category,
+          fromDate: filters.value.fromDate,
+          toDate: filters.value.toDate
         })
 
         articles.value = data.articles || []
@@ -236,6 +280,8 @@ export default {
       visiblePages,
       totalResults,
       pageSize,
+      filters,
+      applyFilters,
       fetchNews,
       formatDate,
       truncateText

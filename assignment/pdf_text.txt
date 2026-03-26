@@ -1,0 +1,257 @@
+School of Science, Computing and Engineering Technologies  
+COS30043 
+Interface Design and Development  
+Custom Web Application 
+ 
+ 
+Overview 
+ 
+This project is designed to help you develop practical skills in building modern web applications using Vue.js 
+(version 3) and the Bootstrap framework. Through this project, you will learn how to structure an application, 
+implement interactive features, and apply best practices in web development. 
+ 
+The project must use Vue.js version 3 and the Bootstrap grid system, and it must be deployed on the uni-
+versity’s web server — the Mercury server. It must also be created using build tools such as Vite or Vue 
+CLI. 
+ 
+This project consists of three stages, with each stage progressively building up your application and enhanc-
+ing its functionality and complexity. 
+ 
+Stage 1: Start Up   
+ 
+In this stage, you will use development tools to create a basic application.  
+ 
+All the requirements in this stage are neutral and can be applied to any type of web application. Please start 
+thinking about your project idea, as we will implement a real-world application in Stage 2. 
+ 
+1. Create a new project using Vite or Vue CLI, and add Vue Router. 
+2. Create three simple single-file components: Home.vue, News.vue, and About.vue. 
+3. Home Page: 
+o Include at least a title, a welcome paragraph, and two images. 
+o In Stage 2, you can design the home page to serve the purpose of your intended web application. 
+4. News Page: 
+o Display a list of news items read from a local JSON file. 
+o Each news item should include at least four fields, such as date, title, short news content, and 
+category. 
+o Users must be able to search based on date, title, content, and category. 
+o The news list must contain enough items to demonstrate pagination. 
+5. About Page: 
+o Include a short paragraph about your web application. 
+o Include two input fields for the user’s first name and last name. Display a welcome message 
+based on the user’s name. 
+
+Interface Design and Development Custom Web Application 
+ Page 2 of 5 
+o Show an image based on the user’s selection from two radio buttons, such as "Mountain" or 
+"Ocean". 
+ 
+ 
+6. The web app should be responsive to three different devices, so that distinct layouts are visible when 
+the viewport changes.  
+ 
+Stage 2: Application Logic   
+ 
+In this stage, you are expected to build an application that incorporates real-world functionality and practical 
+features. You should extend your Stage 1 application by expanding the router, using additional files, and 
+integrating your new functionalities and features into the existing app created in Stage 1. You should not 
+create an entirely new application.  
+ 
+You have the freedom to choose the theme of your application, such as an e-commerce site, event manage-
+ment system, educational course platform, or real estate listing website. You are not limited to these exam-
+ples — feel free to choose any theme that interests you. Regardless of the theme you choose, your applica-
+tion must meet the following technical and functional requirements. Additionally, you must integrate further 
+functionalities and features to ensure that your application operates effectively and provides real-world util-
+ity. 
+    
+2.1 Technical Requirements 
+ 
+Your application must incorporate the following technical aspects: 
+ 
+• Utilise Vue.js components, router, and custom directives to build a modular and maintainable codebase. 
+• Demonstrate proficient use of arrays for dynamic data handling. 
+• Implement core Vue.js directives such as v-bind, v-model, v-if, v-for, and v-on to create interactive and 
+reactive user interfaces. 
+• Utilise a form with data validation. 
+• Follow a mobile-first approach, ensuring your application is fully responsive across at least three device 
+sizes. 
+• Prioritise accessibility in input forms and tables to ensure usability for all users. 
+• Apply coding conventions consistently, including proper case usage and indentation for readability and 
+professionalism. 
+• Utilise methods and computed properties in Vue.js. 
+• Implement pagination for lists or data displays. 
+• Incorporate data from external sources or APIs. 
+
+Interface Design and Development Custom Web Application 
+ Page 3 of 5 
+ 
+2.2 Functional Requirements 
+ 
+Your application must incorporate the following functional aspects: 
+ 
+• Implement features for user registration, login, and differentiated content visibility between authenti-
+cated and unauthenticated users. 
+• Include functionality for all users to search for content and apply filters to refine results. 
+• Integrate social features, such as liking or voting on content. 
+• Allow authorised users to create, edit, and delete content. 
+• Maintain persistent data storage, using a backend database, JSON files, or similar methods. 
+ 
+2.3 Project Report 
+ 
+You should include a project report that provides a clear and concise overview of your application. The re-
+port should include: 
+• The main functionality of your app. 
+• A description of the technical components and tools you have used. 
+• Highlights of any innovative features or unique approaches you have implemented. 
+• A brief reflection on the challenges you encountered and how you addressed them. 
+ 
+Stage 3: Advanced Features   
+ 
+In this stage, you are encouraged to explore and self-learn a technique for implementing an advanced feature 
+in your web application. The technique should not be a very basic one. It should be related to Vue.js, and the 
+feature you implement should significantly enhance your application.  
+ 
+You are required to record a video of 3 to 20 minutes in which you introduce the technique and explain how 
+to implement it, as if teaching a tutorial. You may use PowerPoint to provide an introduction or summarise 
+key points, but we are more interested in seeing how you actively engage with the development environ-
+ment, demonstrate live coding by making real-time changes to your code, and clearly explain the technique 
+with a solid understanding, rather than simply talking over a PowerPoint or Word document. This is also your 
+opportunity to demonstrate your advanced skills.  
+ 
+Your face must be visible throughout the video. 
+ 
+Submission     
+ 
+• Upload your website to Mercury and make sure it is working. 
+• Submit a zip file of all source code files to Canvas. 
+• Submit your project's Mercury URL in the Canvas comments. 
+• If you have reached Stage 2, submit your project report to Canvas. 
+Interface Design and Development Custom Web Application 
+ Page 4 of 5 
+• If you have reached Stage 3, provide the video URL in the Canvas comments and upload your video to 
+YouTube or a cloud drive. Make sure the video permissions allow others to access it. If you encounter 
+YouTube length limitations, you may submit two video links. 
+ 
+ 
+  
+Interface Design and Development Custom Web Application 
+ Page 5 of 5 
+ 
+Stage 1 Marking Rubric (20 marks) 
+Criteria Excellent  Satisfactory Needs Improvement 
+Project Setup and Struc-
+ture (7 marks) 
+Project fully set up, router 
+works, all pages created 
+properly. (6–7 marks) 
+Project mostly set up, 
+router present, minor is-
+sues. (4–5 marks) 
+Project setup incomplete, 
+router missing, or major er-
+rors. (0–3 marks) 
+Home page, About page, 
+and responsiveness (6 
+marks) 
+Fulfills all requirements for the 
+two pages; layout is responsive 
+across 3 devices. (5–6 marks) 
+Pages mostly complete, mi-
+nor issues regarding con-
+tent or responsiveness. (3–4 
+marks) 
+Pages incomplete or little to 
+no responsiveness. (0–2 
+marks) 
+News Page (7 marks) 
+Fully completed, includes load-
+ing JSON file, shows list with 
+pagination, full search func-
+tionality. (6–7 marks) 
+Data loads and displays, mi-
+nor issues in functionality. 
+(4–5 marks) 
+Data not properly loaded, 
+search and pagination not 
+functional or missing. (0–3 
+marks) 
+ 
+Stage 2 Marking Rubric (25 marks) 
+Criteria Excellent Satisfactory Needs Improvement 
+Technical Requirements 
+(10 marks) 
+All technical specifications 
+fully implemented. (8–10 
+marks) 
+Most technical specifications 
+met, but minor errors or issues 
+are present. (4–7 marks) 
+Major technical issues or 
+missing elements. (0–3 
+marks) 
+Functional Requirements 
+(10 marks) 
+All functional requirements 
+fully met. The app demon-
+strates sufficient complexity 
+for real-world use. (8–10 
+marks) 
+Basic functionality works, but 
+some features are incomplete. 
+Overall usable but needs re-
+finement. (4–7 marks) 
+Basic functionality is miss-
+ing or poorly implemented. 
+The app is difficult to use. 
+(0–3 marks) 
+Report and Code (5 
+marks) 
+Clear, well-structured report 
+that covers all the required 
+elements. (4–5 marks) 
+Report covers basic elements 
+but lacks depth. (2–3 marks) 
+Report is poorly written or 
+lacks critical information. 
+(0–1 marks) 
+ 
+Stage 3 Marking Rubric (20 marks) 
+Criteria Excellent Satisfactory Needs Improvement 
+1. Technique Complexity & 
+Relevance (6 marks) 
+Technique is advanced, rele-
+vant, and significantly enhances 
+the application. Demonstrates 
+depth of research. (5-6 marks) 
+Technique is moderately 
+advanced and somewhat 
+relevant. (3-4 marks) 
+Technique is basic or 
+poorly integrated into the 
+app. Little evidence of self-
+learning. (0–2 marks) 
+2. Implementation Quality 
+(6 marks) 
+Feature is well-implemented, 
+fully functional. (5-6 marks) 
+Feature is partially im-
+plemented with minor 
+issues. (3-4 marks) 
+Feature is incomplete or 
+non-functional. (0–2 
+marks) 
+3. Video Content & Live 
+Coding (8 marks) 
+Clear, well-structured explana-
+tion. Live coding is smooth and 
+effectively teaches the tech-
+nique. (6-8 marks) 
+Explanation covers main 
+points but lacks depth or 
+clarity. Live coding works 
+but may have minor is-
+sues. (3–5 marks) 
+Explanation is unclear or 
+disorganised. Live coding is 
+incomplete or ineffective. 
+(0–2 marks) 
+ 

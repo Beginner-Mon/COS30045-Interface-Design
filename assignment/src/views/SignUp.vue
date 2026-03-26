@@ -34,11 +34,14 @@
             <input
               id="firstName"
               v-model="firstName"
+              @input="validateFirstName"
               type="text"
               class="form-control"
+              :class="{ 'is-invalid': firstNameError }"
               placeholder="First name"
               required
             />
+            <div class="invalid-feedback d-block" v-if="firstNameError">{{ firstNameError }}</div>
           </div>
 
           <div class="col-md-6 mb-3">
@@ -46,11 +49,14 @@
             <input
               id="lastName"
               v-model="lastName"
+              @input="validateLastName"
               type="text"
               class="form-control"
+              :class="{ 'is-invalid': lastNameError }"
               placeholder="Last name"
               required
             />
+            <div class="invalid-feedback d-block" v-if="lastNameError">{{ lastNameError }}</div>
           </div>
         </div>
 
@@ -59,11 +65,14 @@
           <input
             id="email"
             v-model="email"
+            @input="validateEmail"
             type="email"
             class="form-control"
+            :class="{ 'is-invalid': emailError }"
             placeholder="Enter your email"
             required
           />
+          <div class="invalid-feedback d-block" v-if="emailError">{{ emailError }}</div>
         </div>
 
         <div class="mb-3">
@@ -71,12 +80,15 @@
           <input
             id="password"
             v-model="password"
+            @input="validatePassword"
             type="password"
             class="form-control"
+            :class="{ 'is-invalid': passwordError }"
             placeholder="Create a strong password"
             required
           />
-          <small class="text-muted d-block mt-1">Must be at least 6 characters</small>
+          <small class="text-muted d-block mt-1" v-if="!passwordError">Must be at least 6 characters</small>
+          <div class="invalid-feedback d-block" v-if="passwordError">{{ passwordError }}</div>
         </div>
 
         <div class="mb-3">
@@ -84,11 +96,14 @@
           <input
             id="confirmPassword"
             v-model="confirmPassword"
+            @input="validateConfirmPassword"
             type="password"
             class="form-control"
+            :class="{ 'is-invalid': confirmPasswordError }"
             placeholder="Confirm your password"
             required
           />
+          <div class="invalid-feedback d-block" v-if="confirmPasswordError">{{ confirmPasswordError }}</div>
         </div>
 
         <div class="mb-3 form-check">
@@ -159,6 +174,57 @@ export default {
     const errorMessage = ref('')
     const isLoading = ref(false)
 
+    // Validation state
+    const firstNameError = ref('')
+    const lastNameError = ref('')
+    const emailError = ref('')
+    const passwordError = ref('')
+    const confirmPasswordError = ref('')
+
+    const validateFirstName = () => {
+      firstNameError.value = !firstName.value.trim() ? 'First name is required.' : ''
+    }
+
+    const validateLastName = () => {
+      lastNameError.value = !lastName.value.trim() ? 'Last name is required.' : ''
+    }
+
+    const validateEmail = () => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!email.value) {
+        emailError.value = 'Email is required.'
+      } else if (!emailRegex.test(email.value)) {
+        emailError.value = 'Please enter a valid email address.'
+      } else {
+        emailError.value = ''
+      }
+    }
+
+    const validatePassword = () => {
+      if (!password.value) {
+        passwordError.value = 'Password is required.'
+      } else if (password.value.length < 6) {
+        passwordError.value = 'Password must be at least 6 characters.'
+      } else {
+        passwordError.value = ''
+      }
+      
+      // Re-validate confirm password if it was already filled
+      if (confirmPassword.value) {
+        validateConfirmPassword()
+      }
+    }
+
+    const validateConfirmPassword = () => {
+      if (!confirmPassword.value) {
+        confirmPasswordError.value = 'Please confirm your password.'
+      } else if (password.value !== confirmPassword.value) {
+        confirmPasswordError.value = 'Passwords do not match.'
+      } else {
+        confirmPasswordError.value = ''
+      }
+    }
+
     const isFormValid = computed(() => {
       return (
         firstName.value &&
@@ -173,13 +239,14 @@ export default {
     })
 
     const handleSignUp = async () => {
-      if (password.value !== confirmPassword.value) {
-        errorMessage.value = 'Passwords do not match'
-        return
-      }
+      validateFirstName()
+      validateLastName()
+      validateEmail()
+      validatePassword()
+      validateConfirmPassword()
 
-      if (password.value.length < 6) {
-        errorMessage.value = 'Password must be at least 6 characters'
+      if (firstNameError.value || lastNameError.value || emailError.value || 
+          passwordError.value || confirmPasswordError.value) {
         return
       }
 
@@ -219,6 +286,16 @@ export default {
       agreedToTerms,
       errorMessage,
       isLoading,
+      firstNameError,
+      lastNameError,
+      emailError,
+      passwordError,
+      confirmPasswordError,
+      validateFirstName,
+      validateLastName,
+      validateEmail,
+      validatePassword,
+      validateConfirmPassword,
       isFormValid,
       handleSignUp,
       handleGoogleSignUp

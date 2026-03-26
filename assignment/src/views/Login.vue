@@ -33,11 +33,16 @@
           <input
             id="email"
             v-model="email"
+            @input="validateEmailField"
             type="email"
             class="form-control"
+            :class="{ 'is-invalid': emailError }"
             placeholder="Enter your email"
             required
           />
+          <div class="invalid-feedback d-block" v-if="emailError">
+            {{ emailError }}
+          </div>
         </div>
 
         <div class="mb-3">
@@ -45,11 +50,16 @@
           <input
             id="password"
             v-model="password"
+            @input="validatePasswordField"
             type="password"
             class="form-control"
+            :class="{ 'is-invalid': passwordError }"
             placeholder="Enter your password"
             required
           />
+          <div class="invalid-feedback d-block" v-if="passwordError">
+            {{ passwordError }}
+          </div>
         </div>
 
         <button type="submit" class="btn btn-custom w-100 mb-3" :disabled="isLoading">
@@ -107,9 +117,39 @@ export default {
     const email = ref('')
     const password = ref('')
     const errorMessage = ref('')
+    const emailError = ref('')
+    const passwordError = ref('')
     const isLoading = ref(false)
 
+    const validateEmailField = () => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!email.value) {
+        emailError.value = 'Email is required.'
+      } else if (!emailRegex.test(email.value)) {
+        emailError.value = 'Please enter a valid email address.'
+      } else {
+        emailError.value = ''
+      }
+    }
+
+    const validatePasswordField = () => {
+      if (!password.value) {
+        passwordError.value = 'Password is required.'
+      } else if (password.value.length < 6) {
+        passwordError.value = 'Wait, passwords must be at least 6 characters.'
+      } else {
+        passwordError.value = ''
+      }
+    }
+
     const handleEmailLogin = async () => {
+      validateEmailField()
+      validatePasswordField()
+      
+      if (emailError.value || passwordError.value) {
+        return
+      }
+
       errorMessage.value = ''
       isLoading.value = true
 
@@ -141,7 +181,11 @@ export default {
       email,
       password,
       errorMessage,
+      emailError,
+      passwordError,
       isLoading,
+      validateEmailField,
+      validatePasswordField,
       handleEmailLogin,
       handleGoogleLogin
     }
