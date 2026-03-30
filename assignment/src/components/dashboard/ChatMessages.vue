@@ -8,8 +8,8 @@
     >
       <div class="message-bubble d-flex flex-column" :class="msg.role === 'user' ? 'align-items-end' : 'align-items-start'">
         <div
-          class="message-content px-3 py-2 rounded-3 border"
-          :class="msg.role === 'user' ? 'bg-primary-subtle border-primary-subtle text-dark' : 'bg-light text-dark'"
+          class="message-content px-3 py-2"
+          :class="msg.role === 'user' ? 'rounded-3 border border-primary-subtle bg-primary-subtle text-dark' : 'bg-light text-dark'"
         >
           <AnimatedMarkdown 
             :text="msg.text" 

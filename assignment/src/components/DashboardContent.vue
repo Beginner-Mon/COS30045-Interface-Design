@@ -27,6 +27,17 @@
 
     <aside class="motion-pane">
       <MotionGlbBackground :motion-url="latestMotionUrl" />
+      
+      <div 
+        v-if="isGeneratingMotion" 
+        class="position-absolute top-50 start-50 translate-middle d-flex flex-column align-items-center justify-content-center bg-white bg-opacity-75 rounded-4 p-4 shadow"
+        style="z-index: 10; min-width: 220px;"
+      >
+        <div class="spinner-border text-primary mb-3" role="status" style="width: 2.5rem; height: 2.5rem;">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <span class="text-primary fw-bold text-uppercase" style="letter-spacing: 1px;">Generating Model...</span>
+      </div>
     </aside>
   </main>
 </template>
@@ -51,6 +62,7 @@ const {
   messages,
   latestMotionUrl,
   isThinking,
+  isGeneratingMotion,
   hasAssistantResponse,
   sendMessage,
   clearMessages,
