@@ -17,8 +17,6 @@ export const useDashboardChat = () => {
     messages.value.some((message) => message.role === 'assistant')
   )
 
-  let audioPlayer = null
-
   const normalizeExercises = (exercises) => {
     if (!Array.isArray(exercises)) return []
 
@@ -31,26 +29,6 @@ export const useDashboardChat = () => {
         return ''
       })
       .filter(Boolean)
-  }
-
-  const playMessageAudio = async (url) => {
-    if (!url) return
-
-    if (!audioPlayer) {
-      audioPlayer = new Audio()
-    }
-
-    if (audioPlayer.src !== url) {
-      audioPlayer.src = url
-    } else {
-      audioPlayer.currentTime = 0
-    }
-
-    try {
-      await audioPlayer.play()
-    } catch (error) {
-      console.warn('Failed to play TTS audio:', error)
-    }
   }
 
   const pollTask = async (taskId, assistantMessageIndex) => {
@@ -80,7 +58,6 @@ export const useDashboardChat = () => {
         
         if (audioUrl && !messages.value[assistantMessageIndex].audioUrl) {
           messages.value[assistantMessageIndex].audioUrl = audioUrl
-          playMessageAudio(audioUrl)
         }
         
         if (motionFileUrl) {
@@ -129,7 +106,8 @@ export const useDashboardChat = () => {
       role: 'assistant',
       text: '',
       audioUrl: '',
-      exercises: []
+      exercises: [],
+      animated: true
     })
     const assistantIndex = messages.value.length - 1
 
@@ -166,7 +144,6 @@ export const useDashboardChat = () => {
         const audioUrl = data.tts?.audio_url || result.tts?.audio_url || result.metadata?.tts?.audio_url || ''
         if (audioUrl) {
           messages.value[assistantIndex].audioUrl = audioUrl
-          playMessageAudio(audioUrl)
         }
         
         const motionFileUrl = data.motion?.motion_file_url || data.motion_file_url || result.motion_file_url || result.motion?.motion_file_url || result.motion_job?.motion_file_url || ''
@@ -209,7 +186,8 @@ export const useDashboardChat = () => {
           role: m.role,
           text: m.content || m.text || '',
           audioUrl: m.audioUrl || '',
-          exercises: normalizeExercises(m.exercises)
+          exercises: normalizeExercises(m.exercises),
+          animated: false
         }))
       }
       currentSessionId.value = sessionId
@@ -225,18 +203,10 @@ export const useDashboardChat = () => {
     isGeneratingMotion.value = false
     latestMotionUrl.value = ''
     currentSessionId.value = null
-
-    if (audioPlayer) {
-      audioPlayer.pause()
-      audioPlayer.currentTime = 0
-    }
   }
 
   onBeforeUnmount(() => {
-    if (audioPlayer) {
-      audioPlayer.pause()
-      audioPlayer.src = ''
-    }
+    // Component unmount cleanup if needed
   })
 
   return {
@@ -249,7 +219,6 @@ export const useDashboardChat = () => {
     currentSessionId,
     sendMessage,
     loadSession,
-    clearMessages,
-    playMessageAudio
+    clearMessages
   }
 }

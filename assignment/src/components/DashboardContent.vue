@@ -15,7 +15,6 @@
         <ChatMessages
           v-if="hasAssistantResponse"
           :messages="messages"
-          @play-audio="playMessageAudio"
         />
 
         <ChatInputBar
@@ -55,7 +54,6 @@ const {
   hasAssistantResponse,
   sendMessage,
   clearMessages,
-  playMessageAudio,
   loadSession
 } = useDashboardChat()
 

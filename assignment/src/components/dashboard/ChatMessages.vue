@@ -11,7 +11,11 @@
           class="message-content px-3 py-2 rounded-3 border"
           :class="msg.role === 'user' ? 'bg-primary-subtle border-primary-subtle text-dark' : 'bg-light text-dark'"
         >
-          {{ msg.text }}
+          <AnimatedMarkdown 
+            :text="msg.text" 
+            :is-assistant="msg.role === 'assistant'" 
+            :animated="msg.animated" 
+          />
         </div>
 
         <div v-if="msg.role === 'assistant' && msg.exercises?.length" class="exercise-list">
@@ -24,21 +28,20 @@
           </div>
         </div>
 
-        <button
+        <MiniAudioPlayer 
           v-if="msg.role === 'assistant' && msg.audioUrl"
-          type="button"
-          class="audio-replay-btn btn btn-sm btn-link text-secondary p-0 mt-1 text-start"
-          title="Play reply audio"
-          @click="emit('play-audio', msg.audioUrl)"
-        >
-          <i class="bi bi-volume-up-fill"></i>
-        </button>
+          :src="msg.audioUrl" 
+          :autoplay="msg.animated"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import AnimatedMarkdown from './AnimatedMarkdown.vue'
+import MiniAudioPlayer from './MiniAudioPlayer.vue'
+
 defineProps({
   messages: {
     type: Array,
@@ -75,10 +78,6 @@ const emit = defineEmits(['play-audio'])
 .exercise-item {
   font-size: 0.78rem;
   font-weight: 500;
-}
-
-.audio-replay-btn {
-  pointer-events: auto;
 }
 
 .messages-container::-webkit-scrollbar {
