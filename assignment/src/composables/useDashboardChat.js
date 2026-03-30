@@ -67,8 +67,11 @@ export const useDashboardChat = () => {
         const result = statusData.result || {}
         const textAnswer = statusData.text_answer || result.text_answer || ''
         
-        const motionFileUrl = statusData.motion_file_url || result.motion_file_url || result.motion?.motion_file_url || result.motion_job?.motion_file_url || ''
+        const motionFileUrl = statusData.motion?.motion_file_url || statusData.motion_file_url || result.motion_file_url || result.motion?.motion_file_url || result.motion_job?.motion_file_url || ''
         const audioUrl = statusData.tts?.audio_url || result.tts?.audio_url || result.metadata?.tts?.audio_url || ''
+        
+        console.log('[DEBUG useDashboardChat] pollTask tick. data:', statusData)
+        console.log('[DEBUG useDashboardChat] pollTask extracted motionUrl:', motionFileUrl)
         
         if (textAnswer && !messages.value[assistantMessageIndex].text) {
           messages.value[assistantMessageIndex].text = textAnswer
@@ -154,6 +157,8 @@ export const useDashboardChat = () => {
       const textAnswer = data.text_answer || result.text_answer || ''
       const isTerminal = data.status === 'completed' || data.status === 'failed'
 
+      console.log('[DEBUG useDashboardChat] fetchOrchestratorAnswer initial data:', data)
+
       if (textAnswer) {
         messages.value[assistantIndex].text = textAnswer
         messages.value[assistantIndex].exercises = normalizeExercises(result.exercises || data.exercises)
@@ -164,7 +169,9 @@ export const useDashboardChat = () => {
           playMessageAudio(audioUrl)
         }
         
-        const motionFileUrl = data.motion_file_url || result.motion_file_url || result.motion?.motion_file_url || result.motion_job?.motion_file_url || ''
+        const motionFileUrl = data.motion?.motion_file_url || data.motion_file_url || result.motion_file_url || result.motion?.motion_file_url || result.motion_job?.motion_file_url || ''
+        console.log('[DEBUG useDashboardChat] fetchOrchestratorAnswer motionFileUrl:', motionFileUrl)
+        
         if (motionFileUrl) {
           latestMotionUrl.value = motionFileUrl
         }

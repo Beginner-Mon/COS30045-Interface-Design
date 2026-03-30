@@ -372,6 +372,8 @@ const setupScene = () => {
 }
 
 const loadGlbMotion = async (url) => {
+  console.log('[DEBUG MotionGlbBackground] loadGlbMotion called with URL:', url)
+
   if (!url) {
     clearMotion()
     return
@@ -460,6 +462,7 @@ const animate = (timestamp) => {
 }
 
 onMounted(async () => {
+  console.log('[DEBUG MotionGlbBackground] onMounted, initial motionUrl is:', props.motionUrl)
   try {
     setupScene()
     animate()
@@ -472,6 +475,7 @@ onMounted(async () => {
 })
 
 watch(() => props.motionUrl, async (newUrl) => {
+  console.log('[DEBUG MotionGlbBackground] watch motionUrl changed to:', newUrl)
   try {
     await loadGlbMotion(newUrl)
   } catch (error) {
