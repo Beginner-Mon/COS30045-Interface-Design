@@ -4,5 +4,12 @@
  */
 
 export { fetchTopHeadlines } from './newsService'
-export { fetchOrchestratorAnswer } from './orchestratorService'
+export { 
+  fetchOrchestratorAnswer, 
+  createSession, 
+  getSessions, 
+  getSession, 
+  deleteSession, 
+  getAnswerStatus 
+} from './orchestratorService'
 export { default as newsApiConfig } from './config'

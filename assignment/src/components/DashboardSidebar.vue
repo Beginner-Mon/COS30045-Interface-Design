@@ -27,16 +27,27 @@
         <i class="bi bi-plus-lg flex-shrink-0"></i>
       </div>
 
-      <!-- Chat History (disabled for now)
+      <!-- Chat History -->
       <div
         v-for="(chat, index) in chatHistory"
         :key="index"
-        class="d-flex align-items-center justify-content-between gap-2 px-4 py-3 cursor-pointer text-muted chat-item-hover"
+        class="d-flex align-items-center justify-content-between gap-2 px-4 py-3 cursor-pointer text-muted chat-item-hover border-bottom"
+        role="button"
+        @click="emit('load-session', chat.session_id || chat.id)"
       >
-        <span v-if="!sidebarCollapsed" class="text-truncate">{{ chat.title }}</span>
-        <i class="bi bi-chat-left flex-shrink-0"></i>
+        <div class="d-flex align-items-center gap-2 overflow-hidden w-100">
+          <i class="bi bi-chat-left flex-shrink-0"></i>
+          <span v-if="!sidebarCollapsed" class="text-truncate flex-grow-1">{{ chat.title || 'Conversation' }}</span>
+        </div>
+        <button 
+          v-if="!sidebarCollapsed" 
+          class="btn btn-link text-danger p-0" 
+          @click.stop="handleDeleteSession(chat.session_id || chat.id)"
+          title="Delete Chat"
+        >
+          <i class="bi bi-trash"></i>
+        </button>
       </div>
-      -->
     </div>
 
     <SidebarUserSection
@@ -66,7 +77,7 @@ defineProps({
   }
 })
 
-const emit = defineEmits(['new-chat'])
+const emit = defineEmits(['new-chat', 'load-session'])
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -76,6 +87,9 @@ const {
   sidebarCollapsed,
   showLogout,
   userInitials,
+  chatHistory,
+  fetchSessions,
+  handleDeleteSession,
   logoutMenuPosition,
   toggleLogoutMenu,
   toggleSidebarCollapsed,

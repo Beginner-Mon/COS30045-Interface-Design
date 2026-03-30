@@ -55,11 +55,13 @@ const {
   hasAssistantResponse,
   sendMessage,
   clearMessages,
-  playMessageAudio
+  playMessageAudio,
+  loadSession
 } = useDashboardChat()
 
 defineExpose({
-  clearMessages
+  clearMessages,
+  loadSession
 })
 </script>
 

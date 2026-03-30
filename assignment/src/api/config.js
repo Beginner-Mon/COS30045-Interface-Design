@@ -20,6 +20,8 @@ export const orchestratorApiConfig = {
     baseURL: ORCHESTRATOR_BASE_URL,
     endpoints: {
         answer: '/answer',
+        answerStatus: '/answer/status',
+        sessions: '/sessions',
         health: '/health',
         info: '/info'
     }

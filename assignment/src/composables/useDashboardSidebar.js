@@ -1,10 +1,15 @@
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, onMounted } from 'vue'
+import { getSessions, deleteSession } from '@/api'
 
 export const useDashboardSidebar = ({ userStore, router }) => {
   const sidebarCollapsed = ref(false)
   const showLogout = ref(false)
   const logoutMenuPos = ref({ left: 0, top: 0 })
   const avatarRef = ref(null)
+  
+  const chatHistory = ref([])
+
+  const userId = computed(() => userStore.user?.uid || 'default')
 
   const userInitials = computed(() => {
     const name = userStore.user?.displayName || 'User'
@@ -14,6 +19,25 @@ export const useDashboardSidebar = ({ userStore, router }) => {
       .join('')
       .toUpperCase()
   })
+
+  const fetchSessions = async () => {
+    try {
+      const data = await getSessions(userId.value)
+      // data might be array or { sessions: [] } depending on backend
+      chatHistory.value = Array.isArray(data) ? data : data.sessions || []
+    } catch (error) {
+      console.error('Failed to load chat history:', error)
+    }
+  }
+
+  const handleDeleteSession = async (sessionId) => {
+    try {
+      await deleteSession(userId.value, sessionId)
+      await fetchSessions()
+    } catch (error) {
+      console.error('Failed to delete session:', error)
+    }
+  }
 
   const updateLogoutMenuPosition = () => {
     const avatar = avatarRef.value
@@ -53,11 +77,19 @@ export const useDashboardSidebar = ({ userStore, router }) => {
     setTimeout(updateLogoutMenuPosition, 100)
   })
 
+  onMounted(() => {
+    fetchSessions()
+  })
+
+  // Expose fetchSessions manually if needed after a new chat is created
   return {
     avatarRef,
     sidebarCollapsed,
     showLogout,
     userInitials,
+    chatHistory,
+    fetchSessions,
+    handleDeleteSession,
     logoutMenuPosition: computed(() => logoutMenuPos.value),
     toggleLogoutMenu,
     toggleSidebarCollapsed,

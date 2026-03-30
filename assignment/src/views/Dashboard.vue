@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex position-relative vh-100 overflow-hidden bg-light">
-    <DashboardSidebar v-if="!isMobile" @new-chat="handleNewChat" />
+    <DashboardSidebar v-if="!isMobile" @new-chat="handleNewChat" @load-session="handleLoadSession" />
     <DashboardContent
       ref="dashboardContent"
       :show-mobile-menu="isMobile"
@@ -14,7 +14,7 @@
       @click="closeMobileSidebar"
     >
       <div class="position-absolute top-0 start-0 h-100" @click.stop>
-        <DashboardSidebar :mobile-drawer="true" @new-chat="handleNewChat" />
+        <DashboardSidebar :mobile-drawer="true" @new-chat="handleNewChat" @load-session="handleLoadSession" />
       </div>
     </div>
   </div>
@@ -40,6 +40,11 @@ if (!userStore.isAuthenticated) {
 
 const handleNewChat = () => {
   dashboardContent.value?.clearMessages()
+  sidebarOpen.value = false
+}
+
+const handleLoadSession = (sessionId) => {
+  dashboardContent.value?.loadSession(sessionId)
   sidebarOpen.value = false
 }
 
