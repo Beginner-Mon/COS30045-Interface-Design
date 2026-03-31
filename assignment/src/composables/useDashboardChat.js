@@ -9,6 +9,7 @@ export const useDashboardChat = () => {
   const isThinking = ref(false)
   const isGeneratingMotion = ref(false)
   const currentSessionId = ref(null)
+  const votes = ref({})  // { messageIndex: 'up' | 'down' | null }
 
   const userStore = useUserStore()
   const userId = computed(() => userStore.user?.uid || 'default')
@@ -16,6 +17,30 @@ export const useDashboardChat = () => {
   const hasAssistantResponse = computed(() =>
     messages.value.some((message) => message.role === 'assistant')
   )
+
+  // ── Vote helpers ──────────────────────────────────────────────────
+  const votesStorageKey = () => `chat-votes-${currentSessionId.value || 'unsaved'}`
+
+  const saveVotes = () => {
+    try {
+      localStorage.setItem(votesStorageKey(), JSON.stringify(votes.value))
+    } catch { /* quota exceeded – silently ignore */ }
+  }
+
+  const loadVotes = () => {
+    try {
+      const raw = localStorage.getItem(votesStorageKey())
+      votes.value = raw ? JSON.parse(raw) : {}
+    } catch {
+      votes.value = {}
+    }
+  }
+
+  const setVote = (index, vote) => {
+    // Toggle: same vote again → clear it
+    votes.value[index] = votes.value[index] === vote ? null : vote
+    saveVotes()
+  }
 
   const normalizeExercises = (exercises) => {
     if (!Array.isArray(exercises)) return []
@@ -191,6 +216,7 @@ export const useDashboardChat = () => {
         }))
       }
       currentSessionId.value = sessionId
+      loadVotes()
     } catch (error) {
       console.error('Failed to load session:', error)
     }
@@ -203,6 +229,7 @@ export const useDashboardChat = () => {
     isGeneratingMotion.value = false
     latestMotionUrl.value = ''
     currentSessionId.value = null
+    votes.value = {}
   }
 
   onBeforeUnmount(() => {
@@ -217,6 +244,8 @@ export const useDashboardChat = () => {
     isGeneratingMotion,
     hasAssistantResponse,
     currentSessionId,
+    votes,
+    setVote,
     sendMessage,
     loadSession,
     clearMessages

@@ -82,81 +82,33 @@ const createAxisLabelSprite = (label, color) => {
   return sprite
 }
 
-const findPelvisNode = (root) => {
-  const pelvisKeywords = ['pelvis', 'hips', 'hip', 'root', 'mixamorighips']
-
-  let matchedNode = null
-  root.traverse((node) => {
-    if (matchedNode || !node?.name) return
-    const name = node.name.toLowerCase()
-    if (pelvisKeywords.some((keyword) => name.includes(keyword))) {
-      matchedNode = node
-    }
-  })
-
-  return matchedNode
-}
-
-const anchorToPelvis = (root) => {
-  const pelvisNode = findPelvisNode(root)
-  if (!pelvisNode) {
-    console.warn('Pelvis node not found in GLB. Keeping original root anchor.')
-    return
-  }
-
-  root.updateWorldMatrix(true, true)
-  const pelvisWorldPosition = new THREE.Vector3()
-  pelvisNode.getWorldPosition(pelvisWorldPosition)
-  const pelvisLocalPosition = root.worldToLocal(pelvisWorldPosition)
-  root.position.sub(pelvisLocalPosition)
-}
-
-const applyAutoUpright = (root) => {
-  root.rotation.set(0, 0, 0)
-  root.updateWorldMatrix(true, true)
-
-  tempBox.setFromObject(root)
-  tempBox.getSize(tempSize)
-
-  const widthX = Math.abs(tempSize.x)
-  const depthY = Math.abs(tempSize.y)
-  const heightZ = Math.abs(tempSize.z)
-
-  if (heightZ >= depthY && heightZ >= widthX) {
-    return
-  }
-
-  if (depthY >= widthX && depthY >= heightZ) {
-    root.rotation.x = -Math.PI / 2
-    return
-  }
-
-  root.rotation.y = Math.PI / 2
-}
-
-const applyFacingTowardViewer = (root) => {
-  root.rotateOnWorldAxis(WORLD_Z_AXIS, Math.PI)
-}
+// Removed applyAutoUpright and related positioning logic
 
 const fitCameraToObject = (object) => {
-  if (!camera || !controls || !object) return
+  if (!camera || !controls || !object || !containerRef.value) return
+
+  const el = containerRef.value
+  const viewportAspect = el.clientWidth / Math.max(el.clientHeight, 1)
 
   tempBox.setFromObject(object)
   if (tempBox.isEmpty()) return
 
-  tempBox.getCenter(tempCenter)
   tempBox.getSize(tempSize)
+  tempBox.getCenter(tempCenter)
 
-  const maxSize = Math.max(tempSize.x, tempSize.y, tempSize.z)
-  if (!Number.isFinite(maxSize) || maxSize <= 0) return
+  const maxDim = Math.max(tempSize.x, tempSize.y, tempSize.z, 0.1)
+  const fov = camera.fov * (Math.PI / 180)
+  const fitHeightDistance = maxDim / (2 * Math.tan(fov / 2))
+  const fitWidthDistance = fitHeightDistance / Math.max(viewportAspect, 0.5)
+  const distance = 1.25 * Math.max(fitHeightDistance, fitWidthDistance)
 
-  const fitDistance = (maxSize * 0.68) / Math.tan((Math.PI * camera.fov) / 360)
-  const distance = Math.max(1.2, fitDistance)
+  camera.position.set(tempCenter.x, tempCenter.y + maxDim * 0.25, tempCenter.z + distance)
+  camera.near = Math.max(distance / 100, 0.01)
+  camera.far = Math.max(distance * 20, 100)
+  camera.up.set(0, 1, 0)
+  camera.updateProjectionMatrix()
 
-  controls.target.set(tempCenter.x, tempCenter.y, tempCenter.z)
-  camera.position.set(tempCenter.x + distance, tempCenter.y - distance, tempCenter.z + (distance * 0.7))
-  camera.up.set(0, 0, 1)
-  camera.lookAt(controls.target)
+  controls.target.copy(tempCenter)
   controls.update()
 }
 
@@ -294,9 +246,9 @@ const setupScene = () => {
   scene = new THREE.Scene()
   scene.background = new THREE.Color(0xf3f7ff)
 
-  camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000)
-  camera.position.set(2.6, -2.4, 1.6)
-  camera.up.set(0, 0, 1)
+  camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.01, 100)
+  camera.position.set(0, 1.2, 3.2)
+  camera.up.set(0, 1, 0)
 
   renderer = new THREE.WebGLRenderer({ antialias: true })
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
@@ -304,36 +256,43 @@ const setupScene = () => {
   container.appendChild(renderer.domElement)
 
   controls = new OrbitControls(camera, renderer.domElement)
-  controls.target.set(0, 0, 0.9)
+  controls.target.set(0, 0.9, 0)
   controls.enableDamping = true
+  controls.dampingFactor = 0.08
+  controls.minDistance = 1
+  controls.maxDistance = 8
   controls.update()
 
   const ambientLight = new THREE.AmbientLight(0xffffff, 1.05)
   const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0xdbe8ff, 0.8)
 
   keyLight = new THREE.DirectionalLight(0xffffff, 1.35)
+  keyLight.position.set(3, 6, 4)
   scene.add(keyLight)
-  scene.add(keyLight.target)
 
   fillBackLight = new THREE.DirectionalLight(0xffffff, 0.45)
-  fillBackLight.position.set(0, 3.2, 1.6)
+  fillBackLight.position.set(-4, 2, -3)
 
   topLight = new THREE.DirectionalLight(0xffffff, 0.55)
-  topLight.position.set(0, 0, 4)
+  topLight.position.set(0, 4, 0)
 
   scene.add(ambientLight, hemisphereLight, fillBackLight, topLight)
 
   axesHelper = new THREE.AxesHelper(1.0)
-  axesHelper.rotation.x = Math.PI / 2
+  // No X-rotation necessary for Y-up
   scene.add(axesHelper)
+  
+  const gridHelper = new THREE.GridHelper(4, 16, 0x333344, 0x222233)
+  gridHelper.position.y = -0.01
+  scene.add(gridHelper)
 
   const xLabel = createAxisLabelSprite('X', '#d64545')
   const yLabel = createAxisLabelSprite('Y', '#2d9b41')
   const zLabel = createAxisLabelSprite('Z', '#275ecb')
   if (xLabel && yLabel && zLabel) {
     xLabel.position.set(1.12, 0, 0)
-    yLabel.position.set(0, 0, 1.12)
-    zLabel.position.set(0, -1.12, 0)
+    yLabel.position.set(0, 1.12, 0)
+    zLabel.position.set(0, 0, 1.12)
     axesLabels.push(xLabel, yLabel, zLabel)
     scene.add(xLabel, yLabel, zLabel)
   }
@@ -396,11 +355,25 @@ const loadGlbMotion = async (url) => {
     throw new Error('GLB scene is empty.')
   }
 
+  // Auto-center & scale
+  tempBox.setFromObject(glbRoot)
+  tempBox.getSize(tempSize)
+  const maxDim = Math.max(tempSize.x, tempSize.y, tempSize.z, 0.1)
+  const scale = 2.0 / maxDim
+  glbRoot.scale.setScalar(scale)
+
+  // SMPL-X is Z-up; rotate to Y-up so the figure stands upright
+  glbRoot.rotation.x = -Math.PI / 2
+
+  // Recalculate box after rotation + scale for correct floor placement
+  tempBox.setFromObject(glbRoot)
+  tempBox.getCenter(tempCenter)
+  glbRoot.position.x = -tempCenter.x
+  glbRoot.position.z = -tempCenter.z
+  glbRoot.position.y = -tempBox.min.y + 0.01
+
   motionGroup = new THREE.Group()
   motionGroup.add(glbRoot)
-  applyAutoUpright(glbRoot)
-  applyFacingTowardViewer(glbRoot)
-  anchorToPelvis(glbRoot)
   scene.add(motionGroup)
   fitCameraToObject(motionGroup)
 
@@ -440,12 +413,6 @@ const loadGlbMotion = async (url) => {
 
 const animate = (timestamp) => {
   frameId = requestAnimationFrame(animate)
-
-  if (keyLight && controls && camera) {
-    keyLight.position.copy(camera.position)
-    keyLight.target.position.copy(controls.target)
-    keyLight.target.updateMatrixWorld()
-  }
 
   timer.update(timestamp)
   const delta = timer.getDelta()

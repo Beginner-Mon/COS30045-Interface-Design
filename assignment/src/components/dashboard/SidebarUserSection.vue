@@ -1,13 +1,26 @@
 <template>
   <div class="p-3 user-section">
+    <!-- Avatar row with relative positioning for the logout popup -->
     <div class="d-flex align-items-center justify-content-between gap-2 position-relative">
-      <div
-        :ref="avatarRef"
-        class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 user-avatar text-white fw-bold bg-primary bg-gradient"
-        :title="userEmail"
-        @click="emit('toggle-logout')"
-      >
-        {{ userInitials }}
+      <div class="avatar-wrapper position-relative">
+        <div
+          :ref="avatarRef"
+          class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 user-avatar text-white fw-bold bg-primary bg-gradient"
+          :title="userEmail"
+          @click="emit('toggle-logout')"
+        >
+          {{ userInitials }}
+        </div>
+
+        <!-- Logout menu positioned directly above the avatar -->
+        <transition name="logout-fade">
+          <div v-if="showLogout" class="logout-menu">
+            <button class="btn btn-sm w-100 text-dark" @click="emit('logout')">
+              <i class="bi bi-box-arrow-right"></i>
+              Log Out
+            </button>
+          </div>
+        </transition>
       </div>
 
       <button
@@ -29,17 +42,6 @@
       <i class="bi bi-chevron-double-right"></i>
     </button>
   </div>
-
-  <Teleport to="body">
-    <transition name="logout-fade">
-      <div v-if="showLogout" class="logout-menu-teleport" :style="{ left: logoutMenuPosition.left, top: logoutMenuPosition.top }">
-        <button class="btn btn-sm w-100 text-dark" @click="emit('logout')">
-          <i class="bi bi-box-arrow-right"></i>
-          Log Out
-        </button>
-      </div>
-    </transition>
-  </Teleport>
 </template>
 
 <script setup>
@@ -80,8 +82,14 @@ const emit = defineEmits(['toggle-logout', 'toggle-sidebar', 'logout'])
   cursor: pointer;
 }
 
-.logout-menu-teleport {
+.avatar-wrapper {
+  position: relative;
+}
+
+.logout-menu {
   position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
   width: 120px;
   min-width: 120px;
   z-index: 9999;
@@ -93,13 +101,13 @@ const emit = defineEmits(['toggle-logout', 'toggle-sidebar', 'logout'])
 
 .logout-fade-enter-active,
 .logout-fade-leave-active {
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .logout-fade-enter-from,
 .logout-fade-leave-to {
   opacity: 0;
-  transform: translateY(10px);
+  transform: translateY(6px);
 }
 
 .logout-fade-enter-to,

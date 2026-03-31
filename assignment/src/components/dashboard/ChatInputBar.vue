@@ -1,6 +1,7 @@
 <template>
   <div class="chat-input-bar input-group border rounded-3 bg-white shadow-sm">
     <input
+      v-autofocus
       :value="modelValue"
       type="text"
       class="chat-input-field form-control border-0 shadow-none"

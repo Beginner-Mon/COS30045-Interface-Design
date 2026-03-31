@@ -18,6 +18,18 @@ app.use(pinia)
 app.use(router)
 app.use(MotionPlugin)
 
+// Custom directive: v-autofocus
+// Automatically focuses an input element when it is mounted into the DOM
+app.directive('autofocus', {
+  mounted(el) {
+    // If the element itself is focusable, focus it; otherwise find the first input inside
+    const target = el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' ? el : el.querySelector('input, textarea')
+    if (target) {
+      target.focus()
+    }
+  }
+})
+
 // Initialize authentication
 const userStore = useUserStore()
 userStore.initializeAuth(router)

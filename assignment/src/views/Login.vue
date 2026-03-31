@@ -32,6 +32,7 @@
           <label for="email" class="form-label">Email Address</label>
           <input
             id="email"
+            v-autofocus
             v-model="email"
             @input="validateEmailField"
             type="email"

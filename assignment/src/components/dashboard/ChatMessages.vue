@@ -33,6 +33,26 @@
           :src="msg.audioUrl" 
           :autoplay="msg.animated"
         />
+
+        <!-- Thumbs up / down vote buttons -->
+        <div v-if="msg.role === 'assistant' && msg.text" class="vote-row d-flex gap-2 mt-1">
+          <button
+            class="vote-btn"
+            :class="{ 'voted': votes[index] === 'up' }"
+            title="Helpful"
+            @click="emit('vote', { index, vote: 'up' })"
+          >
+            <i :class="votes[index] === 'up' ? 'bi bi-hand-thumbs-up-fill' : 'bi bi-hand-thumbs-up'"></i>
+          </button>
+          <button
+            class="vote-btn"
+            :class="{ 'voted': votes[index] === 'down' }"
+            title="Not helpful"
+            @click="emit('vote', { index, vote: 'down' })"
+          >
+            <i :class="votes[index] === 'down' ? 'bi bi-hand-thumbs-down-fill' : 'bi bi-hand-thumbs-down'"></i>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -46,10 +66,14 @@ defineProps({
   messages: {
     type: Array,
     default: () => []
+  },
+  votes: {
+    type: Object,
+    default: () => ({})
   }
 })
 
-const emit = defineEmits(['play-audio'])
+const emit = defineEmits(['vote'])
 </script>
 
 <style scoped>
@@ -80,6 +104,30 @@ const emit = defineEmits(['play-audio'])
   font-weight: 500;
 }
 
+.vote-row {
+  padding-left: 0.15rem;
+}
+
+.vote-btn {
+  background: none;
+  border: none;
+  padding: 0.15rem 0.3rem;
+  font-size: 0.85rem;
+  color: #999;
+  cursor: pointer;
+  border-radius: 0.3rem;
+  transition: color 0.15s ease;
+  line-height: 1;
+}
+
+.vote-btn:hover {
+  color: #000;
+}
+
+.vote-btn.voted {
+  color: #000;
+}
+
 .messages-container::-webkit-scrollbar {
   width: 6px;
 }
@@ -97,3 +145,4 @@ const emit = defineEmits(['play-audio'])
   background: #999;
 }
 </style>
+

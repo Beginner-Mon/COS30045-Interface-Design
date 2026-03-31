@@ -15,6 +15,8 @@
         <ChatMessages
           v-if="hasAssistantResponse"
           :messages="messages"
+          :votes="votes"
+          @vote="handleVote"
         />
 
         <ChatInputBar
@@ -64,10 +66,16 @@ const {
   isThinking,
   isGeneratingMotion,
   hasAssistantResponse,
+  votes,
+  setVote,
   sendMessage,
   clearMessages,
   loadSession
 } = useDashboardChat()
+
+const handleVote = ({ index, vote }) => {
+  setVote(index, vote)
+}
 
 defineExpose({
   clearMessages,
