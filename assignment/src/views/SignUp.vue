@@ -2,7 +2,7 @@
   <div class="signup-container pt-5">
     <!-- Background Image -->
     <img
-      src="@/assets/temp.jpg"
+      src="@/assets/bg.jpg"
       alt="SignUp background"
       class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover"
       style="object-position: center"

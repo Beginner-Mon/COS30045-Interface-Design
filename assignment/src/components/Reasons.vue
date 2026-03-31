@@ -33,7 +33,7 @@ const reasons = [
       <!-- LEFT IMAGE -->
       <div class="left-div position-sticky d-flex align-items-end overflow-hidden col-lg-6 p-5">
         <img
-          src="@/assets/temp.jpg"
+          src="@/assets/bg.jpg"
           alt="Why choose us"
           loading="lazy"
           class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover"
