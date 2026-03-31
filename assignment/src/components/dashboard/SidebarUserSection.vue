@@ -1,11 +1,12 @@
 <template>
-  <div class="p-3 user-section">
+  <div class="p-3">
     <!-- Avatar row with relative positioning for the logout popup -->
     <div class="d-flex align-items-center justify-content-between gap-2 position-relative">
-      <div class="avatar-wrapper position-relative">
+      <div class="position-relative">
         <div
           :ref="avatarRef"
-          class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 user-avatar text-white fw-bold bg-primary bg-gradient"
+          class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 text-white fw-bold bg-primary bg-gradient cursor-pointer"
+          style="width: 40px; height: 40px"
           :title="userEmail"
           @click="emit('toggle-logout')"
         >
@@ -76,16 +77,6 @@ const emit = defineEmits(['toggle-logout', 'toggle-sidebar', 'logout'])
 </script>
 
 <style scoped>
-.user-avatar {
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-}
-
-.avatar-wrapper {
-  position: relative;
-}
-
 .logout-menu {
   position: absolute;
   bottom: calc(100% + 8px);

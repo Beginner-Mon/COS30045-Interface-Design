@@ -5,6 +5,6 @@
 </template>
 
 <script setup>
-import AboutPage from '@/components/AboutPage.vue'
-import NameImageDisplay from '@/components/NameImageDisplay.vue'
+import AboutPage from '@/components/about/AboutPage.vue'
+import NameImageDisplay from '@/components/about/NameImageDisplay.vue'
 </script>

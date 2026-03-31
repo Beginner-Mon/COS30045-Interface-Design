@@ -113,7 +113,6 @@ onBeforeUnmount(() => {
   background-color: rgba(0, 0, 0, 0.05);
   padding: 0.1rem 0.3rem;
   border-radius: 0.2rem;
-  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   font-size: 0.9em;
   color: #d63384;
 }
@@ -132,7 +131,8 @@ onBeforeUnmount(() => {
   color: inherit;
 }
 
-.animated-markdown :deep(ul), .animated-markdown :deep(ol) {
+.animated-markdown :deep(ul),
+.animated-markdown :deep(ol) {
   padding-left: 1.5rem;
   margin-bottom: 0.5rem;
 }

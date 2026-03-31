@@ -24,8 +24,8 @@
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/userStore'
-import DashboardSidebar from '@/components/DashboardSidebar.vue'
-import DashboardContent from '@/components/DashboardContent.vue'
+import DashboardSidebar from '@/components/dashboard/DashboardSidebar.vue'
+import DashboardContent from '@/components/dashboard/DashboardContent.vue'
 
 const router = useRouter()
 const userStore = useUserStore()

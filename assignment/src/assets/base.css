@@ -1,31 +1,13 @@
 /* =========================
-   Bootstrap Integration
+   Bootstrap Overrides
    ========================= */
 
-/* Override Bootstrap theme colors */
 :root {
   --bs-primary: #000000;
-  --bs-secondary: #6c757d;
-  --bs-success: #198754;
-  --bs-danger: #dc3545;
-  --bs-warning: #ffc107;
-  --bs-info: #0dcaf0;
-  --bs-light: #f8f9fa;
-  --bs-dark: #212529;
 }
 
 /* =========================
-   Base Typography
-   ========================= */
-
-body {
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
-}
-
-/* =========================
-   Links
+   Links (Bootstrap doesn't strip underlines globally)
    ========================= */
 
 a {
@@ -34,22 +16,127 @@ a {
 }
 
 /* =========================
-   Headings
-   ========================= */
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: 600;
-}
-
-/* =========================
-   Optional helpers (safe)
+   Utility (no Bootstrap equivalent)
    ========================= */
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+/* =========================
+   Shared Auth Styles (Login / SignUp glassmorphism)
+   ========================= */
+
+.auth-card {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  width: 100%;
+  animation: authSlideUp 0.5s ease;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes authSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-card .form-label {
+  color: white;
+  font-weight: 500;
+}
+
+.auth-card .form-control {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: white;
+}
+
+.auth-card .form-control::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.auth-card .form-control:focus {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: white;
+  box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.1);
+}
+
+.auth-btn {
+  border: 2px solid white;
+  color: white;
+  background-color: transparent;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.auth-btn:hover:not(:disabled) {
+  border-color: white;
+  color: #000;
+  background-color: white;
+}
+
+.auth-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.auth-divider span {
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.auth-card .alert-danger {
+  background: rgba(220, 53, 69, 0.1);
+  border-color: rgba(220, 53, 69, 0.3);
+  color: #ff8a8a;
+}
+
+.auth-card .btn-close {
+  filter: brightness(0) invert(1);
+}
+
+.auth-card .form-check-label {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.auth-card .form-check-input {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.auth-card .form-check-input:checked {
+  background-color: white;
+  border-color: white;
+}
+
+.auth-card small {
+  color: rgba(255, 255, 255, 0.7) !important;
 }

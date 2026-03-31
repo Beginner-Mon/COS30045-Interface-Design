@@ -19,7 +19,7 @@ const reasons = [
 </script>
 
 <template>
-  <section class="min-vh-100 py bg-light d-flex align-items-center">
+  <section class="min-vh-100 py-5 bg-light d-flex align-items-center" style="padding-top: 7rem !important; padding-bottom: 7rem !important">
     <div class="container-fluid px-4 px-md-5">
       <!-- Title only -->
       <div class="mb-5">
@@ -29,7 +29,8 @@ const reasons = [
       <div class="row g-3 justify-content-center">
         <div v-for="(item, index) in reasons" :key="index" class="col-12 col-md-6 col-lg-4">
           <div
-            class="position-relative child-div d-flex align-items-end overflow-hidden p-4 text-white"
+            class="position-relative d-flex align-items-end overflow-hidden p-4 text-white rounded"
+            style="min-height: 10rem"
           >
             <!-- Background image -->
             <img
@@ -54,18 +55,11 @@ const reasons = [
     </div>
   </section>
 </template>
-<style scoped>
-.py {
-  padding-top: 7rem;
-  padding-bottom: 7rem;
-}
-.child-div {
-  min-height: 10rem;
-}
 
+<style scoped>
 @media (min-width: 768px) {
-  .child-div {
-    min-height: 24rem;
+  .col-md-6 > div[class*="position-relative"] {
+    min-height: 24rem !important;
   }
 }
 </style>

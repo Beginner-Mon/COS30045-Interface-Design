@@ -1,5 +1,5 @@
 <template>
-  <div class="news-container">
+  <div class="bg-light min-vh-100">
     <section class="px-md-5 py-5">
       <!-- Loading State -->
       <div v-if="loading" class="text-center py-5">
@@ -14,7 +14,7 @@
       </div>
 
       <!-- Filters and Search -->
-      <div class="row mb-5 g-3 align-items-end filter-bar p-4 rounded bg-white shadow-sm mx-0">
+      <div class="row mb-5 g-3 align-items-end p-4 rounded bg-white shadow-sm mx-0">
         <div class="col-md-4">
           <label class="form-label text-muted small fw-bold text-uppercase">Search Keywords</label>
           <input type="text" v-model="filters.searchQuery" class="form-control" placeholder="Search title or content..." @keyup.enter="applyFilters" />
@@ -22,7 +22,7 @@
         <div class="col-md-3">
           <label class="form-label text-muted small fw-bold text-uppercase">Category</label>
           <select v-model="filters.category" class="form-control form-select" @change="applyFilters">
-            <option value="">All Tech & AI</option>
+            <option value="">All Tech &amp; AI</option>
             <option value="artificial intelligence">Artificial Intelligence</option>
             <option value="software">Software</option>
             <option value="hardware">Hardware</option>
@@ -44,7 +44,7 @@
 
       <!-- Featured News (First Article) -->
       <template v-if="articles.length > 0 && !loading">
-        <div class="featured-article mb-5 p-3 p-md-4">
+        <div class="bg-white rounded-3 shadow-sm mb-5 p-3 p-md-4">
           <div class="row align-items-center" style="min-height: 16rem">
             <!-- Image on Left -->
             <div class="col-md-5">
@@ -54,15 +54,15 @@
                 :alt="articles[0].title"
                 class="img-fluid rounded"
               />
-              <div v-else class="bg-secondary rounded" style="height: 200px; display: flex; align-items: center; justify-content: center;">
+              <div v-else class="bg-secondary rounded d-flex align-items-center justify-content-center" style="height: 200px">
                 <span class="text-white">No Image</span>
               </div>
             </div>
 
             <!-- Content on Right -->
             <div class="col-md-7 ps-md-4">
-              <h2 class="news-title mb-3">{{ articles[0].title }}</h2>
-              <p class="news-description mb-3">{{ articles[0].description }}</p>
+              <h2 class="fs-3 fw-semibold text-dark lh-sm mb-3">{{ articles[0].title }}</h2>
+              <p class="text-secondary lh-lg mb-3">{{ articles[0].description }}</p>
               <p class="text-muted small mb-2">
                 <strong>Source:</strong> {{ articles[0].source.name }}
               </p>
@@ -73,7 +73,7 @@
                 :href="articles[0].url"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="btn btn-custom btn-sm"
+                class="btn btn-dark btn-sm"
               >
                 Read Full Article
               </a>
@@ -82,11 +82,11 @@
         </div>
 
         <!-- Other Articles -->
-        <div class="other-articles">
-          <h3 class="mb-4">More News</h3>
+        <div class="mt-5">
+          <h3 class="fw-semibold text-dark border-bottom border-dark border-2 pb-2 mb-4">More News</h3>
           <div class="row">
             <div v-for="(article, index) in articles.slice(1)" :key="index" class="col-md-6 mb-4">
-              <div class="article-card h-100 p-2 p-md-3">
+              <div class="article-card bg-white rounded-3 border h-100 p-2 p-md-3">
                 <div class="row g-3 align-items-center">
                   <!-- Image on Left (Small) -->
                   <div class="col-md-5">
@@ -97,15 +97,15 @@
                       class="img-fluid rounded"
                       style="height: 120px; object-fit: cover; width: 100%"
                     />
-                    <div v-else class="bg-secondary rounded" style="height: 120px; display: flex; align-items: center; justify-content: center;">
+                    <div v-else class="bg-secondary rounded d-flex align-items-center justify-content-center" style="height: 120px">
                       <span class="text-white small">No Image</span>
                     </div>
                   </div>
 
                   <!-- Content on Right (Small) -->
                   <div class="col-md-7">
-                    <h5 class="article-title mb-2">{{ article.title }}</h5>
-                    <p class="article-description small mb-2">
+                    <h5 class="fs-6 fw-semibold text-dark lh-sm mb-2">{{ article.title }}</h5>
+                    <p class="text-secondary small mb-2">
                       {{ truncateText(article.description, 80) }}
                     </p>
                     <p class="text-muted small mb-2">
@@ -115,7 +115,7 @@
                       :href="article.url"
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="btn btn-custom btn-sm"
+                      class="btn btn-dark btn-sm"
                     >
                       Read More
                     </a>
@@ -133,7 +133,7 @@
       </div>
 
       <!-- Pagination -->
-      <nav v-if="articles.length > 0" class="d-flex justify-content-between align-items-center mt-5 pt-4 border-top">
+      <nav v-if="articles.length > 0" class="d-flex justify-content-between align-items-center mt-5 pt-4 border-top flex-wrap gap-3">
         <div class="text-muted small">
           <span v-if="totalResults > 0">
             Showing {{ (currentPage - 1) * pageSize + 1 }}-{{ Math.min(currentPage * pageSize, totalResults) }} of {{ totalResults }} articles
@@ -152,7 +152,7 @@
             </button>
           </li>
 
-          <!-- Page Numbers (show range around current page, hide on very small screens) -->
+          <!-- Page Numbers -->
           <li
             v-for="page in visiblePages"
             :key="page"
@@ -233,8 +233,6 @@ export default {
         error.value = null
         currentPage.value = page
 
-        // Fetch technology and AI news
-        // Sorted by publishedAt (latest first)
         const data = await fetchTopHeadlines({
           language: 'en',
           sortBy: 'publishedAt',
@@ -292,34 +290,7 @@ export default {
 </script>
 
 <style scoped>
-.news-container {
-  background-color: #f8f9fa;
-  min-height: 100vh;
-}
-
-.featured-article {
-  background-color: white;
-  border-radius: 0.5rem;
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-}
-
-.news-title {
-  font-size: 1.75rem;
-  font-weight: 600;
-  color: #212529;
-  line-height: 1.3;
-}
-
-.news-description {
-  font-size: 1rem;
-  color: #495057;
-  line-height: 1.6;
-}
-
 .article-card {
-  background-color: white;
-  border-radius: 0.5rem;
-  border: 1px solid #e9ecef;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
@@ -328,111 +299,13 @@ export default {
   transform: translateY(-2px);
 }
 
-.article-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #212529;
-  line-height: 1.4;
-}
-
-.article-description {
-  color: #6c757d;
-  line-height: 1.5;
-}
-
-.other-articles {
-  margin-top: 3rem;
-}
-
-.other-articles h3 {
-  font-weight: 600;
-  color: #212529;
-  border-bottom: 2px solid #000;
-  padding-bottom: 0.5rem;
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-}
-
-.pagination {
-  gap: 0.5rem;
-}
-
-.btn-custom {
-  border: 2px solid white;
-  color: white;
-  background-color: #000;
-  transition: all 0.2s ease;
-  font-weight: 500;
-}
-
-.btn-custom:hover:not(:disabled) {
-  border-color: #000;
-  color: #000;
-  background-color: white;
-}
-
-.btn-custom:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.page-item button {
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.page-item:not(.disabled) button:hover {
-  background-color: #000;
-  color: white;
-}
-
 .page-item.active .page-link {
   background-color: #000;
   border-color: #000;
 }
 
-.page-item.disabled button {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-
-@media (max-width: 992px) {
-  .news-title {
-    font-size: 1.5rem;
-  }
-
-  .row {
-    flex-direction: column;
-  }
-
-  nav {
-    flex-direction: column;
-    gap: 1.5rem;
-    align-items: center;
-  }
-
-  .pagination {
-    width: 100%;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.25rem;
-  }
-
-  .page-item {
-    margin: 0.25rem 0.125rem;
-  }
-
-  .page-link {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.875rem;
-  }
-
-  .btn-custom {
-    padding: 0.375rem 0.75rem;
-    font-size: 0.875rem;
-  }
+.page-item:not(.disabled) button:hover {
+  background-color: #000;
+  color: white;
 }
 </style>

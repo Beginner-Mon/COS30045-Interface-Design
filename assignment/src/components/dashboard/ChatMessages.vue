@@ -6,10 +6,11 @@
       class="d-flex"
       :class="msg.role === 'user' ? 'justify-content-end' : 'justify-content-start'"
     >
-      <div class="message-bubble d-flex flex-column" :class="msg.role === 'user' ? 'align-items-end' : 'align-items-start'">
+      <div class="d-flex flex-column mw-100" :class="msg.role === 'user' ? 'align-items-end' : 'align-items-start'">
         <div
-          class="message-content px-3 py-2"
+          class="px-3 py-2 overflow-wrap-break-word"
           :class="msg.role === 'user' ? 'rounded-3 border border-primary-subtle bg-primary-subtle text-dark' : 'bg-light text-dark'"
+          style="white-space: pre-wrap"
         >
           <AnimatedMarkdown 
             :text="msg.text" 
@@ -18,11 +19,12 @@
           />
         </div>
 
-        <div v-if="msg.role === 'assistant' && msg.exercises?.length" class="exercise-list">
+        <div v-if="msg.role === 'assistant' && msg.exercises?.length" class="mt-1 d-flex flex-wrap gap-1">
           <div
             v-for="(exercise, exerciseIndex) in msg.exercises"
             :key="exerciseIndex"
-            class="exercise-item badge rounded-pill text-bg-primary-subtle text-primary-emphasis"
+            class="badge rounded-pill text-bg-primary-subtle text-primary-emphasis"
+            style="font-size: 0.78rem; font-weight: 500"
           >
             {{ exercise }}
           </div>
@@ -35,7 +37,7 @@
         />
 
         <!-- Thumbs up / down vote buttons -->
-        <div v-if="msg.role === 'assistant' && msg.text" class="vote-row d-flex gap-2 mt-1">
+        <div v-if="msg.role === 'assistant' && msg.text" class="d-flex gap-2 mt-1 ps-1">
           <button
             class="vote-btn"
             :class="{ 'voted': votes[index] === 'up' }"
@@ -83,31 +85,6 @@ const emit = defineEmits(['vote'])
   overflow-y: auto;
 }
 
-.message-bubble {
-  max-width: 100%;
-}
-
-.message-content {
-  white-space: pre-wrap;
-  overflow-wrap: break-word;
-}
-
-.exercise-list {
-  margin-top: 0.4rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
-
-.exercise-item {
-  font-size: 0.78rem;
-  font-weight: 500;
-}
-
-.vote-row {
-  padding-left: 0.15rem;
-}
-
 .vote-btn {
   background: none;
   border: none;
@@ -120,10 +97,7 @@ const emit = defineEmits(['vote'])
   line-height: 1;
 }
 
-.vote-btn:hover {
-  color: #000;
-}
-
+.vote-btn:hover,
 .vote-btn.voted {
   color: #000;
 }
@@ -145,4 +119,3 @@ const emit = defineEmits(['vote'])
   background: #999;
 }
 </style>
-

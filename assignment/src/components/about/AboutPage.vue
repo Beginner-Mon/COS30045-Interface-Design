@@ -1,8 +1,8 @@
 <template>
   <!-- First Section -->
-  <section class="section-one min-vh-100 d-flex flex-column">
+  <section class="min-vh-100 d-flex flex-column">
     <div
-      class="hero position-relative d-flex p-5 align-items-center text-center text-white"
+      class="position-relative d-flex p-5 align-items-center text-center text-white"
       style="height: 60vh"
     >
       <image
@@ -15,8 +15,8 @@
       ></div>
       <h1 class="fw-bold position-relative" style="font-size: 3.5rem">About Page</h1>
     </div>
-    <div class="description d-flex" style="height: 35vh">
-      <p class="md-p-5 p-4">
+    <div class="d-flex" style="height: 35vh">
+      <p class="p-4 p-md-5 fs-5 fs-md-4">
         This web application explores the integration of chatbots in physical therapy. It provides
         tools and resources for therapists and patients to utilize AI-driven conversational agents
         to enhance rehabilitation processes, track progress, and offer personalized exercise
@@ -25,14 +25,11 @@
     </div>
   </section>
 </template>
-<style scoped>
-    .description p {
-  font-size: 1.4rem;
-}
 
+<style scoped>
 @media (max-width: 768px) {
-  .description p {
-    font-size: 1rem;
+  p {
+    font-size: 1rem !important;
   }
 }
 </style>

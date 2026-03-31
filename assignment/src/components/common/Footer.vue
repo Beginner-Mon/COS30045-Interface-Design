@@ -1,5 +1,5 @@
 <template>
-  <footer class=" p-5">
+  <footer class="p-5">
     <!-- Title -->
     <h1 class="mb-4">Embodied Conversational Agent</h1>
 
@@ -67,10 +67,9 @@
 }
 
 .icon-hover {
-  transition:
-    transform 0.2s ease,
-    opacity 0.2s ease;
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
+
 .icon-hover:hover {
   transform: scale(1.15);
   opacity: 0.8;

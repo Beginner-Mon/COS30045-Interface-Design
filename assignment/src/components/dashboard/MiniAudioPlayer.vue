@@ -1,5 +1,5 @@
 <template>
-  <div class="mini-audio-player d-flex align-items-center gap-2 bg-white border border-secondary-subtle rounded-pill px-3 py-1 shadow-sm mt-2" style="max-width: 280px;">
+  <div class="d-flex align-items-center gap-2 bg-white border border-secondary-subtle rounded-pill px-3 py-1 shadow-sm mt-2" style="max-width: 280px; min-height: 38px; pointer-events: auto">
     <!-- Play/Pause Button -->
     <button @click="togglePlay" class="btn btn-sm btn-link p-0 text-primary text-decoration-none shadow-none">
       <i :class="isPlaying ? 'bi bi-pause-circle-fill' : 'bi bi-play-circle-fill'" style="font-size: 1.35rem;"></i>
@@ -8,7 +8,7 @@
     <!-- Progress Bar -->
     <input 
       type="range" 
-      class="form-range flex-grow-1 custom-range shadow-none" 
+      class="form-range flex-grow-1 shadow-none custom-range" 
       min="0" 
       :max="duration || 100" 
       :value="currentTime" 
@@ -104,11 +104,6 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-.mini-audio-player {
-  pointer-events: auto;
-  min-height: 38px;
-}
-
 .custom-range {
   height: 4px;
 }
@@ -126,8 +121,8 @@ onBeforeUnmount(() => {
   height: 12px;
 }
 
-.mini-audio-player button:focus,
-.mini-audio-player input:focus {
+button:focus,
+input:focus {
   outline: none;
 }
 </style>

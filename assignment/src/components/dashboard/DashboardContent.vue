@@ -1,5 +1,5 @@
 <template>
-  <main class="chat-main">
+  <main class="d-flex flex-row position-relative overflow-hidden" style="flex: 1; min-height: 100%">
     <section class="chat-pane">
       <button
         v-if="showMobileMenu"
@@ -11,7 +11,7 @@
         <i class="bi bi-list"></i>
       </button>
 
-      <div class="chat-content-layer d-flex flex-column gap-3 h-100 w-100">
+      <div class="d-flex flex-column gap-3 h-100 w-100 chat-content-layer">
         <ChatMessages
           v-if="hasAssistantResponse"
           :messages="messages"
@@ -46,8 +46,8 @@
 
 <script setup>
 import MotionGlbBackground from './MotionGlbBackground.vue'
-import ChatMessages from '@/components/dashboard/ChatMessages.vue'
-import ChatInputBar from '@/components/dashboard/ChatInputBar.vue'
+import ChatMessages from './ChatMessages.vue'
+import ChatInputBar from './ChatInputBar.vue'
 import { useDashboardChat } from '@/composables/useDashboardChat'
 
 defineProps({
@@ -84,15 +84,6 @@ defineExpose({
 </script>
 
 <style scoped>
-.chat-main {
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-  position: relative;
-  overflow: hidden;
-  min-height: 100%;
-}
-
 .chat-pane {
   position: relative;
   z-index: 2;
@@ -102,7 +93,6 @@ defineExpose({
   align-items: stretch;
   padding: 1rem 1.25rem 1.25rem;
   min-height: 0;
-  background: transparent;
 }
 
 .motion-pane {
@@ -121,40 +111,30 @@ defineExpose({
   position: absolute;
   top: 0.9rem;
   left: 0.9rem;
-  width: auto;
-  height: auto;
   padding: 0;
   border: none;
-  border-radius: 0;
   z-index: 4;
   background: transparent;
   color: #000;
-  box-shadow: none;
-  backdrop-filter: none;
   font-size: 1.85rem;
   line-height: 1;
   pointer-events: auto;
 }
 
 @media (max-width: 768px) {
-  .chat-main {
-    min-height: 100vh;
+  .chat-pane {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+    z-index: 2;
+    padding: 4rem 0.85rem 1rem;
+    pointer-events: none;
   }
 
   .motion-pane {
     position: absolute;
     inset: 0;
     z-index: 1;
-  }
-
-  .chat-pane {
-    flex: 1;
-    min-width: 0;
-    width: 100%;
-    max-width: none;
-    z-index: 2;
-    padding: 4rem 0.85rem 1rem;
-    pointer-events: none;
   }
 
   .chat-content-layer {

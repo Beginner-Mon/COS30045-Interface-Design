@@ -36,13 +36,11 @@ const router = createRouter({
           path: 'login',
           name: 'login',
           component: () => import('@/views/Login.vue'),
-          meta: { requiresAuth: false }
         },
         {
           path: 'signup',
           name: 'signup',
           component: () => import('@/views/SignUp.vue'),
-          meta: { requiresAuth: false }
         },
       ]
     },
@@ -61,9 +59,12 @@ const router = createRouter({
   ],
 })
 
-// Auth guard
-router.beforeEach((to, from, next) => {
+// Auth guard — waits for Firebase to confirm auth state before deciding
+router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore()
+
+  // Wait for Firebase to determine if user is logged in (only blocks on first load)
+  await userStore.authReady
 
   if (to.meta.requiresAuth && !userStore.isAuthenticated) {
     next('/auth/login')

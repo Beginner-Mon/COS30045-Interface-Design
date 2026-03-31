@@ -20,6 +20,12 @@ export const useUserStore = defineStore('user', () => {
     const loading = ref(false)
     const error = ref(null)
 
+    // Auth readiness — resolves once Firebase has determined the initial auth state
+    let _resolveAuthReady
+    const authReady = new Promise((resolve) => {
+        _resolveAuthReady = resolve
+    })
+
     // Computed
     const isLoggedIn = computed(() => isAuthenticated.value)
     const userName = computed(() => user.value?.displayName || 'User')
@@ -110,6 +116,8 @@ export const useUserStore = defineStore('user', () => {
             } else {
                 setUser(null)
             }
+            // Signal that Firebase has determined the auth state
+            _resolveAuthReady()
         })
     }
 
@@ -119,6 +127,7 @@ export const useUserStore = defineStore('user', () => {
         isAuthenticated,
         loading,
         error,
+        authReady,
 
         // Computed
         isLoggedIn,

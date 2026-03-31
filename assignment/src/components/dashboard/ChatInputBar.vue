@@ -1,10 +1,12 @@
 <template>
-  <div class="chat-input-bar input-group border rounded-3 bg-white shadow-sm">
+  <div class="chat-input-bar input-group border rounded-3 bg-white shadow-sm mt-auto" style="padding: 0.35rem">
     <input
       v-autofocus
       :value="modelValue"
       type="text"
-      class="chat-input-field form-control border-0 shadow-none"
+      class="form-control border-0 shadow-none"
+      :class="{ 'opacity-75': isThinking }"
+      style="min-height: 2.1rem; pointer-events: auto"
       :placeholder="isThinking ? 'ECA is thinking...' : 'Ask me anything...'"
       :disabled="isThinking"
       @input="emit('update:modelValue', $event.target.value)"
@@ -12,7 +14,8 @@
     />
 
     <button
-      class="chat-send-btn btn btn-dark rounded-2"
+      class="btn btn-dark rounded-2 d-inline-flex align-items-center justify-content-center"
+      style="width: 2.1rem; height: 2.1rem; pointer-events: auto"
       :disabled="!modelValue.trim() || isThinking"
       @click="emit('send')"
     >
@@ -36,32 +39,3 @@ defineProps({
 
 const emit = defineEmits(['update:modelValue', 'send'])
 </script>
-
-<style scoped>
-.chat-input-bar {
-  margin-top: auto;
-  padding: 0.35rem;
-}
-
-.chat-input-field {
-  min-height: 2.1rem;
-  pointer-events: auto;
-}
-
-.chat-input-field:disabled {
-  opacity: 0.75;
-}
-
-.chat-send-btn {
-  width: 2.1rem;
-  height: 2.1rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: auto;
-}
-
-.chat-send-btn:disabled {
-  opacity: 0.55;
-}
-</style>

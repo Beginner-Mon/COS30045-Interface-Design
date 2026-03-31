@@ -11,12 +11,6 @@
       style="object-position: center"
     />
 
-    <!-- Black Gradient Overlay -->
-    <!-- <div
-      class="position-absolute top-0 start-0 w-100 h-100"
-      style="background: linear-gradient(to bottom, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.25))"
-    ></div> -->
-
     <!-- Content -->
     <div
       v-motion

@@ -36,7 +36,7 @@
   </header>
 
   <!-- MOBILE MODAL -->
-  <div v-if="menuOpen" class="position-fixed top-0 start-0 w-100 h-100 small-modal text-white z-50">
+  <div v-if="menuOpen" class="position-fixed top-0 start-0 w-100 h-100 bg-dark text-white" style="z-index: 1050">
     <!-- Close Button -->
     <div class="p-4 d-flex justify-content-end">
       <i class="bi bi-x-lg fs-3" role="button" @click="closeMenu"></i>
@@ -54,15 +54,7 @@
     </nav>
   </div>
 </template>
-<style scoped>
-.desktop-nav {
-  background: rgba(0, 0, 0, 0.45); /* semi-transparent */
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px); /* Safari */
-  border-radius: 999px; /* pill shape */
-  border: 1px solid rgba(255, 255, 255, 0.15);
-}
-</style>
+
 <script setup>
 import { ref, computed } from 'vue'
 import { useWindowSize } from '@vueuse/core'
@@ -82,17 +74,15 @@ const closeMenu = () => {
 </script>
 
 <style scoped>
-.z-50 {
-  z-index: 1050;
+.desktop-nav {
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-.cursor-pointer {
-  cursor: pointer;
-}
 .logo-white {
   filter: brightness(0) invert(1);
-}
-.small-modal {
-  background-color: rgb(33, 37, 41);
 }
 </style>

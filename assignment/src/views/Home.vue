@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import MainPage from '@/components/MainPage.vue'
-import Reasons from '@/components/ReasonTemplate.vue'
-import Register from '@/components/Register.vue'
+import HeroSection from '@/components/home/HeroSection.vue'
+import Reasons from '@/components/home/Reasons.vue'
+import CtaSection from '@/components/home/CtaSection.vue'
 </script>
 
 <template>
-  <MainPage />
+  <HeroSection />
   <Reasons />
-  <Register />
+  <CtaSection />
 </template>

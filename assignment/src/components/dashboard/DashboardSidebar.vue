@@ -31,7 +31,7 @@
       <div
         v-for="(chat, index) in chatHistory"
         :key="index"
-        class="d-flex align-items-center justify-content-between gap-2 px-4 py-3 cursor-pointer text-muted chat-item-hover border-bottom"
+        class="d-flex align-items-center justify-content-between gap-2 px-4 py-3 cursor-pointer text-muted border-bottom"
         role="button"
         @click="emit('load-session', chat.session_id || chat.id)"
       >
@@ -67,7 +67,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/userStore'
-import SidebarUserSection from '@/components/dashboard/SidebarUserSection.vue'
+import SidebarUserSection from './SidebarUserSection.vue'
 import { useDashboardSidebar } from '@/composables/useDashboardSidebar'
 
 defineProps({
