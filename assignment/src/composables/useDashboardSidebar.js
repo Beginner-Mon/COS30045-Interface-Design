@@ -1,4 +1,4 @@
-import { computed, ref, watch, onMounted } from 'vue'
+import { computed, ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import { getSessions, deleteSession } from '@/api'
 
 export const useDashboardSidebar = ({ userStore, router }) => {
@@ -73,12 +73,29 @@ export const useDashboardSidebar = ({ userStore, router }) => {
     }
   }
 
+  // Auto-collapse sidebar on medium screens (768–992px)
+  const COLLAPSE_BREAKPOINT = 992
+  const handleResize = () => {
+    const w = window.innerWidth
+    if (w < COLLAPSE_BREAKPOINT && w > 768) {
+      sidebarCollapsed.value = true
+    } else if (w >= COLLAPSE_BREAKPOINT) {
+      sidebarCollapsed.value = false
+    }
+  }
+
   watch(sidebarCollapsed, () => {
     setTimeout(updateLogoutMenuPosition, 100)
   })
 
   onMounted(() => {
     fetchSessions()
+    handleResize() // set initial state
+    window.addEventListener('resize', handleResize)
+  })
+
+  onBeforeUnmount(() => {
+    window.removeEventListener('resize', handleResize)
   })
 
   // Expose fetchSessions manually if needed after a new chat is created

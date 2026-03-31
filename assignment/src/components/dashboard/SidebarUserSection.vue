@@ -25,7 +25,7 @@
 
       <button
         v-if="!sidebarCollapsed"
-        class="btn btn-sm btn-link text-muted p-2 d-none d-lg-flex"
+        class="btn btn-sm btn-link text-muted p-2 d-flex"
         title="Collapse Sidebar"
         @click="emit('toggle-sidebar')"
       >
@@ -35,7 +35,7 @@
 
     <button
       v-if="sidebarCollapsed"
-      class="btn btn-sm btn-link text-muted p-2 d-none d-lg-flex w-100 justify-content-center mt-2"
+      class="btn btn-sm btn-link text-muted p-2 d-flex w-100 justify-content-center mt-2"
       title="Expand Sidebar"
       @click="emit('toggle-sidebar')"
     >
