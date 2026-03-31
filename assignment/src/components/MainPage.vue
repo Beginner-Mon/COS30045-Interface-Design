@@ -4,7 +4,7 @@
   >
     <!-- Background Image -->
     <img
-      src="@/assets/temp.jpg"
+      src="@/assets/bg.jpg"
       alt="Event background"
       loading="lazy"
       class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover"
@@ -12,10 +12,10 @@
     />
 
     <!-- Black Gradient Overlay -->
-    <div
+    <!-- <div
       class="position-absolute top-0 start-0 w-100 h-100"
       style="background: linear-gradient(to bottom, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.25))"
-    ></div>
+    ></div> -->
 
     <!-- Content -->
     <div

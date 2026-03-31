@@ -6,7 +6,7 @@
       style="height: 60vh"
     >
       <image
-        src="/src/assets/temp.jpg"
+        src="/src/assets/bg.jpg"
         class="w-100 h-100 object-fit-cover position-absolute top-0 start-0"
       ></image>
       <div

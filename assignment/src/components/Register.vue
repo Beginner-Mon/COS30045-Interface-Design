@@ -3,7 +3,7 @@
     class="min-h-50vh d-flex justify-content-center align-items-center p-4 position-relative overflow-hidden"
   >
     <img
-      src="@/assets/temp.jpg"
+      src="@/assets/sign.jpg"
       alt="Event background"
       loading="lazy"
       class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover"

@@ -20,7 +20,7 @@ const reasons = [
 
 <template>
   <section class="min-vh-100 py bg-light d-flex align-items-center">
-    <div class="container">
+    <div class="container-fluid px-4 px-md-5">
       <!-- Title only -->
       <div class="mb-5">
         <h1 class="fw-bold">Why Choose Us?</h1>
@@ -65,7 +65,7 @@ const reasons = [
 
 @media (min-width: 768px) {
   .child-div {
-    min-height: 16rem;
+    min-height: 24rem;
   }
 }
 </style>
