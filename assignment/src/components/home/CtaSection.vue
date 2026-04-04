@@ -21,7 +21,7 @@
       <h1 class="fw-bold display-6 display-md-5 display-lg-4">Login Now</h1>
 
       <RouterLink to="/auth/signup" class="btn btn-outline-light mt-3 px-4 py-2">
-        Go to Chat Bow now
+        Go to Chat Bot now
       </RouterLink>
     </div>
   </section>

@@ -1,16 +1,17 @@
 <template>
   <main class="d-flex flex-row position-relative overflow-hidden" style="flex: 1; min-height: 100%">
-    <section class="chat-pane">
-      <button
-        v-if="showMobileMenu"
-        type="button"
-        class="mobile-menu-btn"
-        @click="emit('open-sidebar')"
-        aria-label="Open sidebar"
-      >
-        <i class="bi bi-list"></i>
-      </button>
+    <!-- Mobile menu button - outside chat pane so it stays at top -->
+    <button
+      v-if="showMobileMenu"
+      type="button"
+      class="mobile-menu-btn"
+      @click="emit('open-sidebar')"
+      aria-label="Open sidebar"
+    >
+      <i class="bi bi-list"></i>
+    </button>
 
+    <section class="chat-pane">
       <div class="d-flex flex-column gap-3 h-100 w-100 chat-content-layer">
         <ChatMessages
           v-if="hasAssistantResponse"
@@ -123,12 +124,20 @@ defineExpose({
 
 @media (max-width: 768px) {
   .chat-pane {
-    flex: 1;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
     min-width: 0;
     width: 100%;
     z-index: 2;
-    padding: 4rem 0.85rem 1rem;
+    padding: 0 0.85rem 1rem;
     pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    max-height: 100%;
   }
 
   .motion-pane {
@@ -141,22 +150,22 @@ defineExpose({
     justify-content: flex-end;
     gap: 0.5rem;
     pointer-events: none;
+    flex: none;
   }
 
   :deep(.messages-container) {
-    height: 30vh;
-    max-height: 30vh;
-    background: rgba(255, 255, 255, 0.2);
+    max-height: 35vh;
+    overflow-y: auto;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     border-radius: 0.7rem;
-    padding: 0.45rem;
+    padding: 0.6rem;
     pointer-events: auto;
   }
 
   :deep(.chat-input-bar) {
     margin-top: 0;
-    position: sticky;
-    bottom: 0;
-    z-index: 3;
     pointer-events: auto;
   }
 }
