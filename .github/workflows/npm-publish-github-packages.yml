@@ -3,10 +3,10 @@ name: Deploy Vue App
 on:
   push:
     branches: [main]
-    
+
 permissions:
   contents: write
-  
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -18,18 +18,12 @@ jobs:
         with:
           node-version: 20
 
-      # move into Vue project folder
-      - name: Install dependencies
+      - name: Install & Build
+        working-directory: assignment-1
         run: |
-          cd assignment-1
           npm install
-
-      - name: Build project
-        run: |
-          cd assignment-1
           npm run build
 
-      # deploy to GitHub Pages
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
