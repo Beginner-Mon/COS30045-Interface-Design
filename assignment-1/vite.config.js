@@ -15,5 +15,5 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
-  base: '/COS30045-Interface-Design/'   // ← Hardcoded for your repo
+  base: './'   
 })
