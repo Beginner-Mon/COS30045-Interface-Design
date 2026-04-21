@@ -10,22 +10,26 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
+          cache-dependency-path: assignment-1/package-lock.json
 
       - name: Install & Build
         working-directory: assignment-1
+        env:
+          VITE_BASE_PATH: /COS30045-Interface-Design/   # ← Only change this if repo name changes
         run: |
-          npm install
+          npm ci
           npm run build
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: assignment-1/dist
+          force_orphan: true        # Cleans old files properly
